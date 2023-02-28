@@ -1,8 +1,7 @@
 import {DrawerNavigationProp} from '@react-navigation/drawer';
 import {ParamListBase} from '@react-navigation/native';
 import React from 'react';
-import {Appbar, Switch} from 'react-native-paper';
-import {PreferencesContext} from '../context';
+import {Appbar} from 'react-native-paper';
 
 interface HeaderProps {
   navigation: DrawerNavigationProp<ParamListBase, string, undefined>;
@@ -10,7 +9,6 @@ interface HeaderProps {
 }
 
 export default function Header(props: HeaderProps) {
-  const {toggleTheme, isThemeDark} = React.useContext(PreferencesContext);
   return (
     <Appbar.Header elevated>
       <Appbar.Action
@@ -20,7 +18,6 @@ export default function Header(props: HeaderProps) {
         }}
       />
       <Appbar.Content title={props.title} />
-      <Switch value={isThemeDark} onValueChange={toggleTheme} />
     </Appbar.Header>
   );
 }
