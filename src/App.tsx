@@ -1,32 +1,38 @@
-/* eslint-disable react/no-unstable-nested-components */
-import {createDrawerNavigator} from '@react-navigation/drawer';
 import React from 'react';
-import DrawerContent from './components/DrawerContent';
-import Header from './components/Header';
-import {routes} from './routes';
+import 'react-native-gesture-handler';
+import {Provider as PaperProvider} from 'react-native-paper';
 
-const Drawer = createDrawerNavigator();
+import {NavigationContainer} from '@react-navigation/native';
+import DrawerNavigation from './components/DrawerNavigation';
+import {getTheme} from './hooks/useTheme';
+import {ThemeContext} from './ThemeContext';
 
 export default function App() {
+  //TODO: in the long run we're gonna save the current theme in local storage or something
+  const [isThemeDark, setIsThemeDark] = React.useState(false);
+
+  let theme = getTheme(isThemeDark);
+
+  const toggleTheme = React.useCallback(() => {
+    return setIsThemeDark(!isThemeDark);
+  }, [isThemeDark]);
+
+  const preferences = React.useMemo(
+    () => ({
+      toggleTheme,
+      isThemeDark,
+    }),
+    [toggleTheme, isThemeDark],
+  );
+
   return (
-    <Drawer.Navigator
-      initialRouteName="play"
-      drawerContent={props => <DrawerContent {...props} />}>
-      {routes.map(route => {
-        return (
-          <Drawer.Screen
-            key={route.name}
-            name={route.name}
-            component={route.component}
-            options={{
-              title: route.displayName,
-              header: ({navigation}) => (
-                <Header title={route.displayName} navigation={navigation} />
-              ),
-            }}
-          />
-        );
-      })}
-    </Drawer.Navigator>
+    //other providers should wrap the paper provider
+    <ThemeContext.Provider value={preferences}>
+      <NavigationContainer theme={theme}>
+        <PaperProvider theme={theme}>
+          <DrawerNavigation />
+        </PaperProvider>
+      </NavigationContainer>
+    </ThemeContext.Provider>
   );
 }
