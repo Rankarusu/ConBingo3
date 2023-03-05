@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {ScrollView} from 'react-native';
+import {StyleSheet} from 'react-native';
+import {FlatList} from 'react-native-gesture-handler';
 import {FieldsRepository} from '../db';
 import {BingoField} from '../models/bingoField';
 import BingoFieldListItem from './BingoFieldListItem';
@@ -7,32 +8,40 @@ import BingoFieldListItem from './BingoFieldListItem';
 const repo = new FieldsRepository();
 
 interface BingoFieldListProps {
-  filter: string;
+  searchQuery: string;
 }
 
 const BingoFieldList = (props: BingoFieldListProps) => {
   const [fields, setFields] = useState<BingoField[]>([]);
-  const [filteredFields, setFilteredFields] = useState<BingoField[]>(fields);
 
   useEffect(() => {
     repo.getAll().then(data => setFields(data));
   }, []);
 
-  useEffect(() => {
-    setFilteredFields(
-      fields.filter(field =>
-        field.text.toLowerCase().includes(props.filter.toLowerCase()),
-      ),
-    );
-  }, [fields, props.filter]);
+  const queryContains = (text: string) => {
+    if (text.toLowerCase().includes(props.searchQuery.toLowerCase())) {
+      return {};
+    }
+    return styles.hide;
+  };
 
   return (
-    <ScrollView>
-      {filteredFields.map(field => {
-        return <BingoFieldListItem key={field.id} {...field} />;
-      })}
-    </ScrollView>
+    <FlatList
+      data={fields}
+      renderItem={({item}) => {
+        return (
+          <BingoFieldListItem style={queryContains(item.text)} {...item} />
+        );
+      }}
+      extraData={props.searchQuery}
+    />
   );
 };
+
+const styles = StyleSheet.create({
+  hide: {
+    display: 'none',
+  },
+});
 
 export default BingoFieldList;

@@ -1,10 +1,12 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, ViewStyle} from 'react-native';
 import {IconButton, List, TouchableRipple} from 'react-native-paper';
 import {useAppTheme} from '../hooks/useAppTheme';
 import {BingoField} from '../models/bingoField';
 
-type BingoFieldListItemProps = BingoField;
+type BingoFieldListItemProps = BingoField & {
+  style: ViewStyle;
+};
 
 export const BingoFieldListItem = (props: BingoFieldListItemProps) => {
   const theme = useAppTheme(); //TODO: maybe pass this as a prop
@@ -29,7 +31,7 @@ export const BingoFieldListItem = (props: BingoFieldListItemProps) => {
   );
 
   return (
-    <TouchableRipple onPress={() => {}}>
+    <TouchableRipple onPress={() => {}} style={props.style}>
       <List.Item
         style={styles.listItem}
         title={props.text}
