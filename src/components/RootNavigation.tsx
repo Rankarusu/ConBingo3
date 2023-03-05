@@ -1,6 +1,8 @@
+/* eslint-disable react/no-unstable-nested-components */
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import {rootRoutes} from '../routes';
+import ModalHeader from './ModalHeader';
 const Stack = createStackNavigator();
 
 export default function RootNavigation() {
@@ -13,7 +15,16 @@ export default function RootNavigation() {
             name={route.name}
             component={route.component}
             //TODO: use paper header here as well
-            options={{title: route.displayName, ...route.options}}
+            options={{
+              title: route.displayName,
+              header: ({navigation}) => (
+                <ModalHeader
+                  title={route.displayName || ''}
+                  navigation={navigation}
+                />
+              ),
+              ...route.options,
+            }}
           />
         );
       })}

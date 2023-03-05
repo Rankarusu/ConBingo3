@@ -1,27 +1,20 @@
-import {DrawerNavigationProp} from '@react-navigation/drawer';
-import {ParamListBase} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {FAB, Searchbar, Text} from 'react-native-paper';
+import {FAB, Searchbar} from 'react-native-paper';
 import BingoFieldList from '../components/BingoFieldList';
+import {StackRouteParameters} from '../routes';
 
-export const EditPage = () => {
-  return <Text>bleh</Text>;
-};
-
-const EditFields = ({
-  navigation,
-}: {
-  navigation: DrawerNavigationProp<ParamListBase>;
-}) => {
+const EditFields = () => {
   const [searchQuery, setSearchQuery] = React.useState('');
-
+  const navigation = useNavigation<StackNavigationProp<StackRouteParameters>>();
   const onChangeSearch = (query: string) => {
     setSearchQuery(query);
   };
 
   const addField = () => {
-    navigation.navigate('add-modal');
+    navigation.navigate('addModal');
   };
 
   return (

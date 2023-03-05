@@ -1,17 +1,17 @@
-import {DrawerNavigationProp} from '@react-navigation/drawer';
-import {ParamListBase} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import {FieldsRepository} from '../db';
 import {BingoField} from '../models/bingoField';
+import {StackRouteParameters} from '../routes';
 import BingoFieldListItem from './BingoFieldListItem';
 
 const repo = new FieldsRepository();
 
 interface BingoFieldListProps {
   searchQuery: string;
-  navigation: DrawerNavigationProp<ParamListBase>;
+  navigation: StackNavigationProp<StackRouteParameters>;
 }
 
 const BingoFieldList = (props: BingoFieldListProps) => {
@@ -28,7 +28,7 @@ const BingoFieldList = (props: BingoFieldListProps) => {
     return styles.hide;
   };
   const edit = (id: number) => {
-    props.navigation.navigate('edit-modal', {id: id});
+    props.navigation.navigate('editModal', {id: id});
   };
 
   return (
