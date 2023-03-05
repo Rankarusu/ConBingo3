@@ -1,5 +1,7 @@
+import {DrawerNavigationProp} from '@react-navigation/drawer';
+import {ParamListBase} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import {FieldsRepository} from '../db';
 import {BingoField} from '../models/bingoField';
@@ -9,6 +11,7 @@ const repo = new FieldsRepository();
 
 interface BingoFieldListProps {
   searchQuery: string;
+  navigation: DrawerNavigationProp<ParamListBase>;
 }
 
 const BingoFieldList = (props: BingoFieldListProps) => {
@@ -24,16 +27,24 @@ const BingoFieldList = (props: BingoFieldListProps) => {
     }
     return styles.hide;
   };
+  const edit = (id: number) => {
+    props.navigation.navigate('edit-modal', {id: id});
+  };
 
   return (
     <FlatList
       data={fields}
+      ListFooterComponent={<View />}
+      ListFooterComponentStyle={styles.footer}
       renderItem={({item}) => {
         return (
-          <BingoFieldListItem style={queryContains(item.text)} {...item} />
+          <BingoFieldListItem
+            style={queryContains(item.text)}
+            {...item}
+            edit={() => edit(item.id)}
+          />
         );
       }}
-      extraData={props.searchQuery}
     />
   );
 };
@@ -41,6 +52,9 @@ const BingoFieldList = (props: BingoFieldListProps) => {
 const styles = StyleSheet.create({
   hide: {
     display: 'none',
+  },
+  footer: {
+    paddingTop: 100,
   },
 });
 

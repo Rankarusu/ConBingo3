@@ -3,7 +3,7 @@ import 'react-native-gesture-handler';
 import {Provider as PaperProvider} from 'react-native-paper';
 
 import {NavigationContainer} from '@react-navigation/native';
-import DrawerNavigation from './components/DrawerNavigation';
+import RootNavigation from './components/RootNavigation';
 import {getTheme, inferTheme} from './hooks/useAppTheme';
 import {ThemeContext} from './ThemeContext';
 
@@ -34,7 +34,7 @@ export default function App() {
     <ThemeContext.Provider value={preferences}>
       <NavigationContainer theme={theme}>
         <PaperProvider theme={theme}>
-          <DrawerNavigation />
+          <RootNavigation />
         </PaperProvider>
       </NavigationContainer>
     </ThemeContext.Provider>
