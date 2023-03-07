@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import defaultFields from './data/defaultFields.json';
 import {BingoField} from './models/bingoField';
+import {CheckableBingoField} from './models/checkableBingoField';
 
 export class FieldsRepository {
   storageKey = '@fields';
@@ -53,5 +54,36 @@ export class FieldsRepository {
     const wantedIdx = fields.findIndex(field => field.id === id);
     fields[wantedIdx] = {...fields[wantedIdx], ...options};
     await this.setAll(fields);
+  }
+}
+
+export class CurrentSheetRepository {
+  storageKey = '@fields';
+  currentIndex = 0;
+
+  async getAll() {
+    const str = await AsyncStorage.getItem(this.storageKey);
+    const fields: CheckableBingoField[] = JSON.parse(str!);
+    return fields;
+  }
+
+  async findAllChecked() {
+    const str = await AsyncStorage.getItem(this.storageKey);
+    const fields: CheckableBingoField[] = JSON.parse(str!);
+    const filteredFields = fields.filter(field => field.checked);
+
+    return filteredFields;
+  }
+
+  async setAll(fields: CheckableBingoField[]) {
+    await AsyncStorage.setItem(this.storageKey, JSON.stringify(fields));
+  }
+
+  async setChecked(position: number, checked: boolean) {
+    const str = await AsyncStorage.getItem(this.storageKey);
+    const fields: CheckableBingoField[] = JSON.parse(str!);
+    fields[position].checked = checked;
+    //TODO: we could check for a bingo here.
+    await AsyncStorage.setItem(this.storageKey, JSON.stringify(fields));
   }
 }
