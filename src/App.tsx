@@ -34,11 +34,13 @@ export default function App() {
   return (
     //other providers should wrap the paper provider
     <ThemeContext.Provider value={preferences}>
-      <NavigationContainer theme={theme}>
-        <PaperProvider theme={theme}>
-          {isLoading ? <ActivityIndicator /> : <RootNavigation />}
-        </PaperProvider>
-      </NavigationContainer>
+      {!isLoading && ( //to supress theme flashing on app start
+        <NavigationContainer theme={theme}>
+          <PaperProvider theme={theme}>
+            <RootNavigation />
+          </PaperProvider>
+        </NavigationContainer>
+      )}
     </ThemeContext.Provider>
   );
 }
