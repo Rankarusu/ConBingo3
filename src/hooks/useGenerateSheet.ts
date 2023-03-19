@@ -1,7 +1,7 @@
 import {BingoField} from '../models/bingoField';
 import {CheckableBingoField} from '../models/checkableBingoField';
 
-export async function generateSheet(fields: BingoField[]) {
+export function generateSheet(fields: BingoField[]) {
   const indices = generateUniqueRandomNumbers(24, fields.length);
   const checkableFields = indices.map((index, position) => {
     return {
