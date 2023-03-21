@@ -12,6 +12,7 @@ import {
   REGISTER,
 } from 'redux-persist';
 import currentSheetSlice from './currentSheetSlice';
+import themeSlice from './themeSlice';
 
 const persistConfig = {
   key: 'root',
@@ -21,6 +22,7 @@ const persistConfig = {
 const reducer = persistCombineReducers(persistConfig, {
   fields: fieldsSlice,
   currentSheet: currentSheetSlice,
+  theme: themeSlice,
 });
 
 export const store = configureStore({
