@@ -4,10 +4,10 @@ import {IconButton, List, TouchableRipple} from 'react-native-paper';
 import {useAppTheme} from '../hooks/useAppTheme';
 import {BingoField} from '../models/bingoField';
 
-type BingoFieldListItemProps = BingoField & {
+export type BingoFieldListItemProps = BingoField & {
   style: ViewStyle;
   edit: () => void;
-  delete?: () => void;
+  delete: () => void;
 };
 
 export const BingoFieldListItem = (props: BingoFieldListItemProps) => {
@@ -27,7 +27,7 @@ export const BingoFieldListItem = (props: BingoFieldListItemProps) => {
         mode="contained"
         iconColor={theme.colors.onSurface}
         size={20}
-        onPress={() => console.log(props.id)}
+        onPress={props.delete}
       />
     </>
   );
