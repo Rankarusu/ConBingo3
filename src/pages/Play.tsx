@@ -1,12 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button} from 'react-native-paper';
 import BingoSheet from '../components/BingoSheet';
 import {useAppDispatch, useAppSelector} from '../hooks';
 import {generateSheet} from '../hooks/useGenerateSheet';
-import {BingoField} from '../models/bingoField';
 import {selectCurrentSheet, set} from '../stores/currentSheetSlice';
-import {add, reset, selectFields} from '../stores/fieldsSlice';
+import {reset, selectFields} from '../stores/fieldsSlice';
 
 const Play = () => {
   const currentSheet = useAppSelector(selectCurrentSheet);
@@ -14,17 +13,20 @@ const Play = () => {
   const dispatch = useAppDispatch();
   const [isEditing, setIsEditing] = useState(false);
 
-  useEffect(() => {
-    if (fields.length < 24) {
-      console.log('not enough fields, resetting');
-      dispatch(reset());
-    }
-    if (!currentSheet || currentSheet.length !== 25) {
-      console.log('generating new field, invalid data');
-      const newSheet = generateSheet(fields); //TODO: do something about initial start. currentyl fields is undefined first time
-      dispatch(set(newSheet));
-    }
-  }, [currentSheet, dispatch, fields]);
+  const reroll = () => {
+    const newSheet = generateSheet(fields);
+    dispatch(set(newSheet));
+  };
+
+  //idk if a useEffect si necessary here
+  if (fields.length < 24) {
+    console.log('not enough fields, resetting');
+    dispatch(reset());
+  }
+  if (!currentSheet || currentSheet.length !== 25) {
+    console.log('generating new field, invalid data');
+    reroll();
+  }
 
   return (
     <View style={styles.wrapper}>
@@ -34,7 +36,7 @@ const Play = () => {
           style={styles.button}
           icon="reload"
           mode="contained"
-          onPress={() => dispatch(add({id: 90, text: 'bleh'} as BingoField))}>
+          onPress={reroll}>
           Reroll
         </Button>
         <Button
@@ -48,7 +50,10 @@ const Play = () => {
           style={styles.button}
           icon={isEditing ? 'pencil-off' : 'pencil'}
           mode="contained"
-          onPress={() => console.log('Pressed')}>
+          onPress={() => {
+            console.log('Pressed');
+            setIsEditing(!isEditing);
+          }}>
           {isEditing ? 'Resume' : 'Edit'}
         </Button>
       </View>

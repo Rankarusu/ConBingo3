@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Dimensions, StyleSheet} from 'react-native';
 
 import {Surface, Text, TouchableRipple} from 'react-native-paper';
@@ -8,8 +8,9 @@ import Animated, {
   useDerivedValue,
   withTiming,
 } from 'react-native-reanimated';
-import {CurrentSheetRepository} from '../db';
+import {useAppDispatch} from '../hooks';
 import {useAppTheme} from '../hooks/useAppTheme';
+import {toggleCheckedState} from '../stores/currentSheetSlice';
 import {RgbaColor} from '../utils/rgbaColor';
 
 export interface BingoFieldProps {
@@ -18,18 +19,16 @@ export interface BingoFieldProps {
   text: string;
   checked?: boolean;
 }
-const repo = new CurrentSheetRepository();
 const BingoField = (props: BingoFieldProps) => {
+  const dispatch = useAppDispatch();
   const theme = useAppTheme();
-  const {text} = props;
-  const [checked, setChecked] = useState(props.checked);
 
   const primary = RgbaColor.FromString(theme.colors.primary);
   primary.a = 0.2;
   const translucentPrimary = primary.toRgbaString();
 
   const progress = useDerivedValue(() => {
-    return withTiming(checked ? 1 : 0, {
+    return withTiming(props.checked ? 1 : 0, {
       duration: 200,
     });
   });
@@ -59,10 +58,14 @@ const BingoField = (props: BingoFieldProps) => {
         style={[styles.content]}
         borderless
         rippleColor={translucentPrimary}
-        onPress={async () => {
-          setChecked(!checked);
-          await repo.setChecked(props.position, !checked);
-          console.log('set checked', props.position, !checked);
+        onPress={() => {
+          //state is managed centrally by redux only and we prevent rerender of other items by using memo :)
+          dispatch(
+            toggleCheckedState({
+              position: props.position,
+              checked: !props.checked,
+            }),
+          );
         }}>
         <Animated.View style={[styles.content, borderStyle]}>
           <Text
@@ -70,7 +73,7 @@ const BingoField = (props: BingoFieldProps) => {
             numberOfLines={6}
             style={styles.text}
             variant="bodySmall">
-            {text}
+            {props.text}
           </Text>
         </Animated.View>
       </TouchableRipple>
