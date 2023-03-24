@@ -1,9 +1,12 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {CheckableBingoField} from '../models/checkableBingoField';
+import {winningRows} from '../utils/winningRows';
 import {RootState} from './store';
 
 interface CurrentSheetState {
   value: CheckableBingoField[];
+  lastCheckedPos: number | null;
+  win: boolean;
 }
 
 interface ToggleCheckedStatePayload {
@@ -13,6 +16,15 @@ interface ToggleCheckedStatePayload {
 
 const initialState: CurrentSheetState = {
   value: [],
+  lastCheckedPos: null,
+  win: false,
+};
+
+const checkWin = (pos: number, checkedPos: number[]) => {
+  const result = winningRows
+    .filter(row => row.every(entry => checkedPos.includes(entry)))
+    .find(arr => arr.includes(pos)); // see if the newly selected field is in the winning row
+  return !!result;
 };
 
 export const currentSheetSlice = createSlice({
@@ -28,6 +40,15 @@ export const currentSheetSlice = createSlice({
     ) => {
       const {position, checked} = action.payload;
       state.value[position].checked = checked;
+
+      const checkedIds = state.value
+        .filter(item => item.checked === true)
+        .map(item => item.position);
+
+      state.win = checkWin(position, checkedIds);
+    },
+    resetWin: state => {
+      state.win = false;
     },
   },
 });
@@ -35,6 +56,8 @@ export const currentSheetSlice = createSlice({
 export const selectCurrentSheet = (state: RootState) =>
   state.currentSheet.value;
 
-export const {set, toggleCheckedState} = currentSheetSlice.actions;
+export const selectWin = (state: RootState) => state.currentSheet.win;
+
+export const {set, toggleCheckedState, resetWin} = currentSheetSlice.actions;
 
 export default currentSheetSlice.reducer;

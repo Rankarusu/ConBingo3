@@ -1,22 +1,23 @@
-import {configureStore, ThunkAction, Action} from '@reduxjs/toolkit';
-import fieldsSlice from './fieldsSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Action, configureStore, ThunkAction} from '@reduxjs/toolkit';
 import {
-  persistStore,
-  persistCombineReducers,
   FLUSH,
-  REHYDRATE,
   PAUSE,
   PERSIST,
+  persistCombineReducers,
+  persistStore,
   PURGE,
   REGISTER,
+  REHYDRATE,
 } from 'redux-persist';
 import currentSheetSlice from './currentSheetSlice';
+import fieldsSlice from './fieldsSlice';
 import themeSlice from './themeSlice';
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
+  blacklist: ['win'],
 };
 
 const reducer = persistCombineReducers(persistConfig, {

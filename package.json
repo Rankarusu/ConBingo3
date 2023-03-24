@@ -11,7 +11,8 @@
     "start": "react-native start",
     "debug": "open 'rndebugger://set-debugger-loc?host=localhost&port=8081'",
     "test": "jest",
-    "release": "standard-version --no-verify"
+    "release": "standard-version --no-verify",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.11",
@@ -19,8 +20,10 @@
     "@react-navigation/native": "^6.1.5",
     "@react-navigation/stack": "^6.3.16",
     "@reduxjs/toolkit": "^1.9.3",
+    "patch-package": "^6.5.1",
     "react": "18.2.0",
     "react-native": "0.71.3",
+    "react-native-confetti-cannon": "^1.5.2",
     "react-native-gesture-handler": "^2.9.0",
     "react-native-paper": "^5.2.0",
     "react-native-reanimated": "^2.14.4",

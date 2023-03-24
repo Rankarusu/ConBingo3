@@ -7,7 +7,7 @@ export function generateSheet(fields: BingoField[]) {
     return {
       id: fields[index].id,
       text: fields[index].text,
-      position,
+      position: position >= 12 ? position + 1 : position,
       checked: false,
     } as CheckableBingoField;
   });
