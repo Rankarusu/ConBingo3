@@ -5,6 +5,8 @@ import {Button} from 'react-native-paper';
 import BingoSheet from '../components/BingoSheet';
 import {useAppDispatch, useAppSelector} from '../hooks';
 import {generateSheet} from '../hooks/useGenerateSheet';
+import {useSnackbar} from '../hooks/useSnackbar';
+import Snackbar from '../components/Snackbar';
 import {
   resetWin,
   selectCurrentSheet,
@@ -37,6 +39,8 @@ const Play = () => {
   const fields = useAppSelector(selectFields);
   const dispatch = useAppDispatch();
   const [isEditing, setIsEditing] = useState(false);
+
+  const {snackbarRef, showSnackbar} = useSnackbar();
 
   const confettiRef = useRef<ConfettiCannon>(null);
 
@@ -86,8 +90,8 @@ const Play = () => {
           icon="content-save"
           mode="contained"
           onPress={() => {
-            dispatch(add({id: 0, content: currentSheet}));
-            console.log('Saved Sheet');
+            dispatch(add(currentSheet));
+            showSnackbar('Sheet saved successfully!');
           }}>
           Save
         </Button>
@@ -102,6 +106,7 @@ const Play = () => {
           {isEditing ? 'Resume' : 'Edit'}
         </Button>
       </View>
+      <Snackbar ref={snackbarRef} style={styles.snackbar} />
     </View>
   );
 };
@@ -109,22 +114,26 @@ const Play = () => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    padding: 6,
   },
   center: {
     flex: 1,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 6,
   },
   buttonBox: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    padding: 6,
     gap: 5,
   },
   button: {
     flex: 1,
+  },
+  snackbar: {
+    bottom: 50,
   },
 });
 

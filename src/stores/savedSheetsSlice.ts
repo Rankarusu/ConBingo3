@@ -1,5 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {BingoSheet} from '../models/bingoSheet';
+import {CheckableBingoField} from '../models/checkableBingoField';
 import {RootState} from './store';
 
 interface SavedSheetsState {
@@ -14,8 +15,8 @@ export const savedSheetsSlice = createSlice({
   name: 'savedSheets',
   initialState,
   reducers: {
-    add: (state, action: PayloadAction<BingoSheet>) => {
-      state.value.push(action.payload);
+    add: (state, action: PayloadAction<CheckableBingoField[]>) => {
+      state.value.push({id: 0, content: action.payload});
     },
     remove: (state, action: PayloadAction<number>) => {
       state.value = state.value.filter(item => item.id !== action.payload);
