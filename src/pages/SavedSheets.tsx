@@ -1,26 +1,31 @@
-import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Button, Text} from 'react-native-paper';
+import React, {createRef, Suspense, useState} from 'react';
+import {FlatList, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, Button} from 'react-native-paper';
 import SavedSheetsScroller from '../components/SavedSheetsScroller';
 import Snackbar from '../components/Snackbar';
 import {useAppDispatch, useAppSelector} from '../hooks';
 import {useSnackbar} from '../hooks/useSnackbar';
-import {remove, selectSavedSheets} from '../stores/savedSheetsSlice';
+import {
+  remove,
+  selectSavedSheets,
+  selectSelectedSheetIndex,
+} from '../stores/savedSheetsSlice';
 
 const SavedSheets = () => {
   const savedSheets = useAppSelector(selectSavedSheets);
+  const selectedSheetIndex = useAppSelector(selectSelectedSheetIndex);
   const dispatch = useAppDispatch();
 
-  const {snackbarRef, showSnackbar} = useSnackbar();
+  const flatRef = createRef<FlatList>();
+
+  const [snackbarRef, showSnackbar] = useSnackbar();
 
   return (
     <View style={styles.wrapper}>
       <View style={styles.center}>
-        {savedSheets.length === 0 ? (
-          <Text>You have no sheets saved at the moment.</Text>
-        ) : (
-          <SavedSheetsScroller savedSheets={savedSheets} />
-        )}
+        <Suspense fallback={<ActivityIndicator />}>
+          <SavedSheetsScroller savedSheets={savedSheets} flatRef={flatRef} />
+        </Suspense>
       </View>
       <View style={styles.buttonBox}>
         <Button
@@ -41,7 +46,18 @@ const SavedSheets = () => {
           mode="contained"
           disabled={savedSheets.length === 0}
           onPress={() => {
-            dispatch(remove(0));
+            const idx = selectedSheetIndex;
+            if (
+              savedSheets[savedSheets.length - 1].id === idx &&
+              savedSheets.length > 1
+            ) {
+              // without this the sheet just gets deleted and we are left with a blank list.
+              // therefore we scroll to the second last item if the last one is about to be deleted.
+              flatRef.current?.scrollToIndex({
+                index: savedSheets.length - 2,
+              });
+            }
+            dispatch(remove(selectedSheetIndex));
             showSnackbar('Sheet deleted!');
           }}>
           Delete

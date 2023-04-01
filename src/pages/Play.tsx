@@ -40,7 +40,7 @@ const Play = () => {
   const dispatch = useAppDispatch();
   const [isEditing, setIsEditing] = useState(false);
 
-  const {snackbarRef, showSnackbar} = useSnackbar();
+  const [snackbarRef, showSnackbar] = useSnackbar();
 
   const confettiRef = useRef<ConfettiCannon>(null);
 

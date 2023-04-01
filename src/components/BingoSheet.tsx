@@ -4,9 +4,11 @@ import BingoField, {BingoFieldProps} from '../components/BingoField';
 import {CheckableBingoField} from '../models/checkableBingoField';
 
 //we memoize list components so they wont rerender unless their props change.
-const Item = memo((props: BingoFieldProps) => <BingoField {...props} />);
+const MemoizedBingoField = memo((props: BingoFieldProps) => (
+  <BingoField {...props} />
+));
 
-interface BingoSheetProps {
+export interface BingoSheetProps {
   fields: CheckableBingoField[];
   readonly?: boolean;
 }
@@ -16,7 +18,7 @@ const BingoSheet = (props: BingoSheetProps) => {
     <View style={styles.grid}>
       {props.fields.map((item, index) => {
         return (
-          <Item
+          <MemoizedBingoField
             key={item.id}
             {...item}
             position={index}
