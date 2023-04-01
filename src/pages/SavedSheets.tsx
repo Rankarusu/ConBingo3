@@ -1,10 +1,11 @@
-import React, {createRef, Suspense, useState} from 'react';
+import React, {createRef, Suspense} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import {ActivityIndicator, Button} from 'react-native-paper';
 import SavedSheetsScroller from '../components/SavedSheetsScroller';
 import Snackbar from '../components/Snackbar';
 import {useAppDispatch, useAppSelector} from '../hooks';
 import {useSnackbar} from '../hooks/useSnackbar';
+import {set} from '../stores/currentSheetSlice';
 import {
   remove,
   selectSavedSheets,
@@ -35,6 +36,13 @@ const SavedSheets = () => {
           mode="contained"
           disabled={savedSheets.length === 0}
           onPress={() => {
+            const idx = selectedSheetIndex;
+            const sheetToLoad = savedSheets.find(item => item.id === idx);
+            if (!sheetToLoad) {
+              showSnackbar('Something went wrong while loading the sheet');
+              return;
+            }
+            dispatch(set(sheetToLoad.content));
             showSnackbar('Sheet loaded successfully!');
           }}>
           Load
