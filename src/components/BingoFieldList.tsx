@@ -8,7 +8,7 @@ import BingoFieldListItem, {
   BingoFieldListItemProps,
 } from './BingoFieldListItem';
 import {useAppDispatch} from '../hooks';
-import {remove} from '../stores/fieldsSlice';
+import {removeField} from '../stores/fieldsSlice';
 import {useSnackbar} from '../hooks/useSnackbar';
 import Snackbar from './Snackbar';
 
@@ -38,7 +38,7 @@ const BingoFieldList = (props: BingoFieldListProps) => {
   };
 
   const deleteField = (id: number) => {
-    dispatch(remove(id));
+    dispatch(removeField(id));
     showSnackbar('Field deleted!');
   };
 

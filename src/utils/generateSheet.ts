@@ -3,19 +3,15 @@ import {CheckableBingoField} from '../models/checkableBingoField';
 
 export function generateSheet(fields: BingoField[]) {
   const indices = generateUniqueRandomNumbers(24, fields.length);
-  const checkableFields = indices.map((index, position) => {
+  const checkableFields = indices.map(index => {
     return {
-      id: fields[index].id,
       text: fields[index].text,
-      position: position >= 12 ? position + 1 : position,
       checked: false,
     } as CheckableBingoField;
   });
   //insert free space in the middle
   checkableFields.splice(12, 0, {
-    id: NaN,
     text: 'FREE SPACE',
-    position: 12,
     checked: true,
   } as CheckableBingoField);
   return checkableFields;

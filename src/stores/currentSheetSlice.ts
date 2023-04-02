@@ -2,6 +2,7 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {CheckableBingoField} from '../models/checkableBingoField';
 import {winningRows} from '../utils/winningRows';
 import {RootState} from './store';
+import {useSelector} from 'react-redux';
 
 interface CurrentSheetState {
   value: CheckableBingoField[];
@@ -31,10 +32,10 @@ export const currentSheetSlice = createSlice({
   name: 'currentSheet',
   initialState,
   reducers: {
-    set: (state, action: PayloadAction<CheckableBingoField[]>) => {
+    setCurrentSheet: (state, action: PayloadAction<CheckableBingoField[]>) => {
       state.value = action.payload;
     },
-    toggleCheckedState: (
+    toggleCheckedField: (
       state,
       action: PayloadAction<ToggleCheckedStatePayload>,
     ) => {
@@ -56,11 +57,15 @@ export const currentSheetSlice = createSlice({
   },
 });
 
-export const selectCurrentSheet = (state: RootState) =>
-  state.currentSheet.value;
+export function useCurrentSheet() {
+  const selectors = {
+    currentSheet: useSelector((state: RootState) => state.currentSheet.value),
+    win: useSelector((state: RootState) => state.currentSheet.win),
+  };
+  return selectors;
+}
 
-export const selectWin = (state: RootState) => state.currentSheet.win;
-
-export const {set, toggleCheckedState, resetWin} = currentSheetSlice.actions;
+export const {setCurrentSheet, toggleCheckedField, resetWin} =
+  currentSheetSlice.actions;
 
 export default currentSheetSlice.reducer;

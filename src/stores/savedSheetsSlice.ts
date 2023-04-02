@@ -1,4 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {useSelector} from 'react-redux';
 import {BingoSheet} from '../models/bingoSheet';
 import {CheckableBingoField} from '../models/checkableBingoField';
 import {RootState} from './store';
@@ -19,26 +20,36 @@ export const savedSheetsSlice = createSlice({
   name: 'savedSheets',
   initialState,
   reducers: {
-    add: (state, action: PayloadAction<CheckableBingoField[]>) => {
+    addSheet: (state, action: PayloadAction<CheckableBingoField[]>) => {
       state.value.push({id: state.index, fields: action.payload});
       state.index++;
     },
-    remove: (state, action: PayloadAction<number>) => {
+    removeSheet: (state, action: PayloadAction<number>) => {
       state.value = state.value.filter(item => item.id !== action.payload);
     },
-    clear: state => {
+    clearSheets: state => {
       state.value = [];
     },
-    setIndex: (state, action: PayloadAction<number>) => {
+    setSelectedSheet: (state, action: PayloadAction<number>) => {
       state.selectedSheetIndex = action.payload;
     },
   },
 });
 
-export const selectSavedSheets = (state: RootState) => state.savedSheets.value;
-export const selectSelectedSheetIndex = (state: RootState) =>
-  state.savedSheets.selectedSheetIndex;
+export function useSavedSheets() {
+  const selectors = {
+    savedSheets: useSelector((state: RootState) => state.savedSheets.value),
+    selectedSheet: useSelector((state: RootState) =>
+      state.savedSheets.value.find(item => item.id === state.savedSheets.index),
+    ),
+    selectedSheetIndex: useSelector(
+      (state: RootState) => state.savedSheets.selectedSheetIndex,
+    ),
+  };
+  return selectors;
+}
 
-export const {add, remove, clear, setIndex} = savedSheetsSlice.actions;
+export const {addSheet, removeSheet, clearSheets, setSelectedSheet} =
+  savedSheetsSlice.actions;
 
 export default savedSheetsSlice.reducer;

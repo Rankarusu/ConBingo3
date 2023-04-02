@@ -3,20 +3,20 @@ import {FlatList, StyleSheet, View} from 'react-native';
 import {ActivityIndicator, Button} from 'react-native-paper';
 import SavedSheetsScroller from '../components/SavedSheetsScroller';
 import Snackbar from '../components/Snackbar';
-import {useAppDispatch, useAppSelector} from '../hooks';
+import {useAppDispatch} from '../hooks';
 import {useSnackbar} from '../hooks/useSnackbar';
-import {set} from '../stores/currentSheetSlice';
 import {
-  remove,
-  selectSavedSheets,
-  selectSelectedSheetIndex,
+  addSheet,
+  removeSheet,
+  useSavedSheets,
 } from '../stores/savedSheetsSlice';
 
 import {load, share} from '../utils/io';
+import {setCurrentSheet} from '../stores/currentSheetSlice';
 
 const SavedSheets = () => {
-  const savedSheets = useAppSelector(selectSavedSheets);
-  const selectedSheetIndex = useAppSelector(selectSelectedSheetIndex);
+  const {savedSheets, selectedSheet, selectedSheetIndex} = useSavedSheets();
+
   const dispatch = useAppDispatch();
 
   const flatRef = createRef<FlatList>();
@@ -38,13 +38,12 @@ const SavedSheets = () => {
           mode="contained"
           disabled={savedSheets.length === 0}
           onPress={() => {
-            const idx = selectedSheetIndex;
-            const sheetToLoad = savedSheets.find(item => item.id === idx);
+            const sheetToLoad = selectedSheet;
             if (!sheetToLoad) {
               showSnackbar('Something went wrong while loading the sheet');
               return;
             }
-            dispatch(set(sheetToLoad.fields));
+            dispatch(setCurrentSheet(sheetToLoad.fields));
             showSnackbar('Sheet loaded successfully!');
           }}>
           Load
@@ -67,7 +66,7 @@ const SavedSheets = () => {
                 index: savedSheets.length - 2,
               });
             }
-            dispatch(remove(selectedSheetIndex));
+            dispatch(removeSheet(selectedSheetIndex));
             showSnackbar('Sheet deleted!');
           }}>
           Delete
@@ -78,9 +77,19 @@ const SavedSheets = () => {
           icon="import"
           mode="contained"
           onPress={async () => {
-            const file = await load();
-            //check regex
-            //add into sheets
+            let file;
+            try {
+              file = await load();
+            } catch (error) {
+              if (error instanceof Error) {
+                showSnackbar(error.message);
+                return;
+              }
+            }
+            if (!file) {
+              return;
+            }
+            dispatch(addSheet(file));
             showSnackbar('Sheet imported successfully!');
           }}>
           Import
@@ -92,9 +101,7 @@ const SavedSheets = () => {
           mode="contained"
           disabled={savedSheets.length === 0}
           onPress={async () => {
-            const idx = selectedSheetIndex;
-            const sheetToLoad = savedSheets.find(item => item.id === idx);
-
+            const sheetToLoad = selectedSheet;
             if (!sheetToLoad) {
               return;
             }
