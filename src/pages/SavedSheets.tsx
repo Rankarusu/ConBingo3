@@ -12,6 +12,8 @@ import {
   selectSelectedSheetIndex,
 } from '../stores/savedSheetsSlice';
 
+import {load, share} from '../utils/io';
+
 const SavedSheets = () => {
   const savedSheets = useAppSelector(selectSavedSheets);
   const selectedSheetIndex = useAppSelector(selectSelectedSheetIndex);
@@ -42,7 +44,7 @@ const SavedSheets = () => {
               showSnackbar('Something went wrong while loading the sheet');
               return;
             }
-            dispatch(set(sheetToLoad.content));
+            dispatch(set(sheetToLoad.fields));
             showSnackbar('Sheet loaded successfully!');
           }}>
           Load
@@ -75,7 +77,10 @@ const SavedSheets = () => {
           style={styles.button}
           icon="import"
           mode="contained"
-          onPress={() => {
+          onPress={async () => {
+            const file = await load();
+            //check regex
+            //add into sheets
             showSnackbar('Sheet imported successfully!');
           }}>
           Import
@@ -86,7 +91,15 @@ const SavedSheets = () => {
           icon="export"
           mode="contained"
           disabled={savedSheets.length === 0}
-          onPress={() => {}}>
+          onPress={async () => {
+            const idx = selectedSheetIndex;
+            const sheetToLoad = savedSheets.find(item => item.id === idx);
+
+            if (!sheetToLoad) {
+              return;
+            }
+            await share(sheetToLoad.fields);
+          }}>
           Export
         </Button>
       </View>

@@ -19,7 +19,7 @@ const BingoSheet = (props: BingoSheetProps) => {
       {props.fields.map((item, index) => {
         return (
           <MemoizedBingoField
-            key={item.id}
+            key={index}
             {...item}
             position={index}
             readonly={props.readonly}

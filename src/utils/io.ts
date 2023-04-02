@@ -9,6 +9,9 @@ const FILE_URL = 'file://' + FILE_PATH;
 //TODO: change this to an actual json file once discord learned what that is and how to handle them
 const MIME_TYPE = 'text/plain';
 
+const fieldsJsonRegex =
+  /^\[(({"id":\d+,"text":"(.*?)","checked":(true|false)},){24}({"id":\d+,"text":"(.*?)","checked":(true|false)}))\]$/;
+
 export const share = async (sheet: CheckableBingoField[]) => {
   const sheetStr = JSON.stringify(sheet);
   await RNFS.writeFile(FILE_PATH, sheetStr, 'utf8');
@@ -28,6 +31,7 @@ export const load = async () => {
     presentationStyle: 'fullScreen',
   });
   const res = await RNFS.readFile(file.uri);
-  console.log(res);
-  return file;
+  const jsonField = JSON.parse(res);
+  console.log(jsonField);
+  return jsonField as CheckableBingoField[];
 };
