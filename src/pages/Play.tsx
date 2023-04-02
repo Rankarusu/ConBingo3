@@ -33,18 +33,27 @@ const Confetti = memo((props: ConfettiProps) => (
 ));
 
 const Play = () => {
+  const dispatch = useAppDispatch();
   const {currentSheet, win} = useCurrentSheet();
   const {fields} = useFields();
-  const dispatch = useAppDispatch();
-  const [isEditing, setIsEditing] = useState(false);
 
   const [snackbarRef, showSnackbar] = useSnackbar();
-
+  const [isEditing, setIsEditing] = useState(false);
   const confettiRef = useRef<ConfettiCannon>(null);
 
-  const reroll = () => {
+  const rerollSheet = () => {
     const newSheet = generateSheet(fields);
     dispatch(setCurrentSheet(newSheet));
+  };
+
+  const saveSheet = () => {
+    dispatch(addSheet(currentSheet));
+    showSnackbar('Sheet saved successfully!');
+  };
+
+  const toggleEditMode = () => {
+    console.log('toggleEditMode');
+    setIsEditing(!isEditing);
   };
 
   const shootConfetti = () => {
@@ -59,7 +68,7 @@ const Play = () => {
   }
   if (!currentSheet || currentSheet.length !== 25) {
     console.log('generating new field, invalid data');
-    reroll(); //TODO: on first launch out range in generateRandomNumbers is null
+    rerollSheet(); //TODO: on first launch out range in generateRandomNumbers is null
   }
 
   useEffect(() => {
@@ -80,27 +89,21 @@ const Play = () => {
           style={styles.button}
           icon="reload"
           mode="contained"
-          onPress={reroll}>
+          onPress={rerollSheet}>
           Reroll
         </Button>
         <Button
           style={styles.button}
           icon="content-save"
           mode="contained"
-          onPress={() => {
-            dispatch(addSheet(currentSheet));
-            showSnackbar('Sheet saved successfully!');
-          }}>
+          onPress={saveSheet}>
           Save
         </Button>
         <Button
           style={styles.button}
           icon={isEditing ? 'pencil-off' : 'pencil'}
           mode="contained"
-          onPress={() => {
-            console.log('Pressed');
-            setIsEditing(!isEditing);
-          }}>
+          onPress={toggleEditMode}>
           {isEditing ? 'Resume' : 'Edit'}
         </Button>
       </View>

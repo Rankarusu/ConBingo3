@@ -13,7 +13,7 @@ import {Text} from 'react-native-paper';
 import BingoSheet from '../components/BingoSheet';
 import {useAppDispatch, useAppTheme} from '../hooks';
 import {BingoSheet as BingoSheetModel} from '../models/bingoSheet';
-import {setIndex} from '../stores/savedSheetsSlice';
+import {setSelectedSheet} from '../stores/savedSheetsSlice';
 
 const width = Dimensions.get('window').width; //TODO: read these once and export const
 
@@ -36,8 +36,7 @@ const SavedSheetsScroller = (props: SavedSheetsScrollerProps) => {
   //using useCallback to circumvent "changing onViewableItemsChanged on the fly is not supported"-error
   const onViewableItemsChanged = useCallback(
     ({viewableItems}: {viewableItems: ViewToken[]}) => {
-      console.log(viewableItems[0].item.id);
-      dispatch(setIndex(viewableItems[0].item.id || 0));
+      dispatch(setSelectedSheet(viewableItems[0].item.id || 0));
     },
     [dispatch],
   );
