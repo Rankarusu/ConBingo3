@@ -1,15 +1,12 @@
-import {DrawerNavigationProp} from '@react-navigation/drawer';
+import {DrawerHeaderProps} from '@react-navigation/drawer';
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Appbar} from 'react-native-paper';
-import {DrawerRouteParameters} from '../routes';
 
-interface HeaderProps {
-  navigation: DrawerNavigationProp<DrawerRouteParameters>;
+type DrawerNavigationHeaderProps = DrawerHeaderProps & {
   title: string;
-}
-
-export default function Header(props: HeaderProps) {
+};
+const DrawerNavigationHeader: React.FC<DrawerNavigationHeaderProps> = props => {
   return (
     <Appbar.Header elevated>
       <Appbar.Action
@@ -21,10 +18,12 @@ export default function Header(props: HeaderProps) {
       <Appbar.Content title={props.title} style={styles.title} />
     </Appbar.Header>
   );
-}
+};
 
 const styles = StyleSheet.create({
   title: {
     paddingStart: 5,
   },
 });
+
+export default DrawerNavigationHeader;

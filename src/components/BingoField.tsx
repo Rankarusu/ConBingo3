@@ -14,13 +14,13 @@ import {toggleCheckedField} from '../stores/currentSheetSlice';
 import {RgbaColor} from '../utils/rgbaColor';
 
 export interface BingoFieldProps {
-  // id: number;
   position: number;
   text: string;
   checked?: boolean;
   readonly?: boolean;
 }
-const BingoField = (props: BingoFieldProps) => {
+
+const BingoField: React.FC<BingoFieldProps> = props => {
   const dispatch = useAppDispatch();
   const theme = useAppTheme();
 

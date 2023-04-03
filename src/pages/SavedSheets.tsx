@@ -13,8 +13,9 @@ import {
 
 import {load, share} from '../utils/io';
 import {setCurrentSheet} from '../stores/currentSheetSlice';
+import {DrawerRouteScreenProps} from '../routes';
 
-const SavedSheets = () => {
+const SavedSheets: React.FC<DrawerRouteScreenProps<'SavedSheets'>> = () => {
   const {savedSheets, selectedSheet, selectedSheetIndex} = useSavedSheets();
   const dispatch = useAppDispatch();
   const [snackbarRef, showSnackbar] = useSnackbar();

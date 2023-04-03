@@ -4,7 +4,7 @@ import Share from 'react-native-share';
 import {CheckableBingoField} from '../models/checkableBingoField';
 
 const FILE_NAME = 'bingo-sheet.txt';
-const FILE_PATH = RNFS.DownloadDirectoryPath + '/' + FILE_NAME;
+const FILE_PATH = RNFS.CachesDirectoryPath + '/' + FILE_NAME;
 const FILE_URL = 'file://' + FILE_PATH;
 //TODO: change this to an actual json file once discord learned what that is and how to handle them
 const MIME_TYPE = 'text/plain';

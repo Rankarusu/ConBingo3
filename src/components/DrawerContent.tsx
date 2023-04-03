@@ -8,10 +8,12 @@ import {Drawer, Switch, Text} from 'react-native-paper';
 import {useAppDispatch, useAppSelector} from '../hooks';
 import {drawerRoutes} from '../routes';
 import {selectTheme, toggle} from '../stores/themeSlice';
-export default function DrawerContent(props: DrawerContentComponentProps) {
+
+const DrawerContent: React.FC<DrawerContentComponentProps> = props => {
   const [active, setActive] = React.useState('play');
   const dispatch = useAppDispatch();
   const theme = useAppSelector(selectTheme);
+
   return (
     <DrawerContentScrollView {...props}>
       <Text style={style.title} variant="titleLarge">
@@ -46,7 +48,7 @@ export default function DrawerContent(props: DrawerContentComponentProps) {
       </Drawer.Section>
     </DrawerContentScrollView>
   );
-}
+};
 
 const style = StyleSheet.create({
   title: {
@@ -60,3 +62,5 @@ const style = StyleSheet.create({
     paddingHorizontal: 30,
   },
 });
+
+export default DrawerContent;

@@ -4,21 +4,21 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {FAB, Searchbar} from 'react-native-paper';
 import BingoFieldList from '../components/BingoFieldList';
-import {StackRouteParameters} from '../routes';
+import {DrawerRouteScreenProps, StackRouteParamList} from '../routes';
 import {useFields} from '../stores/fieldsSlice';
 
-const EditFields = () => {
-  const {fields} = useFields();
+const EditFields: React.FC<DrawerRouteScreenProps<'EditFields'>> = () => {
+  const {sortedFields} = useFields();
 
   const [searchQuery, setSearchQuery] = React.useState('');
-  const navigation = useNavigation<StackNavigationProp<StackRouteParameters>>();
+  const navigation = useNavigation<StackNavigationProp<StackRouteParamList>>();
 
   const onChangeSearch = (query: string) => {
     setSearchQuery(query);
   };
 
   const addField = () => {
-    navigation.navigate('addModal');
+    navigation.navigate('AddModal');
   };
 
   return (
@@ -31,7 +31,7 @@ const EditFields = () => {
         style={styles.searchBar}
       />
       <BingoFieldList
-        fields={fields}
+        fields={sortedFields}
         searchQuery={searchQuery}
         navigation={navigation}
       />

@@ -2,10 +2,11 @@ import React from 'react';
 import {Linking, StyleSheet} from 'react-native';
 import {Button, Card, Text} from 'react-native-paper';
 import {version} from '../../package.json';
+import {DrawerRouteScreenProps} from '../routes';
 
 const url = 'https://github.com/Rankarusu/ConBingo3';
 
-const About = () => {
+const About: React.FC<DrawerRouteScreenProps<'About'>> = () => {
   return (
     <Card onPress={() => {}} style={styles.card}>
       <Card.Title
