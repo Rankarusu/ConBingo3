@@ -10,6 +10,7 @@ import BingoFieldListItem, {
 } from './BingoFieldListItem';
 import Snackbar from './Snackbar';
 import {AppScreenProps} from '../navigation/types';
+import {useModal} from '../hooks/useModal';
 
 //we memoize list components so they wont rerender unless their props change.
 const MemoizedBingoFieldListItem = memo((props: BingoFieldListItemProps) => (
@@ -24,6 +25,8 @@ interface BingoFieldListProps {
 
 const BingoFieldList: React.FC<BingoFieldListProps> = props => {
   const dispatch = useAppDispatch();
+  const {openEditModal} = useModal();
+
   const [snackbarRef, showSnackbar] = useSnackbar();
 
   const queryContains = (text: string) => {
@@ -31,9 +34,6 @@ const BingoFieldList: React.FC<BingoFieldListProps> = props => {
       return {};
     }
     return styles.hide;
-  };
-  const editField = (id: number) => {
-    props.navigation.navigate('Modal', {id: id});
   };
 
   const deleteField = (id: number) => {
@@ -52,7 +52,7 @@ const BingoFieldList: React.FC<BingoFieldListProps> = props => {
             <MemoizedBingoFieldListItem
               style={queryContains(item.text)}
               {...item}
-              edit={() => editField(item.id)}
+              edit={() => openEditModal(item.id)}
               delete={() => deleteField(item.id)}
             />
           );

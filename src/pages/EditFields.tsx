@@ -4,18 +4,16 @@ import {FAB, Searchbar} from 'react-native-paper';
 import BingoFieldList from '../components/BingoFieldList';
 import {AppScreenProps} from '../navigation/types';
 import {useFields} from '../stores/fieldsSlice';
+import {useModal} from '../hooks/useModal';
 
 const EditFields: React.FC<AppScreenProps<'EditFields'>> = props => {
   const {sortedFields} = useFields();
+  const {openAddModal} = useModal();
 
   const [searchQuery, setSearchQuery] = React.useState('');
 
   const onChangeSearch = (query: string) => {
     setSearchQuery(query);
-  };
-
-  const addField = () => {
-    props.navigation.navigate('Modal', {});
   };
 
   return (
@@ -32,7 +30,7 @@ const EditFields: React.FC<AppScreenProps<'EditFields'>> = props => {
         searchQuery={searchQuery}
         navigation={props.navigation}
       />
-      <FAB icon="plus" style={styles.fab} onPress={addField} />
+      <FAB icon="plus" style={styles.fab} onPress={openAddModal} />
     </>
   );
 };

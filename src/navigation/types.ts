@@ -8,13 +8,23 @@ import {
   NavigatorScreenParams,
 } from '@react-navigation/native';
 import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
+import {ModalMode} from '../pages/Modal';
 
 export type RootRouteParamList = {
   App: NavigatorScreenParams<AppRouteParamList>;
-  Modal: {
-    id?: number;
-    position?: number;
-  };
+  Modal: editCurrentSheetPayload | editPayload | addPayload;
+};
+
+type editCurrentSheetPayload = {
+  mode: ModalMode.EDIT_CURRENT_SHEET;
+  position: number;
+};
+type editPayload = {
+  mode: ModalMode.EDIT;
+  id: number;
+};
+type addPayload = {
+  mode: ModalMode.ADD;
 };
 
 export type AppRouteParamList = {
