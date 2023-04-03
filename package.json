@@ -7,7 +7,7 @@
     "android:release": "react-native run-android --mode=release",
     "description": "A bullshit-bingo-esque to play with your weeb friends at conventions",
     "ios": "react-native run-ios",
-    "lint": "eslint .",
+    "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "start": "react-native start",
     "debug": "open 'rndebugger://set-debugger-loc?host=localhost&port=8081'",
     "test": "jest",

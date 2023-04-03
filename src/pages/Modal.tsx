@@ -1,6 +1,5 @@
 /* eslint-disable react/no-unstable-nested-components */
 // /* eslint-disable react/no-unstable-nested-components */
-import {StackScreenProps} from '@react-navigation/stack';
 import React, {memo, useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button, Text, TextInput} from 'react-native-paper';
@@ -8,8 +7,8 @@ import RootNavigationHeader, {
   RootNavigationHeaderProps,
 } from '../components/RootNavigationHeader';
 import {useAppDispatch, useAppTheme} from '../hooks';
-import {StackRouteParamList} from '../routes';
 import {addField, updateField, useFields} from '../stores/fieldsSlice';
+import {RootScreenProps} from '../navigation/types';
 
 type MemoizedHeaderProps = RootNavigationHeaderProps & {
   error: boolean;
@@ -31,15 +30,20 @@ const validate = (input: string) => {
   return input.length < 3;
 };
 
-type ModalProps = StackScreenProps<
-  StackRouteParamList,
-  'AddModal' | 'EditModal'
->;
-
-const Modal: React.FC<ModalProps> = props => {
+const Modal: React.FC<RootScreenProps<'Modal'>> = props => {
   const {fieldById} = useFields();
 
+  const pos = props.route.params?.position;
   const id = props.route.params?.id;
+
+  let title = '';
+  if (pos) {
+    title = 'Edit Bingo Field';
+  } else if (id) {
+    title = 'Edit Field';
+  } else {
+    title = 'Add Field';
+  }
 
   const initialText = id ? fieldById(id)?.text || '' : '';
 
@@ -63,10 +67,15 @@ const Modal: React.FC<ModalProps> = props => {
   useEffect(() => {
     props.navigation.setOptions({
       header: headerProps => (
-        <MemoizedHeader {...headerProps} error={error} save={saveField} />
+        <MemoizedHeader
+          {...headerProps}
+          title={title}
+          error={error}
+          save={saveField}
+        />
       ),
     });
-  }, [props.navigation, error, saveField]);
+  }, [props.navigation, error, title, saveField]);
 
   return (
     <>

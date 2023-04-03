@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unstable-nested-components */
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
-import {rootRoutes} from '../routes';
+import {rootRoutes} from '../navigation/routes';
 import RootNavigationHeader from './RootNavigationHeader';
 
 /*
@@ -14,7 +14,7 @@ export default function RootNavigation() {
   return (
     <Stack.Navigator
       screenOptions={{
-        header: props => <RootNavigationHeader {...props} />,
+        header: props => <RootNavigationHeader title="Modal" {...props} />,
       }}>
       {rootRoutes.map(route => {
         return (

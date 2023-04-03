@@ -1,24 +1,21 @@
-import {useNavigation} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {FAB, Searchbar} from 'react-native-paper';
 import BingoFieldList from '../components/BingoFieldList';
-import {DrawerRouteScreenProps, StackRouteParamList} from '../routes';
+import {AppScreenProps} from '../navigation/types';
 import {useFields} from '../stores/fieldsSlice';
 
-const EditFields: React.FC<DrawerRouteScreenProps<'EditFields'>> = () => {
+const EditFields: React.FC<AppScreenProps<'EditFields'>> = props => {
   const {sortedFields} = useFields();
 
   const [searchQuery, setSearchQuery] = React.useState('');
-  const navigation = useNavigation<StackNavigationProp<StackRouteParamList>>();
 
   const onChangeSearch = (query: string) => {
     setSearchQuery(query);
   };
 
   const addField = () => {
-    navigation.navigate('AddModal');
+    props.navigation.navigate('Modal', {});
   };
 
   return (
@@ -33,7 +30,7 @@ const EditFields: React.FC<DrawerRouteScreenProps<'EditFields'>> = () => {
       <BingoFieldList
         fields={sortedFields}
         searchQuery={searchQuery}
-        navigation={navigation}
+        navigation={props.navigation}
       />
       <FAB icon="plus" style={styles.fab} onPress={addField} />
     </>

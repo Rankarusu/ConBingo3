@@ -1,4 +1,4 @@
-import React, {memo, RefObject, useEffect, useRef, useState} from 'react';
+import React, {memo, RefObject, useEffect, useRef} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import ConfettiCannon from 'react-native-confetti-cannon';
 import {Button} from 'react-native-paper';
@@ -6,6 +6,7 @@ import BingoSheet from '../components/BingoSheet';
 import Snackbar from '../components/Snackbar';
 import {useAppDispatch} from '../hooks';
 import {useSnackbar} from '../hooks/useSnackbar';
+import {AppScreenProps} from '../navigation/types';
 import {
   resetWin,
   setCurrentSheet,
@@ -14,7 +15,6 @@ import {
 import {resetFields, useFields} from '../stores/fieldsSlice';
 import {addSheet} from '../stores/savedSheetsSlice';
 import {generateSheet} from '../utils/generateSheet';
-import {DrawerRouteScreenProps} from '../routes';
 
 interface ConfettiProps {
   confettiRef: RefObject<ConfettiCannon>;
@@ -33,13 +33,12 @@ const Confetti = memo((props: ConfettiProps) => (
   />
 ));
 
-const Play: React.FC<DrawerRouteScreenProps<'Play'>> = () => {
+const Play: React.FC<AppScreenProps<'Play'>> = () => {
   const dispatch = useAppDispatch();
   const {currentSheet, win} = useCurrentSheet();
   const {fields} = useFields();
 
   const [snackbarRef, showSnackbar] = useSnackbar();
-  const [isEditing, setIsEditing] = useState(false);
   const confettiRef = useRef<ConfettiCannon>(null);
 
   const rerollSheet = () => {
@@ -50,11 +49,6 @@ const Play: React.FC<DrawerRouteScreenProps<'Play'>> = () => {
   const saveSheet = () => {
     dispatch(addSheet(currentSheet));
     showSnackbar('Sheet saved successfully!');
-  };
-
-  const toggleEditMode = () => {
-    console.log('toggleEditMode');
-    setIsEditing(!isEditing);
   };
 
   const shootConfetti = () => {
@@ -100,13 +94,13 @@ const Play: React.FC<DrawerRouteScreenProps<'Play'>> = () => {
           onPress={saveSheet}>
           Save
         </Button>
-        <Button
+        {/* <Button
           style={styles.button}
           icon={isEditing ? 'pencil-off' : 'pencil'}
           mode="contained"
           onPress={toggleEditMode}>
           {isEditing ? 'Resume' : 'Edit'}
-        </Button>
+        </Button> */}
       </View>
       <Snackbar ref={snackbarRef} style={styles.snackbar} />
     </View>
