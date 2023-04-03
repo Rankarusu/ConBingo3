@@ -9,6 +9,10 @@ import RootNavigationHeader, {
 import {useAppDispatch, useAppTheme} from '../hooks';
 import {addField, updateField, useFields} from '../stores/fieldsSlice';
 import {RootScreenProps} from '../navigation/types';
+import {
+  updateCurrentSheetField,
+  useCurrentSheet,
+} from '../stores/currentSheetSlice';
 
 type MemoizedHeaderProps = RootNavigationHeaderProps & {
   error: boolean;
@@ -32,37 +36,43 @@ const validate = (input: string) => {
 
 const Modal: React.FC<RootScreenProps<'Modal'>> = props => {
   const {fieldById} = useFields();
+  const {fieldByPosition} = useCurrentSheet();
+  const dispatch = useAppDispatch();
 
-  const pos = props.route.params?.position;
+  const position = props.route.params?.position;
   const id = props.route.params?.id;
 
-  let title = '';
-  if (pos) {
+  //not the prettiest solution but it lets us reuse this component
+  let title: string;
+  let initialText: string;
+  if (position !== undefined) {
     title = 'Edit Bingo Field';
-  } else if (id) {
+    initialText = fieldByPosition(position)?.text;
+  } else if (id !== undefined) {
     title = 'Edit Field';
+    initialText = fieldById(id)?.text || '';
   } else {
     title = 'Add Field';
+    initialText = '';
   }
-
-  const initialText = id ? fieldById(id)?.text || '' : '';
 
   const [text, setText] = React.useState(initialText);
   const [textLength, setTextLength] = useState(initialText.length);
   const [error, setError] = useState(validate(text));
 
   const {colors} = useAppTheme();
-  const dispatch = useAppDispatch();
 
   const saveField = useCallback(() => {
-    if (id) {
+    if (position) {
       // we only have the id when we call edit but not on add
+      dispatch(updateCurrentSheetField({position, text}));
+    } else if (id) {
       dispatch(updateField({id, text}));
     } else {
       dispatch(addField(text));
     }
     props.navigation.goBack();
-  }, [dispatch, text, id, props.navigation]);
+  }, [dispatch, text, id, position, props.navigation]);
 
   useEffect(() => {
     props.navigation.setOptions({
