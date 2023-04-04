@@ -3,16 +3,41 @@ import {
   DrawerContentScrollView,
 } from '@react-navigation/drawer';
 import React, {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {BackHandler, StyleSheet, View} from 'react-native';
 import {Drawer, Switch, Text} from 'react-native-paper';
 import {useAppDispatch, useAppSelector} from '../hooks';
-import {appRoutes} from '../navigation/routes';
+import {INITIAL_ROUTE, appRoutes} from '../navigation/routes';
 import {selectTheme, toggle} from '../stores/themeSlice';
+import {useFocusEffect} from '@react-navigation/native';
 
 const DrawerContent: React.FC<DrawerContentComponentProps> = props => {
-  const [active, setActive] = useState('Play');
+  const [active, setActive] = useState(INITIAL_ROUTE);
   const dispatch = useAppDispatch();
   const theme = useAppSelector(selectTheme);
+
+  // Set our drawer state when a user uses their hardware back button
+  // https://reactnavigation.org/docs/custom-android-back-button-handling
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        /*
+        since we configured our drawer nav so it goes back to the initial route on a hardware
+        back button press, we can use that here.
+        */
+        if (active !== INITIAL_ROUTE) {
+          setActive(INITIAL_ROUTE);
+        }
+        return false;
+      };
+
+      const subscription = BackHandler.addEventListener(
+        'hardwareBackPress',
+        onBackPress,
+      );
+
+      return () => subscription.remove();
+    }, [active]),
+  );
 
   return (
     <DrawerContentScrollView {...props}>

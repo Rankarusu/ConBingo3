@@ -14,6 +14,8 @@ export interface AppRoute {
   component: React.FC<any>;
 }
 
+export const INITIAL_ROUTE = 'Play';
+
 export const appRoutes: AppRoute[] = [
   {
     name: 'Play',
