@@ -43,7 +43,8 @@ export const currentSheetSlice = createSlice({
       state.value = action.payload;
     },
     resetCurrentSheet: (state, action: PayloadAction<BingoField[]>) => {
-      state.value = generateSheet(action.payload);
+      const newSheet = generateSheet(action.payload);
+      state.value = newSheet;
     },
     toggleCheckedField: (
       state,

@@ -6,6 +6,7 @@ import BingoSheet from '../components/BingoSheet';
 import {useAppDispatch} from '../hooks';
 import {AppScreenProps} from '../navigation/types';
 import {
+  resetCurrentSheet,
   resetWin,
   setCurrentSheet,
   useCurrentSheet,
@@ -40,11 +41,6 @@ const Play: React.FC<AppScreenProps<'Play'>> = () => {
 
   const confettiRef = useRef<ConfettiCannon>(null);
 
-  const rerollSheet = () => {
-    const newSheet = generateSheet(fields);
-    dispatch(setCurrentSheet(newSheet));
-  };
-
   const saveSheet = () => {
     dispatch(addSheet(currentSheet));
     showSnackbar('Sheet saved successfully!');
@@ -54,16 +50,18 @@ const Play: React.FC<AppScreenProps<'Play'>> = () => {
     confettiRef.current?.start();
   };
 
-  //idk if a useEffect is necessary here
-  if (fields.length < 24) {
-    console.log('not enough fields, resetting');
-    //TODO: throw a warning here
-    dispatch(resetFields());
-  }
-  if (!currentSheet || currentSheet.length !== 25) {
-    console.log('generating new field, invalid data');
-    rerollSheet(); //TODO: on first launch out range in generateRandomNumbers is null
-  }
+  useEffect(() => {
+    if (fields.length < 24) {
+      console.log('not enough fields, resetting');
+      //TODO: throw alert here
+      dispatch(resetFields());
+    }
+    if (fields.length > 1 && currentSheet.length !== 25) {
+      // our fields are only set on the second rendering. therefore we skip generating a field on the first
+      console.log('generating new field, invalid data');
+      dispatch(resetCurrentSheet(fields));
+    }
+  }, [fields, currentSheet, dispatch]);
 
   useEffect(() => {
     if (win) {
@@ -84,7 +82,9 @@ const Play: React.FC<AppScreenProps<'Play'>> = () => {
           style={styles.button}
           icon="reload"
           mode="contained"
-          onPress={rerollSheet}>
+          onPress={() => {
+            dispatch(resetCurrentSheet(fields));
+          }}>
           Reroll
         </Button>
         <Button
