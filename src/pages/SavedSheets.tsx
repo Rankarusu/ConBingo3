@@ -2,9 +2,7 @@ import React, {createRef, Suspense} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import {ActivityIndicator, Button} from 'react-native-paper';
 import SavedSheetsScroller from '../components/SavedSheetsScroller';
-import Snackbar from '../components/Snackbar';
 import {useAppDispatch} from '../hooks';
-import {useSnackbar} from '../hooks/useSnackbar';
 import {
   addSheet,
   removeSheet,
@@ -14,17 +12,18 @@ import {
 import {AppScreenProps} from '../navigation/types';
 import {setCurrentSheet} from '../stores/currentSheetSlice';
 import {load, share} from '../utils/io';
+import {useSnackbar} from '../context/SnackbarContext';
 
 const SavedSheets: React.FC<AppScreenProps<'SavedSheets'>> = () => {
   const {savedSheets, selectedSheet, selectedSheetIndex} = useSavedSheets();
   const dispatch = useAppDispatch();
-  const [snackbarRef, showSnackbar] = useSnackbar();
+  const {showSnackbar} = useSnackbar();
   const flatRef = createRef<FlatList>();
 
   const loadSheet = () => {
     const sheetToLoad = selectedSheet;
     if (!sheetToLoad) {
-      showSnackbar('Something went wrong while loading the sheet');
+      showSnackbar('Something went wrong while loading the sheet.');
       return;
     }
     dispatch(setCurrentSheet(sheetToLoad.fields));
@@ -116,7 +115,6 @@ const SavedSheets: React.FC<AppScreenProps<'SavedSheets'>> = () => {
           Share
         </Button>
       </View>
-      <Snackbar ref={snackbarRef} style={styles.snackbar} />
     </View>
   );
 };
@@ -142,8 +140,5 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
-  },
-  snackbar: {
-    bottom: 50,
   },
 });

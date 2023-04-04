@@ -46,6 +46,7 @@ const About: React.FC<AppScreenProps<'About'>> = () => {
 const styles = StyleSheet.create({
   card: {
     marginTop: 30,
+    marginHorizontal: 5,
   },
 });
 

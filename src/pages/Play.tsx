@@ -3,9 +3,7 @@ import {Dimensions, StyleSheet, View} from 'react-native';
 import ConfettiCannon from 'react-native-confetti-cannon';
 import {Button} from 'react-native-paper';
 import BingoSheet from '../components/BingoSheet';
-import Snackbar from '../components/Snackbar';
 import {useAppDispatch} from '../hooks';
-import {useSnackbar} from '../hooks/useSnackbar';
 import {AppScreenProps} from '../navigation/types';
 import {
   resetWin,
@@ -15,6 +13,8 @@ import {
 import {resetFields, useFields} from '../stores/fieldsSlice';
 import {addSheet} from '../stores/savedSheetsSlice';
 import {generateSheet} from '../utils/generateSheet';
+import {useSnackbar} from '../context/SnackbarContext';
+
 interface ConfettiProps {
   confettiRef: RefObject<ConfettiCannon>;
 }
@@ -36,8 +36,8 @@ const Play: React.FC<AppScreenProps<'Play'>> = () => {
   const dispatch = useAppDispatch();
   const {currentSheet, win} = useCurrentSheet();
   const {fields} = useFields();
+  const {showSnackbar} = useSnackbar();
 
-  const [snackbarRef, showSnackbar] = useSnackbar();
   const confettiRef = useRef<ConfettiCannon>(null);
 
   const rerollSheet = () => {
@@ -68,9 +68,10 @@ const Play: React.FC<AppScreenProps<'Play'>> = () => {
   useEffect(() => {
     if (win) {
       shootConfetti();
+      showSnackbar('Winner, Winner Chicken Dinner!');
       dispatch(resetWin());
     }
-  }, [win, dispatch]);
+  }, [win, dispatch, showSnackbar]);
 
   return (
     <View style={styles.wrapper}>
@@ -94,7 +95,6 @@ const Play: React.FC<AppScreenProps<'Play'>> = () => {
           Save
         </Button>
       </View>
-      <Snackbar ref={snackbarRef} style={styles.snackbar} />
     </View>
   );
 };
@@ -120,9 +120,6 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
-  },
-  snackbar: {
-    bottom: 50,
   },
 });
 
