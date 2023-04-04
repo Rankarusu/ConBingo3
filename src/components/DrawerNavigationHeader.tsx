@@ -3,8 +3,9 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Appbar} from 'react-native-paper';
 
-type DrawerNavigationHeaderProps = DrawerHeaderProps & {
+export type DrawerNavigationHeaderProps = DrawerHeaderProps & {
   title: string;
+  right?: JSX.Element;
 };
 const DrawerNavigationHeader: React.FC<DrawerNavigationHeaderProps> = props => {
   return (
@@ -16,6 +17,7 @@ const DrawerNavigationHeader: React.FC<DrawerNavigationHeaderProps> = props => {
         }}
       />
       <Appbar.Content title={props.title} style={styles.title} />
+      {props.right}
     </Appbar.Header>
   );
 };
