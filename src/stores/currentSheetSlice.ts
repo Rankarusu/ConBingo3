@@ -3,6 +3,8 @@ import {CheckableBingoField} from '../models/checkableBingoField';
 import {winningRows} from '../utils/winningRows';
 import {RootState} from './store';
 import {useSelector} from 'react-redux';
+import {generateSheet} from '../utils/generateSheet';
+import {BingoField} from '../models/bingoField';
 
 interface CurrentSheetState {
   value: CheckableBingoField[];
@@ -39,6 +41,9 @@ export const currentSheetSlice = createSlice({
   reducers: {
     setCurrentSheet: (state, action: PayloadAction<CheckableBingoField[]>) => {
       state.value = action.payload;
+    },
+    resetCurrentSheet: (state, action: PayloadAction<BingoField[]>) => {
+      state.value = generateSheet(action.payload);
     },
     toggleCheckedField: (
       state,
@@ -82,6 +87,7 @@ export function useCurrentSheet() {
 
 export const {
   setCurrentSheet,
+  resetCurrentSheet,
   toggleCheckedField,
   updateCurrentSheetField,
   resetWin,
