@@ -1,18 +1,24 @@
 import React, {
   PropsWithChildren,
   createContext,
+  useCallback,
   useContext,
   useState,
 } from 'react';
 import {Button, Dialog, Portal, Text} from 'react-native-paper';
 
-type AlertContextActions = {
-  showAlert: (
-    title: string,
-    content: string,
-    confirmAction: () => void,
-  ) => void;
-};
+export interface AlertOptions {
+  title: string;
+  content: string;
+  confirmText?: string;
+  confirmAction?: () => void;
+  cancelText?: string;
+  cancelAction?: () => void;
+}
+
+interface AlertContextActions {
+  showAlert: (showAlertAttributes: AlertOptions) => void;
+}
 
 const AlertContext = createContext<AlertContextActions>(
   {} as AlertContextActions,
@@ -20,29 +26,32 @@ const AlertContext = createContext<AlertContextActions>(
 
 export const AlertProvider: React.FC<PropsWithChildren> = props => {
   const [open, setOpen] = useState(false);
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [confirmAction, setConfirmAction] = useState<() => void>();
 
-  const showAlert = (
-    titleInput: string,
-    contentInput: string,
-    confirmActionInput: () => void,
-  ) => {
-    setTitle(titleInput);
-    setContent(contentInput);
-    setConfirmAction(confirmActionInput);
+  const [alertOptions, setAlertOptions] = useState<AlertOptions>({
+    title: '',
+    content: '',
+  });
+
+  const showAlert = useCallback((options: AlertOptions) => {
+    setAlertOptions(options);
     setOpen(true);
-  };
+  }, []);
 
-  const handleClose = () => {
+  const handleConfirm = () => {
+    if (alertOptions.confirmAction) {
+      alertOptions.confirmAction();
+    }
     setOpen(false);
   };
 
-  const handleConfirm = () => {
-    if (confirmAction) {
-      confirmAction();
+  const handleCancel = () => {
+    if (alertOptions.cancelAction) {
+      alertOptions.cancelAction();
     }
+    setOpen(false);
+  };
+
+  const handleDismiss = () => {
     setOpen(false);
   };
 
@@ -50,14 +59,18 @@ export const AlertProvider: React.FC<PropsWithChildren> = props => {
     <AlertContext.Provider value={{showAlert}}>
       {props.children}
       <Portal>
-        <Dialog visible={open} onDismiss={handleClose}>
-          <Dialog.Title>{title}</Dialog.Title>
+        <Dialog visible={open} onDismiss={handleDismiss}>
+          <Dialog.Title>{alertOptions.title}</Dialog.Title>
           <Dialog.Content>
-            <Text variant="bodyMedium">{content}</Text>
+            <Text variant="bodyMedium">{alertOptions.content}</Text>
           </Dialog.Content>
           <Dialog.Actions>
-            <Button onPress={handleConfirm}>OK</Button>
-            <Button onPress={handleClose}>Cancel</Button>
+            <Button onPress={handleConfirm}>
+              {alertOptions.confirmText || 'OK'}
+            </Button>
+            <Button onPress={handleCancel}>
+              {alertOptions.cancelText || 'Cancel'}
+            </Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>
