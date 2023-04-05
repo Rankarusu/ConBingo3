@@ -1,15 +1,16 @@
 import React, {memo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
+import {Text} from 'react-native-paper';
+import {useSnackbar} from '../context/SnackbarContext';
 import {useAppDispatch} from '../hooks';
+import {useModal} from '../hooks/useModal';
 import {BingoField} from '../models/bingoField';
+import {AppScreenProps} from '../navigation/types';
 import {removeField} from '../stores/fieldsSlice';
 import BingoFieldListItem, {
   BingoFieldListItemProps,
 } from './BingoFieldListItem';
-import {AppScreenProps} from '../navigation/types';
-import {useModal} from '../hooks/useModal';
-import {useSnackbar} from '../context/SnackbarContext';
 
 //we memoize list components so they wont rerender unless their props change.
 const MemoizedBingoFieldListItem = memo((props: BingoFieldListItemProps) => (
@@ -43,7 +44,11 @@ const BingoFieldList: React.FC<BingoFieldListProps> = props => {
     <>
       <FlatList
         data={props.fields}
-        ListFooterComponent={<View />}
+        ListFooterComponent={
+          <Text style={styles.text} variant="labelMedium">
+            {props.fields.length} fields
+          </Text>
+        }
         ListFooterComponentStyle={styles.footer}
         renderItem={({item}) => {
           return (
@@ -65,7 +70,10 @@ const styles = StyleSheet.create({
     display: 'none',
   },
   footer: {
-    paddingTop: 100,
+    paddingVertical: 35,
+  },
+  text: {
+    textAlign: 'center',
   },
 });
 
