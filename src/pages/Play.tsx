@@ -1,12 +1,5 @@
 import {useFocusEffect} from '@react-navigation/native';
-import React, {
-  memo,
-  RefObject,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import ConfettiCannon from 'react-native-confetti-cannon';
 import {Button} from 'react-native-paper';
@@ -23,23 +16,9 @@ import {
 } from '../stores/currentSheetSlice';
 import {resetFields, useFields} from '../stores/fieldsSlice';
 import {addSheet} from '../stores/savedSheetsSlice';
+import Confetti from '../components/Confetti';
 
-interface ConfettiProps {
-  confettiRef: RefObject<ConfettiCannon>;
-}
-const {height, width} = Dimensions.get('window');
-const Confetti = memo((props: ConfettiProps) => (
-  <ConfettiCannon
-    autoStart={false}
-    count={200}
-    explosionSpeed={400}
-    fallSpeed={2000}
-    origin={{x: width / 2, y: height / 2}}
-    fadeOut={true}
-    autoStartDelay={0}
-    ref={props.confettiRef}
-  />
-));
+const {height} = Dimensions.get('window');
 
 const Play: React.FC<AppScreenProps<'Play'>> = props => {
   const dispatch = useAppDispatch();

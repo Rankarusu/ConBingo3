@@ -15,7 +15,7 @@ import {useAppDispatch, useAppTheme} from '../hooks';
 import {BingoSheet as BingoSheetModel} from '../models/bingoSheet';
 import {setSelectedSheet} from '../stores/savedSheetsSlice';
 
-const width = Dimensions.get('window').width; //TODO: read these once and export const
+const width = Dimensions.get('window').width;
 
 interface SavedSheetsScrollerProps {
   savedSheets: BingoSheetModel[];
