@@ -70,6 +70,7 @@ const Play: React.FC<AppScreenProps<'Play'>> = props => {
       }
 
       if (fields.length < 24) {
+        // we need to check if currentsheet does not exists and maybe call this on reroll
         console.log('not enough fields, showing alert');
         const alertOptions: AlertOptions = {
           title: 'Reset Fields',
