@@ -10,7 +10,7 @@ while still keeping our drawer which is our "main" navigation
 */
 const Stack = createStackNavigator();
 
-export default function RootNavigation() {
+const RootNavigation: React.FC = () => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -31,4 +31,6 @@ export default function RootNavigation() {
       })}
     </Stack.Navigator>
   );
-}
+};
+
+export default RootNavigation;

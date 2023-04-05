@@ -11,7 +11,7 @@ while still keeping our drawer which is our "main" navigation
 */
 const Drawer = createDrawerNavigator();
 
-export function DrawerNavigation() {
+const DrawerNavigation: React.FC = () => {
   return (
     <Drawer.Navigator
       initialRouteName={INITIAL_ROUTE}
@@ -34,4 +34,6 @@ export function DrawerNavigation() {
       })}
     </Drawer.Navigator>
   );
-}
+};
+
+export default DrawerNavigation;

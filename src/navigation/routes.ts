@@ -1,6 +1,6 @@
 import {StackNavigationOptions} from '@react-navigation/stack';
 import React from 'react';
-import {DrawerNavigation} from '../components/DrawerNavigation';
+import DrawerNavigation from '../components/DrawerNavigation';
 import About from '../pages/About';
 import EditFields from '../pages/EditFields';
 import Modal from '../pages/Modal';
