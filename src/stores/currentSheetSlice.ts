@@ -5,7 +5,7 @@ import {RootState} from './store';
 import {useSelector} from 'react-redux';
 import {generateSheet} from '../utils/generateSheet';
 import {BingoField} from '../models/bingoField';
-import {Logger} from '../logger';
+import {Logger} from '../utils/logger';
 
 interface CurrentSheetState {
   value: CheckableBingoField[];

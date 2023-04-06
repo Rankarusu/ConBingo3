@@ -17,6 +17,7 @@ import {
 import {resetFields, useFields} from '../stores/fieldsSlice';
 import {addSheet} from '../stores/savedSheetsSlice';
 import Confetti from '../components/Confetti';
+import {Logger} from '../utils/logger';
 
 const {height} = Dimensions.get('window');
 
@@ -61,7 +62,9 @@ const Play: React.FC<AppScreenProps<'Play'>> = props => {
   useEffect(() => {
     if (fields.length >= 24 && currentSheet.length !== 25) {
       // our fields are only set on the second rendering. therefore we skip generating a field on the first
-      console.log('generating new field, invalid data');
+      Logger.info(
+        `generating new sheet, currentSheet length: ${currentSheet.length}`,
+      );
       dispatch(resetCurrentSheet(fields));
     }
   }, [fields, currentSheet, dispatch]);
@@ -69,7 +72,7 @@ const Play: React.FC<AppScreenProps<'Play'>> = props => {
   useFocusEffect(
     useCallback(() => {
       if (!alreadyLaunched) {
-        console.log('first launch detected. Resetting fields.');
+        Logger.info('first launch detected. Resetting fields.');
         dispatch(resetFields());
         dispatch(setAlreadyLaunched());
         return;
@@ -78,7 +81,7 @@ const Play: React.FC<AppScreenProps<'Play'>> = props => {
       if (currentSheet.length !== 25 && fields.length < 24) {
         // no need to display the popup if current sheet is viable.
         // e.g. one got generated but afterwards the user deletes all fields
-        console.log('not enough fields, showing alert');
+        Logger.info('not enough fields, showing alert');
         showAlert(alertOptions);
       }
     }, [

@@ -2,7 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 import {Appearance, ColorSchemeName} from 'react-native';
 import {CombinedDarkTheme, CombinedDefaultTheme} from '../utils/theme';
 import {RootState} from './store';
-import {Logger} from '../logger';
+import {Logger} from '../utils/logger';
 
 interface ThemeState {
   value: ColorSchemeName;

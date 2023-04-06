@@ -8,11 +8,11 @@ import {
   removeSheet,
   useSavedSheets,
 } from '../stores/savedSheetsSlice';
-
 import {AppScreenProps} from '../navigation/types';
 import {setCurrentSheet} from '../stores/currentSheetSlice';
 import {load, share} from '../utils/io';
 import {useSnackbar} from '../context/SnackbarContext';
+import {Logger} from '../utils/logger';
 
 const SavedSheets: React.FC<AppScreenProps<'SavedSheets'>> = () => {
   const {savedSheets, selectedSheet, selectedSheetIndex} = useSavedSheets();
@@ -24,6 +24,7 @@ const SavedSheets: React.FC<AppScreenProps<'SavedSheets'>> = () => {
     const sheetToLoad = selectedSheet;
     if (!sheetToLoad) {
       showSnackbar('Something went wrong while loading the sheet.');
+      Logger.error('tried to load empty sheet');
       return;
     }
     dispatch(setCurrentSheet(sheetToLoad.fields));
@@ -53,10 +54,12 @@ const SavedSheets: React.FC<AppScreenProps<'SavedSheets'>> = () => {
     } catch (error) {
       if (error instanceof Error) {
         showSnackbar(error.message);
+        Logger.error(error.message);
         return;
       }
     }
     if (!file) {
+      Logger.error('failed to load file');
       return;
     }
     dispatch(addSheet(file));
@@ -66,6 +69,8 @@ const SavedSheets: React.FC<AppScreenProps<'SavedSheets'>> = () => {
   const shareSheet = async () => {
     const sheetToLoad = selectedSheet;
     if (!sheetToLoad) {
+      showSnackbar('Something went wrong while sharing the sheet.');
+      Logger.error('tried to share empty sheet.');
       return;
     }
     await share(sheetToLoad.fields);
