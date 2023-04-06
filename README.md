@@ -3,7 +3,7 @@
 <div align="center">
 
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/Rankarusu/ConBingo3)
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/Rankarusu/ConBingo3/build.yaml)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/Rankarusu/ConBingo3/release.yaml)
 
 </div>
 
@@ -26,6 +26,7 @@ This is already the third iteration this application is going through. While the
 - Playable out of the box with almost 50 different fields
 - _Confetti_ 🎉
 - Light and Dark mode toggle 💡
+- Material You theme utilizing [React Native Paper](https://github.com/callstack/react-native-paper)
 - Active sheets can be rerolled and edited freely
 - Sheets (including their progress) can be saved, loaded, imported and shared
 - You are free to edit, remove or add new fields as you see fit.
@@ -44,6 +45,7 @@ An Apple Developer License costs 100€/year, which is way too expensive for a f
 I'll try to get this project to build for the web as well, so you'll have to use this.
 
 ## Screenshots
+
 <p float="left">
 <img width="300" src="https://user-images.githubusercontent.com/48137583/230430053-0f87e106-9df3-4887-8adc-9b903d57796e.gif"/>
 <img width="300" src="https://user-images.githubusercontent.com/48137583/230430059-beeb9937-5186-45b5-b86b-217535c99620.gif"/>
