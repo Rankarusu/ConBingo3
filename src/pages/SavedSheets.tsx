@@ -59,7 +59,6 @@ const SavedSheets: React.FC<AppScreenProps<'SavedSheets'>> = () => {
       }
     }
     if (!file) {
-      Logger.error('failed to load file');
       return;
     }
     dispatch(addSheet(file));
