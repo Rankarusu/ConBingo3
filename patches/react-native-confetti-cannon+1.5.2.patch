@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-confetti-cannon/src/index.js b/node_modules/react-native-confetti-cannon/src/index.js
-index 7092e70..810a990 100644
+index 7092e70..cecfecc 100644
 --- a/node_modules/react-native-confetti-cannon/src/index.js
 +++ b/node_modules/react-native-confetti-cannon/src/index.js
 @@ -110,7 +110,7 @@ class Explosion extends React.PureComponent<Props, State> {
@@ -11,16 +11,14 @@ index 7092e70..810a990 100644
        swingDelta: randomValue(0.2, 1),
        speedDelta: {
          rotateX: randomValue(0.3, 1),
-@@ -185,10 +185,12 @@ class Explosion extends React.PureComponent<Props, State> {
-     return (
-       <React.Fragment>
-         {items.map((item: Item, index: number) => {
-+          const test = this.animation.interpolate({inputRange:[0,1], outputRange:[1,2]})
-           const left = this.animation.interpolate({
-             inputRange: [0, 1, 2],
-             outputRange: [origin.x, item.leftDelta * width, item.leftDelta * width]
+@@ -210,8 +210,8 @@ class Explosion extends React.PureComponent<Props, State> {
+             outputRange: [0, -(item.swingDelta * 30), (item.swingDelta * 30), 0]
            });
-+
-           const top = this.animation.interpolate({
-             inputRange: [0, 1, 1 + item.topDelta, 2],
-             outputRange: [-origin.y, -item.topDelta * height, 0, 0]
+           const opacity = this.animation.interpolate({
+-            inputRange: [0, 1, 1.8, 2],
+-            outputRange: [1, 1, 1, fadeOut ? 0 : 1]
++            inputRange: [0, 0.1, 1, 1.8, 2], //make confetti not initially visible
++            outputRange: [0, 1, 1, 1, fadeOut ? 0 : 1]
+           });
+           const containerTransform = [{translateX: left}, {translateY: top}];
+           const transform = [{rotateX}, {rotateY}, {rotate: rotateZ}, {translateX}];
