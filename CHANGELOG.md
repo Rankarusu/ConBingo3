@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.3](https://github.com/Rankarusu/ConBingo3/compare/v1.2.2...v1.2.3) (2023-04-12)
+
+
+### Bug Fixes
+
+* set windowSoftInputMode to adjustPan and make view use flex instead of height ([bcef971](https://github.com/Rankarusu/ConBingo3/commit/bcef97153f52ed0b6e16731dd3087bb2f248b66c))
+
 ### 1.2.1 (2023-04-08)
 
 
