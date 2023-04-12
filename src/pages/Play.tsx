@@ -1,9 +1,10 @@
 import {useFocusEffect} from '@react-navigation/native';
 import React, {useCallback, useEffect, useMemo, useRef} from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import ConfettiCannon from 'react-native-confetti-cannon';
 import {Button} from 'react-native-paper';
 import BingoSheet from '../components/BingoSheet';
+import Confetti from '../components/Confetti';
 import {AlertOptions, useAlert} from '../context/AlertContext';
 import {useSnackbar} from '../context/SnackbarContext';
 import {useAppDispatch} from '../hooks';
@@ -16,10 +17,7 @@ import {
 } from '../stores/currentSheetSlice';
 import {resetFields, useFields} from '../stores/fieldsSlice';
 import {addSheet} from '../stores/savedSheetsSlice';
-import Confetti from '../components/Confetti';
 import {Logger} from '../utils/logger';
-
-const {height} = Dimensions.get('window');
 
 const Play: React.FC<AppScreenProps<'Play'>> = props => {
   const dispatch = useAppDispatch();
@@ -132,9 +130,7 @@ const Play: React.FC<AppScreenProps<'Play'>> = props => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    // adjust pan does fuck all
-    // for some reason, the keyboard pushed the buttons and sheet up
-    minHeight: height - 64, // 64 is the default MD3 height
+    flex: 1,
   },
   center: {
     flex: 1,
