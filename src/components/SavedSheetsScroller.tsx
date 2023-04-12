@@ -33,10 +33,15 @@ const SavedSheetsScroller: React.FC<SavedSheetsScrollerProps> = props => {
   const {primary} = useAppTheme().colors;
   const scrollX = React.useRef(new Animated.Value(0)).current;
 
-  //using useCallback to circumvent "changing onViewableItemsChanged on the fly is not supported"-error
+  // using useCallback to circumvent "changing onViewableItemsChanged on the fly is not supported"-error
   const onViewableItemsChanged = useCallback(
     ({viewableItems}: {viewableItems: ViewToken[]}) => {
-      dispatch(setSelectedSheet(viewableItems[0].item.id || 0));
+      const currentId = viewableItems[0]?.item?.id;
+      if (currentId) {
+        /* because we keep our screens mounted and the viewable items change upon
+        navigating, we only want to dispatch if something is visible */
+        dispatch(setSelectedSheet(currentId));
+      }
     },
     [dispatch],
   );
