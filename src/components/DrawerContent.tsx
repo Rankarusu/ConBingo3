@@ -5,13 +5,13 @@ import {
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Drawer, Switch, Text} from 'react-native-paper';
-import {useAppDispatch, useAppSelector} from '../hooks';
+import {useAppDispatch, useAppTheme} from '../hooks';
 import {appRoutes} from '../navigation/routes';
-import {selectTheme, toggle} from '../stores/themeSlice';
+import {toggle} from '../stores/themeSlice';
 
 const DrawerContent: React.FC<DrawerContentComponentProps> = props => {
   const dispatch = useAppDispatch();
-  const theme = useAppSelector(selectTheme);
+  const theme = useAppTheme();
 
   const getCurrentRouteName = () => {
     const {routeNames, index} = props.navigation.getState();
@@ -42,7 +42,7 @@ const DrawerContent: React.FC<DrawerContentComponentProps> = props => {
         <View style={style.toggleBox}>
           <Text variant="bodyMedium">Dark Theme</Text>
           <Switch
-            value={theme === 'dark' ? true : false}
+            value={theme.dark ? true : false}
             onValueChange={() => {
               dispatch(toggle());
             }}

@@ -32,6 +32,7 @@ export type AppRouteParamList = {
   EditFields: undefined;
   SavedSheets: undefined;
   About: undefined;
+  Logs: undefined;
 };
 
 //this is singular! you can use it to type a navigation that you passed to a child via prop
