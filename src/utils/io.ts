@@ -24,6 +24,19 @@ export const share = async (sheet: CheckableBingoField[]) => {
   }).catch(error => Logger.warn(error));
 };
 
+export const shareLog = async (text: string) => {
+  await RNFS.writeFile(
+    RNFS.CachesDirectoryPath + '/conbingo-log.txt',
+    text,
+    'utf8',
+  );
+  await Share.open({
+    filename: 'conbingo-log.txt',
+    url: 'file://' + RNFS.CachesDirectoryPath + '/conbingo-log.txt',
+    type: 'text/plain',
+  }).catch(error => Logger.warn(error));
+};
+
 export const load = async () => {
   let file;
   try {

@@ -30,15 +30,34 @@ const config = {
 
 type LogLevels = keyof typeof config.levels;
 
-const Logger = logger.createLogger<LogLevels>(config);
+export const Logger = logger.createLogger<LogLevels>(config);
 
-async function deleteOldLogs() {
-  Logger.debug('Cleaning up logs');
+export async function getLogs() {
   const files = await RNFS.readDir(RNFS.DocumentDirectoryPath);
   const logs = files
     .filter(item => item.name.startsWith('log_'))
     .sort((a, b) => b.name.localeCompare(a.name));
+  return logs;
+}
 
+export async function getConcatenatedLog() {
+  let res = '';
+  const logs = await getLogs();
+
+  for await (const file of logs) {
+    const content = await RNFS.readFile(file.path);
+    res += `\n${'-'.repeat(50)}\n`;
+    res += file.name;
+    res += '\n';
+    // reverse so we have one chronologically sorted log stream
+    res += content.split('\n').reverse().join('\n');
+  }
+  return res;
+}
+
+export async function deleteOldLogs() {
+  Logger.debug('Cleaning up logs');
+  const logs = await getLogs();
   const logsToDelete = logs.slice(5);
   Logger.debug(`found ${logsToDelete.length} logs to delete`);
 
@@ -47,5 +66,3 @@ async function deleteOldLogs() {
     await RNFS.unlink(file.path);
   }
 }
-
-export {Logger, deleteOldLogs};

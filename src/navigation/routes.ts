@@ -6,6 +6,7 @@ import EditFields from '../pages/EditFields';
 import Modal from '../pages/Modal';
 import Play from '../pages/Play';
 import SavedSheets from '../pages/SavedSheets';
+import Logs from '../pages/Logs';
 
 export interface AppRoute {
   name: string;
@@ -40,6 +41,15 @@ export const appRoutes: AppRoute[] = [
     displayName: 'About',
     icon: 'information',
     component: About,
+  },
+];
+
+export const hiddenRoutes: AppRoute[] = [
+  {
+    name: 'Logs',
+    displayName: 'Logs',
+    icon: 'text-long',
+    component: Logs,
   },
 ];
 
