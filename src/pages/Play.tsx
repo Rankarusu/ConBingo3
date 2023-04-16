@@ -17,7 +17,7 @@ import {
 } from '../stores/currentSheetSlice';
 import {resetFields, useFields} from '../stores/fieldsSlice';
 import {addSheet} from '../stores/savedSheetsSlice';
-import {Logger} from '../utils/logger';
+import {Logger, deleteOldLogs} from '../utils/logger';
 
 const Play: React.FC<AppScreenProps<'Play'>> = props => {
   const dispatch = useAppDispatch();
@@ -56,6 +56,10 @@ const Play: React.FC<AppScreenProps<'Play'>> = props => {
       cancelAction: () => props.navigation.navigate('EditFields'),
     };
   }, [dispatch, props.navigation]);
+
+  useEffect(() => {
+    deleteOldLogs();
+  }, []);
 
   useEffect(() => {
     if (fields.length >= 24 && currentSheet.length !== 25) {
