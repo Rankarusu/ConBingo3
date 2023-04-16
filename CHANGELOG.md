@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/Rankarusu/ConBingo3/compare/v1.2.3...v1.3.0) (2023-04-16)
+
+
+### Features
+
+* add log cleanup function ([bdc44af](https://github.com/Rankarusu/ConBingo3/commit/bdc44afc29548619e52271c594545106bf4c53ad))
+* add reroll button for individual fields to modal ([488770f](https://github.com/Rankarusu/ConBingo3/commit/488770f5361be0f92f42ca4534164a5b7e043a1d))
+* add screen for viewing logs with export button ([0056489](https://github.com/Rankarusu/ConBingo3/commit/00564892ca115265842fd532786c037eb314deda))
+
 ### [1.2.3](https://github.com/Rankarusu/ConBingo3/compare/v1.2.2...v1.2.3) (2023-04-12)
 
 
