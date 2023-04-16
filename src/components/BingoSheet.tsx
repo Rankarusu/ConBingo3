@@ -1,12 +1,7 @@
-import React, {memo} from 'react';
+import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import BingoField, {BingoFieldProps} from '../components/BingoField';
+import BingoField from '../components/BingoField';
 import {CheckableBingoField} from '../models/checkableBingoField';
-
-//we memoize list components so they wont rerender unless their props change.
-const MemoizedBingoField = memo((props: BingoFieldProps) => (
-  <BingoField {...props} />
-));
 
 export interface BingoSheetProps {
   fields: CheckableBingoField[];
@@ -18,7 +13,7 @@ const BingoSheet: React.FC<BingoSheetProps> = props => {
     <View style={styles.grid}>
       {props.fields.map((item, index) => {
         return (
-          <MemoizedBingoField
+          <BingoField
             key={index}
             {...item}
             position={index}

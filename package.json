@@ -16,7 +16,7 @@
     "start:clean": "react-native start --reset-cache",
     "gradle:clean": "cd android && ./gradlew clean && cd ..",
     "test": "jest",
-    "release": "standard-version --no-verify",
+    "release": "standard-version --no-verify --skip.commit",
     "postinstall": "patch-package",
     "postrelease": "react-native-version",
     "create-appicon": "iconset create -A -b ./assets/logo_bg.png -f ./assets/logo_fg.png ./assets/logo_full.png"

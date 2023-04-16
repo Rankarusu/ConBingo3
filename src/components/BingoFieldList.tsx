@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import React from 'react';
 import {StyleSheet} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import {Text} from 'react-native-paper';
@@ -8,14 +8,7 @@ import {useModal} from '../hooks/useModal';
 import {BingoField} from '../models/bingoField';
 import {AppScreenProps} from '../navigation/types';
 import {removeField} from '../stores/fieldsSlice';
-import BingoFieldListItem, {
-  BingoFieldListItemProps,
-} from './BingoFieldListItem';
-
-//we memoize list components so they wont rerender unless their props change.
-const MemoizedBingoFieldListItem = memo((props: BingoFieldListItemProps) => (
-  <BingoFieldListItem {...props} />
-));
+import BingoFieldListItem from './BingoFieldListItem';
 
 interface BingoFieldListProps {
   fields: BingoField[];
@@ -49,7 +42,7 @@ const BingoFieldList: React.FC<BingoFieldListProps> = props => {
         ListFooterComponentStyle={styles.footer}
         renderItem={({item}) => {
           return (
-            <MemoizedBingoFieldListItem
+            <BingoFieldListItem
               style={shouldHide(item.text) ? styles.hide : {}}
               {...item}
               edit={() => openEditModal(item.id)}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import {StyleSheet, ViewStyle} from 'react-native';
 import {IconButton, List, TouchableRipple} from 'react-native-paper';
 import {useAppTheme} from '../hooks';
@@ -51,4 +51,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BingoFieldListItem;
+//we memoize list components so they wont rerender unless their props change.
+export default memo(BingoFieldListItem);
