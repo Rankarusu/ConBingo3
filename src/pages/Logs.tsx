@@ -10,6 +10,7 @@ import {shareLog} from '../utils/io';
 import {getConcatenatedLog} from '../utils/logger';
 
 type MemoizedHeaderProps = DrawerNavigationHeaderProps & {
+  disabled: boolean;
   share: () => Promise<void>;
 };
 
@@ -17,7 +18,13 @@ const MemoizedHeader = memo((props: MemoizedHeaderProps) => {
   return (
     <DrawerNavigationHeader
       {...props}
-      right={<Appbar.Action icon="share-variant" onPress={props.share} />}
+      right={
+        <Appbar.Action
+          icon="share-variant"
+          disabled={props.disabled}
+          onPress={props.share}
+        />
+      }
     />
   );
 });
@@ -35,6 +42,7 @@ const Logs: React.FC<AppScreenProps<'Logs'>> = props => {
         <MemoizedHeader
           {...(headerProps as DrawerNavigationHeaderProps)}
           title={'Logs'}
+          disabled={log.length < 1}
           share={() => shareLog(log)}
         />
       ),
@@ -43,7 +51,11 @@ const Logs: React.FC<AppScreenProps<'Logs'>> = props => {
 
   return (
     <ScrollView style={styles.wrapper}>
-      <Text>{log}</Text>
+      {log.length > 0 ? (
+        <Text>{log}</Text>
+      ) : (
+        <Text style={styles.fallback}>No logs written yet</Text>
+      )}
     </ScrollView>
   );
 };
@@ -52,6 +64,9 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     margin: 5,
+  },
+  fallback: {
+    textAlign: 'center',
   },
 });
 
