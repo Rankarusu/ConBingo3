@@ -154,7 +154,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   button: {
-    // flex: 1,
     marginVertical: 10,
   },
 });
