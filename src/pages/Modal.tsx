@@ -87,7 +87,7 @@ const Modal: React.FC<RootScreenProps<'Modal'>> = props => {
     const randomField =
       filteredFields[Math.floor(Math.random() * filteredFields.length)];
 
-    setText(randomField.text);
+    setText(randomField?.text || '');
     Logger.debug('field rerolled');
   };
 
@@ -134,8 +134,9 @@ const Modal: React.FC<RootScreenProps<'Modal'>> = props => {
           style={styles.button}
           icon="reload"
           mode="contained"
+          disabled={fields.length < 25}
           onPress={rerollField}>
-          Reroll
+          {fields.length < 25 ? 'Not enough fields to reroll' : 'Reroll'}
         </Button>
       )}
     </View>
