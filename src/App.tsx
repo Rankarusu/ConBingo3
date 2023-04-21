@@ -7,13 +7,48 @@ import LoadingScreen from './components/LoadingScreen';
 import RootNavigation from './components/RootNavigation';
 import {AlertProvider} from './context/AlertContext';
 import {SnackbarProvider} from './context/SnackbarContext';
-import {useAppSelector} from './hooks';
-import {persistor} from './stores/store';
-import {selectAppTheme} from './stores/themeSlice';
+import {persistor, store} from './stores/store';
 import {Logger} from './utils/logger';
+import {Provider as ReduxProvider} from 'react-redux';
+import {ErrorBoundary, useErrorBoundary} from 'react-error-boundary';
+import ErrorScreen from './components/ErrorScreen';
+import {
+  setJSExceptionHandler,
+  setNativeExceptionHandler,
+} from 'react-native-exception-handler';
+import {useAppTheme} from './stores/themeSlice';
 
-export default function App() {
-  const theme = useAppSelector(selectAppTheme);
+export default function ErrorBoundaryLayer() {
+  //putting the error boundary to highest level so it can also catch redux errors
+  return (
+    <ErrorBoundary
+      onError={error => Logger.error(error)}
+      FallbackComponent={ErrorScreen}>
+      <ReduxLayer />
+    </ErrorBoundary>
+  );
+}
+
+const ReduxLayer = () => {
+  const errorBoundary = useErrorBoundary();
+  setJSExceptionHandler(error => {
+    errorBoundary.showBoundary(error);
+  }, true);
+
+  setNativeExceptionHandler(exceptionString => {
+    errorBoundary.showBoundary(exceptionString);
+  });
+
+  return (
+    //need to move redux provider to another component to we can query the theme inside the next
+    <ReduxProvider store={store}>
+      <AppLayer />
+    </ReduxProvider>
+  );
+};
+
+const AppLayer = () => {
+  const theme = useAppTheme();
 
   return (
     <PersistGate
@@ -31,4 +66,4 @@ export default function App() {
       </NavigationContainer>
     </PersistGate>
   );
-}
+};

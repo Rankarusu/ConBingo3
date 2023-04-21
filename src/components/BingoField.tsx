@@ -8,10 +8,11 @@ import Animated, {
   useDerivedValue,
   withTiming,
 } from 'react-native-reanimated';
-import {useAppDispatch, useAppTheme} from '../hooks';
+import {useAppDispatch} from '../hooks';
 import {useModal} from '../hooks/useModal';
 import {toggleCheckedField} from '../stores/currentSheetSlice';
 import {RgbaColor} from '../utils/rgbaColor';
+import {useAppTheme} from '../stores/themeSlice';
 
 export interface BingoFieldProps {
   position: number;
