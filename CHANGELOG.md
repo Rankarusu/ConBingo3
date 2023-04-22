@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/Rankarusu/ConBingo3/compare/v1.2.3...v1.4.0) (2023-04-22)
+
+
+### Features
+
+* add error boundary to catch unexpected errors and display cute error screen ([e5b2060](https://github.com/Rankarusu/ConBingo3/commit/e5b2060c8c3e3829cad48f0e8070fbccf3b32c88))
+* add log cleanup function ([6f82038](https://github.com/Rankarusu/ConBingo3/commit/6f8203817b13ca284d7cc0129b1f21de6ef74f7e))
+* add react-native-error-handler to catch everything that error boundary does not ([f59171e](https://github.com/Rankarusu/ConBingo3/commit/f59171ead5f620bc4df1de76e2af4f092d63e172))
+* add reroll button for individual fields to modal ([488770f](https://github.com/Rankarusu/ConBingo3/commit/488770f5361be0f92f42ca4534164a5b7e043a1d))
+* add screen for viewing logs with export button ([978f516](https://github.com/Rankarusu/ConBingo3/commit/978f516f8cb009013f8942f283a33b5dbf726a3f))
+
+
+### Bug Fixes
+
+* disable share button if logs are empty, render fallback text ([725e1ae](https://github.com/Rankarusu/ConBingo3/commit/725e1ae568fbbc4ab8f424f895fed0b37332f284))
+* fix app crash upon rerolling with exactly 24 saved fields ([44fd38e](https://github.com/Rankarusu/ConBingo3/commit/44fd38e714e8f1360135361e6eacb542b5974d8d))
+
 ## [1.3.0](https://github.com/Rankarusu/ConBingo3/compare/v1.2.3...v1.3.0) (2023-04-16)
 
 
