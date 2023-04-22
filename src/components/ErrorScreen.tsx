@@ -1,58 +1,89 @@
 import React from 'react';
 import {useErrorBoundary} from 'react-error-boundary';
-import {Image, Linking, StyleSheet, View} from 'react-native';
-import {Button, Text} from 'react-native-paper';
+import {Image, Linking, ScrollView, StyleSheet, View} from 'react-native';
+import {Button, List, Text} from 'react-native-paper';
 
 const ISSUE_URL = 'https://github.com/Rankarusu/ConBingo3/issues/new/choose';
 
-const ErrorScreen = () => {
+interface ErrorScreenProps {
+  error: Error;
+}
+
+const ErrorScreen: React.FC<ErrorScreenProps> = props => {
   const {resetBoundary} = useErrorBoundary();
+
+  const [expanded, setExpanded] = React.useState(false);
+
+  const handlePress = () => setExpanded(!expanded);
+
   return (
-    <View style={styles.center}>
+    <ScrollView contentContainerStyle={styles.wrapper}>
       <Image source={require('../../assets/astolfo-plushy.gif')} />
-      <Text variant="headlineLarge">Oh no, you broke it!</Text>
-      <Text variant="labelMedium">
-        Please check the logs to see what is going on (About {'>'} Show logs)
+      <Text variant="headlineLarge" style={styles.centerText}>
+        Oh no, you broke it!
       </Text>
-      <Text variant="labelMedium" style={styles.spacer}>
-        Consider opening an issue on GitHub so the error gets fixed
+      <Text
+        variant="bodyMedium"
+        style={[
+          styles.spacer,
+          styles.error,
+        ]}>{`${props.error.name}: ${props.error.message}`}</Text>
+
+      <List.Accordion
+        title={expanded ? 'Hide Stacktrace' : 'Show Stacktrace'}
+        expanded={expanded}
+        onPress={handlePress}>
+        <Text variant="bodyMedium" style={[styles.spacer, styles.error]}>
+          {props.error.stack}
+        </Text>
+      </List.Accordion>
+
+      <Text variant="labelMedium" style={[styles.spacer, styles.centerText]}>
+        Consider opening an issue on GitHub so the error can be fixed
       </Text>
       <View style={styles.buttonBox}>
         <Button
           mode="outlined"
-          compact
+          style={styles.button}
           icon="arrow-left"
           onPress={resetBoundary}>
           Go Back
         </Button>
         <Button
           mode="outlined"
-          compact
+          style={styles.button}
           icon="github"
           onPress={() => Linking.openURL(ISSUE_URL)}>
           Open Issue
         </Button>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  center: {
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+  wrapper: {
+    padding: 6,
+    backgroundColor: 'rgba(255, 251, 254, 1)',
+  },
+  error: {
+    fontWeight: 'bold',
+  },
+  centerText: {
+    textAlign: 'center',
   },
   buttonBox: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 6,
+    marginTop: 10,
     gap: 5,
   },
   spacer: {
-    marginVertical: 20,
+    marginTop: 30,
+  },
+  button: {
+    flex: 1,
   },
 });
 
