@@ -21,13 +21,13 @@ export const drawerRoutes: DrawerRoute[] = [
     component: Play,
   },
   {
-    name: 'edit-fields',
+    name: 'editFields',
     displayName: 'Edit Fields',
     icon: 'playlist-edit',
     component: EditFields,
   },
   {
-    name: 'saved-sheets',
+    name: 'savedSheets',
     displayName: 'Saved Sheets',
     icon: 'file-multiple',
     component: SavedSheets,
@@ -39,6 +39,13 @@ export const drawerRoutes: DrawerRoute[] = [
     component: About,
   },
 ];
+
+export type DrawerRouteParameters = {
+  play: undefined;
+  editFields: undefined;
+  savedSheets: undefined;
+  about: undefined;
+};
 
 export interface StackRoute {
   name: string;
@@ -54,7 +61,7 @@ export const rootRoutes: StackRoute[] = [
     options: {headerShown: false},
   },
   {
-    name: 'edit-modal',
+    name: 'editModal',
     displayName: 'Edit Field',
     component: EditModal,
     options: {
@@ -63,7 +70,7 @@ export const rootRoutes: StackRoute[] = [
     },
   },
   {
-    name: 'add-modal',
+    name: 'addModal',
     displayName: 'Add Field',
     component: AddModal,
     options: {
@@ -72,3 +79,11 @@ export const rootRoutes: StackRoute[] = [
     },
   },
 ];
+
+export type StackRouteParameters = {
+  App: undefined;
+  addModal: undefined;
+  editModal: {
+    id: number;
+  };
+};

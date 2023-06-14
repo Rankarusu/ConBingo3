@@ -1,10 +1,11 @@
-import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
+import {StyleSheet, View} from 'react-native';
+import {Text} from 'react-native-paper';
 
 const AddModal = () => {
   return (
     <View>
-      <Text>AddModal</Text>
+      <Text>Add Modal</Text>
     </View>
   );
 };

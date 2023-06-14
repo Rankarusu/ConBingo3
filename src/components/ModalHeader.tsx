@@ -1,24 +1,25 @@
-import {DrawerNavigationProp} from '@react-navigation/drawer';
+import {StackNavigationProp} from '@react-navigation/stack';
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {Appbar} from 'react-native-paper';
-import {DrawerRouteParameters} from '../routes';
+import {Appbar, Button} from 'react-native-paper';
+import {StackRouteParameters} from '../routes';
 
 interface HeaderProps {
-  navigation: DrawerNavigationProp<DrawerRouteParameters>;
+  navigation: StackNavigationProp<StackRouteParameters>;
   title: string;
 }
 
-export default function Header(props: HeaderProps) {
+export default function ModalHeader(props: HeaderProps) {
   return (
     <Appbar.Header elevated>
       <Appbar.Action
-        icon="menu"
+        icon={'close'}
         onPress={() => {
-          props.navigation.toggleDrawer();
+          props.navigation.goBack();
         }}
       />
       <Appbar.Content title={props.title} style={styles.title} />
+      <Button onPress={() => {}}>Save</Button>
     </Appbar.Header>
   );
 }
