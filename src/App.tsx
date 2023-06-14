@@ -8,6 +8,7 @@ import {useAppSelector} from './hooks';
 import {persistor} from './stores/store';
 import {selectAppTheme} from './stores/themeSlice';
 import {SnackbarProvider} from './context/SnackbarContext';
+import {AlertProvider} from './context/AlertContext';
 
 export default function App() {
   const theme = useAppSelector(selectAppTheme);
@@ -19,7 +20,9 @@ export default function App() {
       <NavigationContainer theme={theme}>
         <PaperProvider theme={theme}>
           <SnackbarProvider>
-            <RootNavigation />
+            <AlertProvider>
+              <RootNavigation />
+            </AlertProvider>
           </SnackbarProvider>
         </PaperProvider>
       </NavigationContainer>
