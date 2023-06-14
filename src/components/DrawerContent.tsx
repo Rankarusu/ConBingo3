@@ -1,15 +1,16 @@
-/* eslint-disable react/no-unstable-nested-components */
 import {
   DrawerContentComponentProps,
   DrawerContentScrollView,
 } from '@react-navigation/drawer';
-import React from 'react';
+import React, {useContext} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Drawer, Switch, Text, TouchableRipple} from 'react-native-paper';
+import {Drawer, Switch, Text} from 'react-native-paper';
 import {routes} from '../routes';
+import {ThemeContext} from '../ThemeContext';
 
 export default function DrawerContent(props: DrawerContentComponentProps) {
   const [active, setActive] = React.useState('play');
+  const {isThemeDark, toggleTheme} = useContext(ThemeContext);
   return (
     <DrawerContentScrollView {...props}>
       <Text style={style.title} variant="titleLarge">
@@ -32,14 +33,10 @@ export default function DrawerContent(props: DrawerContentComponentProps) {
         })}
       </Drawer.Section>
       <Drawer.Section title="Preferences">
-        <TouchableRipple onPress={() => {}}>
-          <View>
-            <Text variant="bodyMedium">Dark Theme</Text>
-            <View pointerEvents="none">
-              <Switch value={false} />
-            </View>
-          </View>
-        </TouchableRipple>
+        <View style={style.toggleBox}>
+          <Text variant="bodyMedium">Dark Theme</Text>
+          <Switch value={isThemeDark} onValueChange={toggleTheme} />
+        </View>
       </Drawer.Section>
     </DrawerContentScrollView>
   );
@@ -49,5 +46,11 @@ const style = StyleSheet.create({
   title: {
     paddingVertical: 20,
     textAlign: 'center',
+  },
+  toggleBox: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 30,
   },
 });

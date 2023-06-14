@@ -15,7 +15,7 @@ import {
   DefaultTheme as NavigationDefaultTheme,
 } from '@react-navigation/native';
 
-import {PreferencesContext} from './src/context.ts';
+import {ThemeContext} from './src/ThemeContext.ts';
 
 const {LightTheme, DarkTheme} = adaptNavigationTheme({
   reactNavigationLight: NavigationDefaultTheme,
@@ -40,6 +40,7 @@ const CombinedDarkTheme = {
 };
 
 export default function Main() {
+  //TODO: in the long run we're gonna save the current theme in local storage or something
   const [isThemeDark, setIsThemeDark] = React.useState(false);
 
   let theme = isThemeDark ? CombinedDarkTheme : CombinedDefaultTheme;
@@ -58,14 +59,13 @@ export default function Main() {
 
   return (
     //other providers should wrap the paper provider
-    <PreferencesContext.Provider value={preferences}>
+    <ThemeContext.Provider value={preferences}>
       <NavigationContainer theme={theme}>
         <PaperProvider theme={theme}>
-          {/* paper provider uses md3 by default */}
           <App />
         </PaperProvider>
       </NavigationContainer>
-    </PreferencesContext.Provider>
+    </ThemeContext.Provider>
   );
 }
 
