@@ -16,12 +16,60 @@ import {setCurrentSheet} from '../stores/currentSheetSlice';
 
 const SavedSheets = () => {
   const {savedSheets, selectedSheet, selectedSheetIndex} = useSavedSheets();
-
   const dispatch = useAppDispatch();
-
+  const [snackbarRef, showSnackbar] = useSnackbar();
   const flatRef = createRef<FlatList>();
 
-  const [snackbarRef, showSnackbar] = useSnackbar();
+  const loadSheet = () => {
+    const sheetToLoad = selectedSheet;
+    if (!sheetToLoad) {
+      showSnackbar('Something went wrong while loading the sheet');
+      return;
+    }
+    dispatch(setCurrentSheet(sheetToLoad.fields));
+    showSnackbar('Sheet loaded successfully!');
+  };
+
+  const deleteSheet = () => {
+    const idx = selectedSheetIndex;
+    if (
+      savedSheets[savedSheets.length - 1].id === idx &&
+      savedSheets.length > 1
+    ) {
+      // without this the sheet just gets deleted and we are left with a blank list.
+      // therefore we scroll to the second last item if the last one is about to be deleted.
+      flatRef.current?.scrollToIndex({
+        index: savedSheets.length - 2,
+      });
+    }
+    dispatch(removeSheet(selectedSheetIndex));
+    showSnackbar('Sheet deleted!');
+  };
+
+  const importSheet = async () => {
+    let file;
+    try {
+      file = await load();
+    } catch (error) {
+      if (error instanceof Error) {
+        showSnackbar(error.message);
+        return;
+      }
+    }
+    if (!file) {
+      return;
+    }
+    dispatch(addSheet(file));
+    showSnackbar('Sheet imported successfully!');
+  };
+
+  const shareSheet = async () => {
+    const sheetToLoad = selectedSheet;
+    if (!sheetToLoad) {
+      return;
+    }
+    await share(sheetToLoad.fields);
+  };
 
   return (
     <View style={styles.wrapper}>
@@ -37,15 +85,7 @@ const SavedSheets = () => {
           icon="open-in-new"
           mode="contained"
           disabled={savedSheets.length === 0}
-          onPress={() => {
-            const sheetToLoad = selectedSheet;
-            if (!sheetToLoad) {
-              showSnackbar('Something went wrong while loading the sheet');
-              return;
-            }
-            dispatch(setCurrentSheet(sheetToLoad.fields));
-            showSnackbar('Sheet loaded successfully!');
-          }}>
+          onPress={loadSheet}>
           Load
         </Button>
         <Button
@@ -54,21 +94,7 @@ const SavedSheets = () => {
           icon="delete"
           mode="contained"
           disabled={savedSheets.length === 0}
-          onPress={() => {
-            const idx = selectedSheetIndex;
-            if (
-              savedSheets[savedSheets.length - 1].id === idx &&
-              savedSheets.length > 1
-            ) {
-              // without this the sheet just gets deleted and we are left with a blank list.
-              // therefore we scroll to the second last item if the last one is about to be deleted.
-              flatRef.current?.scrollToIndex({
-                index: savedSheets.length - 2,
-              });
-            }
-            dispatch(removeSheet(selectedSheetIndex));
-            showSnackbar('Sheet deleted!');
-          }}>
+          onPress={deleteSheet}>
           Delete
         </Button>
         <Button
@@ -76,38 +102,17 @@ const SavedSheets = () => {
           style={styles.button}
           icon="import"
           mode="contained"
-          onPress={async () => {
-            let file;
-            try {
-              file = await load();
-            } catch (error) {
-              if (error instanceof Error) {
-                showSnackbar(error.message);
-                return;
-              }
-            }
-            if (!file) {
-              return;
-            }
-            dispatch(addSheet(file));
-            showSnackbar('Sheet imported successfully!');
-          }}>
+          onPress={importSheet}>
           Import
         </Button>
         <Button
           compact
           style={styles.button}
-          icon="export"
+          icon="share-variant"
           mode="contained"
           disabled={savedSheets.length === 0}
-          onPress={async () => {
-            const sheetToLoad = selectedSheet;
-            if (!sheetToLoad) {
-              return;
-            }
-            await share(sheetToLoad.fields);
-          }}>
-          Export
+          onPress={shareSheet}>
+          Share
         </Button>
       </View>
       <Snackbar ref={snackbarRef} style={styles.snackbar} />

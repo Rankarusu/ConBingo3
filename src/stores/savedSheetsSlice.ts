@@ -40,7 +40,9 @@ export function useSavedSheets() {
   const selectors = {
     savedSheets: useSelector((state: RootState) => state.savedSheets.value),
     selectedSheet: useSelector((state: RootState) =>
-      state.savedSheets.value.find(item => item.id === state.savedSheets.index),
+      state.savedSheets.value.find(
+        item => item.id === state.savedSheets.selectedSheetIndex,
+      ),
     ),
     selectedSheetIndex: useSelector(
       (state: RootState) => state.savedSheets.selectedSheetIndex,
