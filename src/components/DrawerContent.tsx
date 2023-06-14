@@ -5,6 +5,7 @@ import {
 import React, {useContext} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Drawer, Switch, Text} from 'react-native-paper';
+import {saveTheme} from '../hooks/useAppTheme';
 import {routes} from '../routes';
 import {ThemeContext} from '../ThemeContext';
 
@@ -35,7 +36,13 @@ export default function DrawerContent(props: DrawerContentComponentProps) {
       <Drawer.Section title="Preferences">
         <View style={style.toggleBox}>
           <Text variant="bodyMedium">Dark Theme</Text>
-          <Switch value={isThemeDark} onValueChange={toggleTheme} />
+          <Switch
+            value={isThemeDark}
+            onValueChange={async (value: boolean) => {
+              toggleTheme();
+              await saveTheme(value ? 'dark' : 'light');
+            }}
+          />
         </View>
       </Drawer.Section>
     </DrawerContentScrollView>
