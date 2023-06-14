@@ -11,7 +11,7 @@ export type BingoFieldListItemProps = BingoField & {
 };
 
 export const BingoFieldListItem: React.FC<BingoFieldListItemProps> = props => {
-  const theme = useAppTheme(); //TODO: maybe pass this as a prop
+  const theme = useAppTheme();
 
   const buttonGroup = () => (
     <>
