@@ -12,17 +12,18 @@ import {
 } from 'redux-persist';
 import currentSheetSlice from './currentSheetSlice';
 import fieldsSlice from './fieldsSlice';
+import savedSheetsSlice from './savedSheetsSlice';
 import themeSlice from './themeSlice';
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  blacklist: ['win'],
 };
 
 const reducer = persistCombineReducers(persistConfig, {
   fields: fieldsSlice,
   currentSheet: currentSheetSlice,
+  savedSheets: savedSheetsSlice,
   theme: themeSlice,
 });
 

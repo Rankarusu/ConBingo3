@@ -12,6 +12,7 @@ import {
   set,
 } from '../stores/currentSheetSlice';
 import {reset, selectFields} from '../stores/fieldsSlice';
+import {add} from '../stores/savedSheetsSlice';
 
 interface ConfettiProps {
   confettiRef: RefObject<ConfettiCannon>;
@@ -68,7 +69,9 @@ const Play = () => {
 
   return (
     <View style={styles.wrapper}>
-      <BingoSheet fields={currentSheet} />
+      <View style={styles.center}>
+        <BingoSheet fields={currentSheet} />
+      </View>
       <Confetti confettiRef={confettiRef} />
       <View style={styles.buttonBox}>
         <Button
@@ -82,7 +85,10 @@ const Play = () => {
           style={styles.button}
           icon="content-save"
           mode="contained"
-          onPress={() => console.log('Pressed')}>
+          onPress={() => {
+            dispatch(add({id: 0, content: currentSheet}));
+            console.log('Saved Sheet');
+          }}>
           Save
         </Button>
         <Button
@@ -104,6 +110,12 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     padding: 6,
+  },
+  center: {
+    flex: 1,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonBox: {
     display: 'flex',

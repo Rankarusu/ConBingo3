@@ -18,6 +18,7 @@ export interface BingoFieldProps {
   position: number;
   text: string;
   checked?: boolean;
+  readonly?: boolean;
 }
 const BingoField = (props: BingoFieldProps) => {
   const dispatch = useAppDispatch();
@@ -53,10 +54,11 @@ const BingoField = (props: BingoFieldProps) => {
   });
 
   return (
-    <Surface style={[styles.bingoField]}>
+    <Surface style={styles.bingoField}>
       <TouchableRipple
-        style={[styles.content]}
+        style={styles.content}
         borderless
+        disabled={props.readonly}
         rippleColor={translucentPrimary}
         onPress={() => {
           //state is managed centrally by redux only and we prevent rerender of other items by using memo :)
