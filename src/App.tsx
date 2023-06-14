@@ -18,12 +18,16 @@ import {
 } from 'react-native-exception-handler';
 import {useAppTheme} from './stores/themeSlice';
 
+function fallbackRender({error}: {error: Error}) {
+  return <ErrorScreen error={error} />;
+}
+
 export default function ErrorBoundaryLayer() {
   //putting the error boundary to highest level so it can also catch redux errors
   return (
     <ErrorBoundary
       onError={error => Logger.error(error)}
-      FallbackComponent={ErrorScreen}>
+      fallbackRender={fallbackRender}>
       <ReduxLayer />
     </ErrorBoundary>
   );

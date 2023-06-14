@@ -11,9 +11,10 @@ import {
 import {ScalingDot} from 'react-native-animated-pagination-dots';
 import {Text} from 'react-native-paper';
 import BingoSheet from '../components/BingoSheet';
-import {useAppDispatch, useAppTheme} from '../hooks';
+import {useAppDispatch} from '../hooks';
 import {BingoSheet as BingoSheetModel} from '../models/bingoSheet';
 import {setSelectedSheet} from '../stores/savedSheetsSlice';
+import {useAppTheme} from '../stores/themeSlice';
 
 const width = Dimensions.get('window').width;
 

@@ -1,8 +1,8 @@
 import React, {memo} from 'react';
 import {StyleSheet, ViewStyle} from 'react-native';
 import {IconButton, List, TouchableRipple} from 'react-native-paper';
-import {useAppTheme} from '../hooks';
 import {BingoField} from '../models/bingoField';
+import {useAppTheme} from '../stores/themeSlice';
 
 export type BingoFieldListItemProps = BingoField & {
   //we pass style as a prop to hide the item if it does not match the search query

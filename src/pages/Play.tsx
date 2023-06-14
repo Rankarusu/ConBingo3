@@ -27,7 +27,6 @@ const Play: React.FC<AppScreenProps<'Play'>> = props => {
   const {showAlert} = useAlert();
 
   const confettiRef = useRef<ConfettiCannon>(null);
-
   const saveSheet = () => {
     dispatch(addSheet(currentSheet));
     showSnackbar('Sheet saved successfully!');
