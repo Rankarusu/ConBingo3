@@ -10,6 +10,7 @@ interface CurrentSheetState {
   value: CheckableBingoField[];
   lastCheckedPos: number | null;
   win: boolean;
+  alreadyLaunched: boolean;
 }
 
 interface ToggleCheckedStatePayload {
@@ -26,6 +27,7 @@ const initialState: CurrentSheetState = {
   value: [],
   lastCheckedPos: null,
   win: false,
+  alreadyLaunched: false,
 };
 
 const checkWin = (pos: number, checkedPos: number[]) => {
@@ -72,6 +74,9 @@ export const currentSheetSlice = createSlice({
     resetWin: state => {
       state.win = false;
     },
+    setAlreadyLaunched: state => {
+      state.alreadyLaunched = true;
+    },
   },
 });
 
@@ -79,6 +84,9 @@ export function useCurrentSheet() {
   const selectors = {
     currentSheet: useSelector((state: RootState) => state.currentSheet.value),
     win: useSelector((state: RootState) => state.currentSheet.win),
+    alreadyLaunched: useSelector(
+      (state: RootState) => state.currentSheet.alreadyLaunched,
+    ),
     fieldByPosition: (position: number) =>
       // eslint-disable-next-line react-hooks/rules-of-hooks
       useSelector((state: RootState) => state.currentSheet.value[position]),
@@ -92,6 +100,7 @@ export const {
   toggleCheckedField,
   updateCurrentSheetField,
   resetWin,
+  setAlreadyLaunched,
 } = currentSheetSlice.actions;
 
 export default currentSheetSlice.reducer;
