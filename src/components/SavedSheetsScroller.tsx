@@ -27,7 +27,7 @@ const viewabilityConfig: ViewabilityConfig = {
   waitForInteraction: false,
 };
 
-const SavedSheetsScroller = (props: SavedSheetsScrollerProps) => {
+const SavedSheetsScroller: React.FC<SavedSheetsScrollerProps> = props => {
   const dispatch = useAppDispatch();
 
   const {primary} = useAppTheme().colors;
@@ -90,8 +90,6 @@ const SavedSheetsScroller = (props: SavedSheetsScrollerProps) => {
   );
 };
 
-export default SavedSheetsScroller;
-
 const styles = StyleSheet.create({
   swiper: {
     padding: 6,
@@ -114,3 +112,5 @@ const styles = StyleSheet.create({
     bottom: -10,
   },
 });
+
+export default SavedSheetsScroller;

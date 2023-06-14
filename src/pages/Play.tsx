@@ -14,6 +14,7 @@ import {
 import {resetFields, useFields} from '../stores/fieldsSlice';
 import {addSheet} from '../stores/savedSheetsSlice';
 import {generateSheet} from '../utils/generateSheet';
+import {DrawerRouteScreenProps} from '../routes';
 
 interface ConfettiProps {
   confettiRef: RefObject<ConfettiCannon>;
@@ -32,7 +33,7 @@ const Confetti = memo((props: ConfettiProps) => (
   />
 ));
 
-const Play = () => {
+const Play: React.FC<DrawerRouteScreenProps<'Play'>> = () => {
   const dispatch = useAppDispatch();
   const {currentSheet, win} = useCurrentSheet();
   const {fields} = useFields();

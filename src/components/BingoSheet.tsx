@@ -13,7 +13,7 @@ export interface BingoSheetProps {
   readonly?: boolean;
 }
 
-const BingoSheet = (props: BingoSheetProps) => {
+const BingoSheet: React.FC<BingoSheetProps> = props => {
   return (
     <View style={styles.grid}>
       {props.fields.map((item, index) => {

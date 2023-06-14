@@ -10,7 +10,7 @@ export type BingoFieldListItemProps = BingoField & {
   delete: () => void;
 };
 
-export const BingoFieldListItem = (props: BingoFieldListItemProps) => {
+export const BingoFieldListItem: React.FC<BingoFieldListItemProps> = props => {
   const theme = useAppTheme(); //TODO: maybe pass this as a prop
 
   const buttonGroup = () => (

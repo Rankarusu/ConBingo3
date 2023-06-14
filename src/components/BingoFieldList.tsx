@@ -3,7 +3,7 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {StyleSheet, View} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import {BingoField} from '../models/bingoField';
-import {StackRouteParameters} from '../routes';
+import {StackRouteParamList} from '../routes';
 import BingoFieldListItem, {
   BingoFieldListItemProps,
 } from './BingoFieldListItem';
@@ -20,10 +20,10 @@ const MemoizedBingoFieldListItem = memo((props: BingoFieldListItemProps) => (
 interface BingoFieldListProps {
   fields: BingoField[];
   searchQuery: string;
-  navigation: StackNavigationProp<StackRouteParameters>;
+  navigation: StackNavigationProp<StackRouteParamList>;
 }
 
-const BingoFieldList = (props: BingoFieldListProps) => {
+const BingoFieldList: React.FC<BingoFieldListProps> = props => {
   const dispatch = useAppDispatch();
   const [snackbarRef, showSnackbar] = useSnackbar();
 
@@ -34,7 +34,7 @@ const BingoFieldList = (props: BingoFieldListProps) => {
     return styles.hide;
   };
   const editField = (id: number) => {
-    props.navigation.navigate('editModal', {id: id});
+    props.navigation.navigate('EditModal', {id: id});
   };
 
   const deleteField = (id: number) => {

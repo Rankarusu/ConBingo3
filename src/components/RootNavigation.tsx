@@ -2,12 +2,20 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import {rootRoutes} from '../routes';
-import ModalHeader from './ModalHeader';
+import RootNavigationHeader from './RootNavigationHeader';
+
+/*
+We wrap a drawer inside a stack nav here to achieve a neat modal-like effect
+while still keeping our drawer which is our "main" navigation
+*/
 const Stack = createStackNavigator();
 
 export default function RootNavigation() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        header: props => <RootNavigationHeader {...props} />,
+      }}>
       {rootRoutes.map(route => {
         return (
           <Stack.Screen
@@ -16,12 +24,6 @@ export default function RootNavigation() {
             component={route.component}
             options={{
               title: route.displayName,
-              header: ({navigation}) => (
-                <ModalHeader
-                  title={route.displayName || ''}
-                  navigation={navigation}
-                />
-              ),
               ...route.options,
             }}
           />
