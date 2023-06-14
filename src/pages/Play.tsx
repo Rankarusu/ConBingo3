@@ -1,8 +1,14 @@
-import React from 'react';
-import BingoSheet from '../components/BingoSheet';
+import React, {lazy, Suspense} from 'react';
+import {ActivityIndicator} from 'react-native-paper';
+
+const BingoSheet = lazy(() => import('../components/BingoSheet'));
 
 const Play = () => {
-  return <BingoSheet />;
+  return (
+    <Suspense fallback={<ActivityIndicator />}>
+      <BingoSheet />
+    </Suspense>
+  );
 };
 
 export default Play;

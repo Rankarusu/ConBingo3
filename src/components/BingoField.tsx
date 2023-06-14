@@ -8,15 +8,17 @@ import Animated, {
   useDerivedValue,
   withTiming,
 } from 'react-native-reanimated';
+import {CurrentSheetRepository} from '../db';
 import {useAppTheme} from '../hooks/useAppTheme';
 import {RgbaColor} from '../utils/rgbaColor';
 
 export interface BingoFieldProps {
   id: number;
+  position: number;
   text: string;
   checked?: boolean;
 }
-
+const repo = new CurrentSheetRepository();
 const BingoField = (props: BingoFieldProps) => {
   const theme = useAppTheme();
   const {text} = props;
@@ -57,11 +59,17 @@ const BingoField = (props: BingoFieldProps) => {
         style={[styles.content]}
         borderless
         rippleColor={translucentPrimary}
-        onPress={() => {
+        onPress={async () => {
           setChecked(!checked);
+          await repo.setChecked(props.position, !checked);
+          console.log('set checked', props.position, !checked);
         }}>
         <Animated.View style={[styles.content, borderStyle]}>
-          <Text style={styles.text} variant="bodySmall">
+          <Text
+            android_hyphenationFrequency="full"
+            numberOfLines={6}
+            style={styles.text}
+            variant="bodySmall">
             {text}
           </Text>
         </Animated.View>
@@ -85,9 +93,10 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   text: {
-    // lineHeight: 1,
+    lineHeight: 10,
+    fontSize: 10,
     flex: 1,
-    padding: 2,
+    padding: 1,
     textAlign: 'center',
     textAlignVertical: 'center',
   },

@@ -1,19 +1,34 @@
-import React, {memo, useState} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import BingoField, {BingoFieldProps} from '../components/BingoField';
+import {CurrentSheetRepository, FieldsRepository} from '../db';
+import {generateSheet} from '../hooks/useGenerateSheet';
 
 const Item = memo((props: BingoFieldProps) => <BingoField {...props} />);
+const currentSheetRepo = new CurrentSheetRepository();
+const fieldsRepo = new FieldsRepository();
 
 const BingoSheet = () => {
-  const [data, setData] = useState<BingoFieldProps[]>(
-    [...Array(25).keys()].map(num => {
-      return {
-        id: num,
-        text: num.toString(),
-        checked: true,
-      } as BingoFieldProps;
-    }),
-  );
+  useEffect(() => {
+    currentSheetRepo.getAll().then(data => {
+      if (!data || data.length > 25) {
+        console.log('generating new field, either no or too much data.');
+        fieldsRepo
+          .getAll()
+          .then(fields => generateSheet(fields))
+          .then(sheet => {
+            console.log(sheet);
+            setData(sheet);
+            currentSheetRepo.setAll(sheet);
+          });
+      } else {
+        setData(data);
+        console.log('loaded currentSheet data from Async Storage');
+      }
+    });
+  }, []);
+
+  const [data, setData] = useState<BingoFieldProps[]>([]);
 
   // const onOrderChanged = useCallback(
   //   (orderedData: Array<BingoFieldProps>) => setData(orderedData),
@@ -28,8 +43,8 @@ const BingoSheet = () => {
   return (
     <View style={styles.center}>
       <View style={styles.grid}>
-        {data.map(item => {
-          return <Item key={item.text} {...item} />;
+        {data.map((item, index) => {
+          return <Item key={item.id} {...item} position={index} />;
         })}
       </View>
     </View>
