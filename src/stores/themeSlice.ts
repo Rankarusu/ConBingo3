@@ -3,6 +3,7 @@ import {Appearance, ColorSchemeName} from 'react-native';
 import {CombinedDarkTheme, CombinedDefaultTheme} from '../utils/theme';
 import {RootState} from './store';
 import {Logger} from '../utils/logger';
+import {useSelector} from 'react-redux';
 
 interface ThemeState {
   value: ColorSchemeName;
@@ -23,10 +24,12 @@ export const themeSlice = createSlice({
   },
 });
 
-export const selectTheme = (state: RootState) => state.theme.value;
-export const selectAppTheme = (state: RootState) =>
-  state.theme.value === 'dark' ? CombinedDarkTheme : CombinedDefaultTheme;
-
+export function useAppTheme() {
+  const selector = useSelector((state: RootState) =>
+    state.theme.value === 'dark' ? CombinedDarkTheme : CombinedDefaultTheme,
+  );
+  return selector;
+}
 export const {toggle} = themeSlice.actions;
 
 export default themeSlice.reducer;

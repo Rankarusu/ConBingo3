@@ -10,7 +10,9 @@ const fileName = `log_${y}-${m}-${d}.txt`;
 
 const config = {
   severity: __DEV__ ? 'debug' : 'error',
-  transport: __DEV__ ? consoleTransport : fileAsyncTransport,
+  transport: __DEV__
+    ? [consoleTransport, fileAsyncTransport]
+    : fileAsyncTransport,
   levels: {
     debug: 0,
     info: 1,

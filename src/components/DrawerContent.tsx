@@ -5,9 +5,9 @@ import {
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Drawer, Switch, Text} from 'react-native-paper';
-import {useAppDispatch, useAppTheme} from '../hooks';
+import {useAppDispatch} from '../hooks';
 import {appRoutes} from '../navigation/routes';
-import {toggle} from '../stores/themeSlice';
+import {toggle, useAppTheme} from '../stores/themeSlice';
 
 const DrawerContent: React.FC<DrawerContentComponentProps> = props => {
   const dispatch = useAppDispatch();

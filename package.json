@@ -34,6 +34,7 @@
     "react-native-animated-pagination-dots": "^0.1.73",
     "react-native-confetti-cannon": "^1.5.2",
     "react-native-document-picker": "^8.2.0",
+    "react-native-exception-handler": "^2.10.10",
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "^2.9.0",
     "react-native-logs": "^5.0.1",
