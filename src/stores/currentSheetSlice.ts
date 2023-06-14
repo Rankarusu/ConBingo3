@@ -5,6 +5,7 @@ import {RootState} from './store';
 import {useSelector} from 'react-redux';
 import {generateSheet} from '../utils/generateSheet';
 import {BingoField} from '../models/bingoField';
+import {Logger} from '../logger';
 
 interface CurrentSheetState {
   value: CheckableBingoField[];
@@ -34,6 +35,9 @@ const checkWin = (pos: number, checkedPos: number[]) => {
   const result = winningRows
     .filter(row => row.every(entry => checkedPos.includes(entry)))
     .find(arr => arr.includes(pos)); // see if the newly selected field is in the winning row
+  if (result) {
+    Logger.info('bingo achieved');
+  }
   return !!result;
 };
 
@@ -43,17 +47,24 @@ export const currentSheetSlice = createSlice({
   reducers: {
     setCurrentSheet: (state, action: PayloadAction<CheckableBingoField[]>) => {
       state.value = action.payload;
+      Logger.debug('current sheet set');
     },
+
     resetCurrentSheet: (state, action: PayloadAction<BingoField[]>) => {
       const newSheet = generateSheet(action.payload);
       state.value = newSheet;
+      Logger.debug('current sheet reset');
     },
+
     toggleCheckedField: (
       state,
       action: PayloadAction<ToggleCheckedStatePayload>,
     ) => {
       const {position, checked} = action.payload;
       state.value[position].checked = checked;
+      Logger.debug(
+        `bingo field ${position} state changed: ${state.value[position].checked}`,
+      );
 
       const checkedIds = state.value.reduce((a: number[], curr, index) => {
         if (curr.checked) {
@@ -64,18 +75,26 @@ export const currentSheetSlice = createSlice({
 
       state.win = checkWin(position, checkedIds);
     },
+
     updateCurrentSheetField: (
       state,
       action: PayloadAction<UpdateBingoFieldPayload>,
     ) => {
       const {position, text} = action.payload;
       state.value[position].text = text;
+      Logger.debug(
+        `bingo field ${position} text changed: ${state.value[position].text}`,
+      );
     },
+
     resetWin: state => {
       state.win = false;
+      Logger.debug('win state reset');
     },
+
     setAlreadyLaunched: state => {
       state.alreadyLaunched = true;
+      Logger.info('alreadyLaunched state set');
     },
   },
 });

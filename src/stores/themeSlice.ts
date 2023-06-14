@@ -2,6 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 import {Appearance, ColorSchemeName} from 'react-native';
 import {CombinedDarkTheme, CombinedDefaultTheme} from '../utils/theme';
 import {RootState} from './store';
+import {Logger} from '../logger';
 
 interface ThemeState {
   value: ColorSchemeName;
@@ -17,6 +18,7 @@ export const themeSlice = createSlice({
   reducers: {
     toggle: state => {
       state.value = state.value === 'light' ? 'dark' : 'light';
+      Logger.debug(`theme toggled: ${state.value}`);
     },
   },
 });

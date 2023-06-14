@@ -10,11 +10,15 @@ import {SnackbarProvider} from './context/SnackbarContext';
 import {useAppSelector} from './hooks';
 import {persistor} from './stores/store';
 import {selectAppTheme} from './stores/themeSlice';
+import {Logger} from './logger';
 export default function App() {
   const theme = useAppSelector(selectAppTheme);
 
   return (
-    <PersistGate persistor={persistor} loading={<LoadingScreen />}>
+    <PersistGate
+      persistor={persistor}
+      loading={<LoadingScreen />}
+      onBeforeLift={() => Logger.debug('Persist gate lifting.')}>
       <NavigationContainer theme={theme}>
         <PaperProvider theme={theme}>
           <SnackbarProvider>

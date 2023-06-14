@@ -3,6 +3,7 @@ import {useSelector} from 'react-redux';
 import {BingoSheet} from '../models/bingoSheet';
 import {CheckableBingoField} from '../models/checkableBingoField';
 import {RootState} from './store';
+import {Logger} from '../logger';
 
 interface SavedSheetsState {
   value: BingoSheet[];
@@ -21,17 +22,20 @@ export const savedSheetsSlice = createSlice({
   initialState,
   reducers: {
     addSheet: (state, action: PayloadAction<CheckableBingoField[]>) => {
-      state.value.push({id: state.index, fields: action.payload});
+      const newSheet = {id: state.index, fields: action.payload} as BingoSheet;
+      state.value.push(newSheet);
       state.index++;
+      Logger.debug(`sheet added: ${JSON.stringify(newSheet)}`);
     },
+
     removeSheet: (state, action: PayloadAction<number>) => {
       state.value = state.value.filter(item => item.id !== action.payload);
+      Logger.debug(`sheet ${action.payload} removed`);
     },
-    clearSheets: state => {
-      state.value = [];
-    },
+
     setSelectedSheet: (state, action: PayloadAction<number>) => {
       state.selectedSheetIndex = action.payload;
+      Logger.debug(`set selected sheet: ${action.payload}`);
     },
   },
 });
@@ -51,7 +55,7 @@ export function useSavedSheets() {
   return selectors;
 }
 
-export const {addSheet, removeSheet, clearSheets, setSelectedSheet} =
+export const {addSheet, removeSheet, setSelectedSheet} =
   savedSheetsSlice.actions;
 
 export default savedSheetsSlice.reducer;

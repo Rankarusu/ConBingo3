@@ -3,6 +3,7 @@ import {useSelector} from 'react-redux';
 import defaultFields from '../data/defaultFields.json';
 import {BingoField} from '../models/bingoField';
 import {RootState} from './store';
+import {Logger} from '../logger';
 
 interface FieldsState {
   value: BingoField[];
@@ -21,22 +22,30 @@ export const fieldsSlice = createSlice({
   initialState,
   reducers: {
     addField: (state, action: PayloadAction<string>) => {
+      const newField = {id: state.index, text: action.payload} as BingoField;
+      state.value.push(newField);
       state.index++;
-      state.value.push({id: state.index, text: action.payload});
+      Logger.debug(`field added: ${JSON.stringify(newField)}`);
     },
+
     removeField: (state, action: PayloadAction<number>) => {
       state.value = state.value.filter(item => item.id !== action.payload);
+      Logger.debug(`field ${action.payload} removed`);
     },
+
     updateField: (state, action: PayloadAction<UpdateBingoFieldPayload>) => {
       const {id, text} = action.payload;
       const idx = state.value.findIndex(item => item.id === id);
       state.value[idx].text = text;
+      Logger.debug(`field ${id} updated: ${text}`);
     },
+
     resetFields: state => {
       state.value = defaultFields.map((field, index) => {
-        state.index = index;
         return {id: index, text: field} as BingoField;
       });
+      state.index = defaultFields.length;
+      Logger.info('fields reset');
     },
   },
 });
