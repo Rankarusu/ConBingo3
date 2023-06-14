@@ -1,6 +1,5 @@
-# <p align="center">ConBingo3</p>
-
 <div align="center">
+<img height="100" src="https://user-images.githubusercontent.com/48137583/230713892-9168a96a-b9c2-447e-95d4-3d0c57a06827.png">
 
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/Rankarusu/ConBingo3)
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/Rankarusu/ConBingo3/release.yaml)
