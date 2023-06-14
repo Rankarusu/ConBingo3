@@ -6,6 +6,8 @@ import {BingoField} from '../models/bingoField';
 
 type BingoFieldListItemProps = BingoField & {
   style: ViewStyle;
+  edit: () => void;
+  delete?: () => void;
 };
 
 export const BingoFieldListItem = (props: BingoFieldListItemProps) => {
@@ -18,7 +20,7 @@ export const BingoFieldListItem = (props: BingoFieldListItemProps) => {
         mode="contained"
         iconColor={theme.colors.onSurface}
         size={20}
-        onPress={() => console.log(props.id)}
+        onPress={props.edit}
       />
       <IconButton
         icon="delete"

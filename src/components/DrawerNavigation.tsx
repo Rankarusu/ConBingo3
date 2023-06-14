@@ -1,18 +1,21 @@
 /* eslint-disable react/no-unstable-nested-components */
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import React from 'react';
-import {routes} from '../routes';
 import DrawerContent from './DrawerContent';
 import Header from './Header';
+import {drawerRoutes} from '../routes';
+/*
+We wrap a drawer inside a stack nav here to achieve a neat modal-like effect
+while still keeping our drawer which is our "main" navigation
+*/
+export const Drawer = createDrawerNavigator();
 
-const Drawer = createDrawerNavigator();
-
-export default function DrawerNavigation() {
+export function DrawerNavigation() {
   return (
     <Drawer.Navigator
       initialRouteName="play"
       drawerContent={props => <DrawerContent {...props} />}>
-      {routes.map(route => {
+      {drawerRoutes.map(route => {
         return (
           <Drawer.Screen
             key={route.name}

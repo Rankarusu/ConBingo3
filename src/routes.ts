@@ -1,16 +1,19 @@
+import {DrawerNavigation} from './components/DrawerNavigation';
 import About from './pages/About';
+import AddModal from './pages/AddModal';
 import EditFields from './pages/EditFields';
+import EditModal from './pages/EditModal';
 import Play from './pages/Play';
 import SavedSheets from './pages/SavedSheets';
 
-export interface Route {
+export interface DrawerRoute {
   name: string;
   displayName: string;
   icon: string;
   component: () => JSX.Element;
 }
 
-export const routes: Route[] = [
+export const drawerRoutes: DrawerRoute[] = [
   {
     name: 'play',
     displayName: 'Play',
@@ -34,5 +37,38 @@ export const routes: Route[] = [
     displayName: 'About',
     icon: 'information',
     component: About,
+  },
+];
+
+export interface StackRoute {
+  name: string;
+  displayName?: string;
+  component: () => JSX.Element;
+  options?: Object;
+}
+
+export const rootRoutes: StackRoute[] = [
+  {
+    name: 'App',
+    component: DrawerNavigation,
+    options: {headerShown: false},
+  },
+  {
+    name: 'edit-modal',
+    displayName: 'Edit Field',
+    component: EditModal,
+    options: {
+      presentation: 'modal',
+      headerMode: 'screen',
+    },
+  },
+  {
+    name: 'add-modal',
+    displayName: 'Add Field',
+    component: AddModal,
+    options: {
+      presentation: 'modal',
+      headerMode: 'screen',
+    },
   },
 ];

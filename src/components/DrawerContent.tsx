@@ -6,9 +6,8 @@ import React, {useContext} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Drawer, Switch, Text} from 'react-native-paper';
 import {saveTheme} from '../hooks/useAppTheme';
-import {routes} from '../routes';
 import {ThemeContext} from '../ThemeContext';
-
+import {drawerRoutes} from '../routes';
 export default function DrawerContent(props: DrawerContentComponentProps) {
   const [active, setActive] = React.useState('play');
   const {isThemeDark, toggleTheme} = useContext(ThemeContext);
@@ -18,7 +17,7 @@ export default function DrawerContent(props: DrawerContentComponentProps) {
         Convention Bingo
       </Text>
       <Drawer.Section>
-        {routes.map(route => {
+        {drawerRoutes.map(route => {
           return (
             <Drawer.Item
               key={route.name}
