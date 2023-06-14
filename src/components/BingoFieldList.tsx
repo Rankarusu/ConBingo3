@@ -1,25 +1,28 @@
+import React, {memo} from 'react';
 import {StackNavigationProp} from '@react-navigation/stack';
-import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
-import {FieldsRepository} from '../db';
 import {BingoField} from '../models/bingoField';
 import {StackRouteParameters} from '../routes';
-import BingoFieldListItem from './BingoFieldListItem';
+import BingoFieldListItem, {
+  BingoFieldListItemProps,
+} from './BingoFieldListItem';
+import {useAppDispatch} from '../hooks';
+import {remove} from '../stores/fieldsSlice';
 
-const repo = new FieldsRepository();
+//we memoize list components so they wont rerender unless their props change.
+const Item = memo((props: BingoFieldListItemProps) => (
+  <BingoFieldListItem {...props} />
+));
 
 interface BingoFieldListProps {
+  fields: BingoField[];
   searchQuery: string;
   navigation: StackNavigationProp<StackRouteParameters>;
 }
 
 const BingoFieldList = (props: BingoFieldListProps) => {
-  const [fields, setFields] = useState<BingoField[]>([]);
-
-  useEffect(() => {
-    repo.getAll().then(data => setFields(data));
-  }, []);
+  const dispatch = useAppDispatch();
 
   const queryContains = (text: string) => {
     if (text.toLowerCase().includes(props.searchQuery.toLowerCase())) {
@@ -27,21 +30,26 @@ const BingoFieldList = (props: BingoFieldListProps) => {
     }
     return styles.hide;
   };
-  const edit = (id: number) => {
+  const editField = (id: number) => {
     props.navigation.navigate('editModal', {id: id});
+  };
+
+  const deleteField = (id: number) => {
+    dispatch(remove(id));
   };
 
   return (
     <FlatList
-      data={fields}
+      data={props.fields}
       ListFooterComponent={<View />}
       ListFooterComponentStyle={styles.footer}
       renderItem={({item}) => {
         return (
-          <BingoFieldListItem
+          <Item
             style={queryContains(item.text)}
             {...item}
-            edit={() => edit(item.id)}
+            edit={() => editField(item.id)}
+            delete={() => deleteField(item.id)}
           />
         );
       }}

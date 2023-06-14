@@ -3,6 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import BingoField, {BingoFieldProps} from '../components/BingoField';
 import {CheckableBingoField} from '../models/checkableBingoField';
 
+//we memoize list components so they wont rerender unless their props change.
 const Item = memo((props: BingoFieldProps) => <BingoField {...props} />);
 
 interface BingoSheetProps {

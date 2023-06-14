@@ -4,9 +4,13 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {FAB, Searchbar} from 'react-native-paper';
 import BingoFieldList from '../components/BingoFieldList';
+import {useAppSelector} from '../hooks';
 import {StackRouteParameters} from '../routes';
+import {selectFields} from '../stores/fieldsSlice';
 
 const EditFields = () => {
+  const fields = useAppSelector(selectFields);
+
   const [searchQuery, setSearchQuery] = React.useState('');
   const navigation = useNavigation<StackNavigationProp<StackRouteParameters>>();
   const onChangeSearch = (query: string) => {
@@ -26,7 +30,11 @@ const EditFields = () => {
         elevation={1}
         style={styles.searchBar}
       />
-      <BingoFieldList searchQuery={searchQuery} navigation={navigation} />
+      <BingoFieldList
+        fields={fields}
+        searchQuery={searchQuery}
+        navigation={navigation}
+      />
       <FAB icon="plus" style={styles.fab} onPress={addField} />
     </>
   );
