@@ -1,5 +1,4 @@
 /* eslint-disable react/no-unstable-nested-components */
-// /* eslint-disable react/no-unstable-nested-components */
 import React, {memo, useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button, Text, TextInput} from 'react-native-paper';
@@ -7,12 +6,13 @@ import RootNavigationHeader, {
   RootNavigationHeaderProps,
 } from '../components/RootNavigationHeader';
 import {useAppDispatch, useAppTheme} from '../hooks';
-import {addField, updateField, useFields} from '../stores/fieldsSlice';
 import {RootScreenProps} from '../navigation/types';
 import {
   updateCurrentSheetField,
   useCurrentSheet,
 } from '../stores/currentSheetSlice';
+import {addField, updateField, useFields} from '../stores/fieldsSlice';
+import {Logger} from '../utils/logger';
 
 export enum ModalMode {
   ADD = 'Add Field',
@@ -42,8 +42,8 @@ const validate = (input: string) => {
 
 const Modal: React.FC<RootScreenProps<'Modal'>> = props => {
   const dispatch = useAppDispatch();
-  const {fieldByPosition} = useCurrentSheet();
-  const {fieldById} = useFields();
+  const {currentSheet, fieldByPosition} = useCurrentSheet();
+  const {fields, fieldById} = useFields();
   const {colors} = useAppTheme();
 
   const {mode} = props.route.params;
@@ -78,6 +78,19 @@ const Modal: React.FC<RootScreenProps<'Modal'>> = props => {
     props.navigation.goBack();
   }, [saveFn, props.navigation, text]);
 
+  const rerollField = () => {
+    //only get fields that we do not already have in the sheet
+    const filteredFields = fields.filter(
+      field => !currentSheet.find(cField => cField.text === field.text),
+    );
+
+    const randomField =
+      filteredFields[Math.floor(Math.random() * filteredFields.length)];
+
+    setText(randomField.text);
+    Logger.debug('field rerolled');
+  };
+
   useEffect(() => {
     props.navigation.setOptions({
       header: headerProps => (
@@ -92,10 +105,9 @@ const Modal: React.FC<RootScreenProps<'Modal'>> = props => {
   }, [props.navigation, error, title, saveField]);
 
   return (
-    <>
+    <View style={styles.wrapper}>
       <TextInput
         value={text}
-        style={styles.textArea}
         label="Field Text"
         placeholder="Enter text..."
         multiline
@@ -117,12 +129,21 @@ const Modal: React.FC<RootScreenProps<'Modal'>> = props => {
           </Text>
         )}
       </View>
-    </>
+      {mode === ModalMode.EDIT_CURRENT_SHEET && (
+        <Button
+          style={styles.button}
+          icon="reload"
+          mode="contained"
+          onPress={rerollField}>
+          Reroll
+        </Button>
+      )}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  textArea: {
+  wrapper: {
     margin: 5,
   },
   indicatorBox: {
@@ -130,6 +151,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row-reverse',
     marginHorizontal: 20,
+  },
+  button: {
+    // flex: 1,
+    marginVertical: 10,
   },
 });
 
