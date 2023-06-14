@@ -1,12 +1,14 @@
 import React from 'react';
-import {Searchbar} from 'react-native-paper';
 import {StyleSheet} from 'react-native';
+import {Searchbar} from 'react-native-paper';
 import BingoFieldList from '../components/BingoFieldList';
 
 const EditFields = () => {
   const [searchQuery, setSearchQuery] = React.useState('');
 
-  const onChangeSearch = (query: string) => setSearchQuery(query);
+  const onChangeSearch = (query: string) => {
+    setSearchQuery(query);
+  };
 
   return (
     <>
@@ -17,7 +19,7 @@ const EditFields = () => {
         elevation={1}
         style={styles.searchBar}
       />
-      <BingoFieldList filter={searchQuery} />
+      <BingoFieldList searchQuery={searchQuery} />
     </>
   );
 };
