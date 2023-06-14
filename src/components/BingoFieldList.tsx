@@ -13,7 +13,7 @@ import {useSnackbar} from '../hooks/useSnackbar';
 import Snackbar from './Snackbar';
 
 //we memoize list components so they wont rerender unless their props change.
-const Item = memo((props: BingoFieldListItemProps) => (
+const MemoizedBingoFieldListItem = memo((props: BingoFieldListItemProps) => (
   <BingoFieldListItem {...props} />
 ));
 
@@ -25,7 +25,7 @@ interface BingoFieldListProps {
 
 const BingoFieldList = (props: BingoFieldListProps) => {
   const dispatch = useAppDispatch();
-  const {snackbarRef, showSnackbar} = useSnackbar();
+  const [snackbarRef, showSnackbar] = useSnackbar();
 
   const queryContains = (text: string) => {
     if (text.toLowerCase().includes(props.searchQuery.toLowerCase())) {
@@ -50,7 +50,7 @@ const BingoFieldList = (props: BingoFieldListProps) => {
         ListFooterComponentStyle={styles.footer}
         renderItem={({item}) => {
           return (
-            <Item
+            <MemoizedBingoFieldListItem
               style={queryContains(item.text)}
               {...item}
               edit={() => editField(item.id)}

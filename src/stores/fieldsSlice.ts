@@ -5,6 +5,7 @@ import defaultFields from '../data/defaultFields.json';
 
 interface FieldsState {
   value: BingoField[];
+  index: number;
 }
 
 interface UpdateBingoFieldPayload {
@@ -14,6 +15,7 @@ interface UpdateBingoFieldPayload {
 
 const initialState: FieldsState = {
   value: [],
+  index: 0,
 };
 
 export const fieldsSlice = createSlice({
@@ -22,6 +24,7 @@ export const fieldsSlice = createSlice({
   reducers: {
     add: (state, action: PayloadAction<BingoField>) => {
       state.value.push(action.payload);
+      state.index++;
     },
     remove: (state, action: PayloadAction<number>) => {
       state.value = state.value.filter(item => item.id !== action.payload);
@@ -32,6 +35,7 @@ export const fieldsSlice = createSlice({
     },
     reset: state => {
       state.value = defaultFields.map((field, index) => {
+        state.index = index;
         return {id: index, text: field} as BingoField;
       });
     },
