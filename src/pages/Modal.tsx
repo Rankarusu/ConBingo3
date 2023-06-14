@@ -1,11 +1,11 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React, {memo, useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Button, Text, TextInput} from 'react-native-paper';
+import {Button, HelperText, TextInput} from 'react-native-paper';
 import RootNavigationHeader, {
   RootNavigationHeaderProps,
 } from '../components/RootNavigationHeader';
-import {useAppDispatch, useAppTheme} from '../hooks';
+import {useAppDispatch} from '../hooks';
 import {RootScreenProps} from '../navigation/types';
 import {
   updateCurrentSheetField,
@@ -44,7 +44,6 @@ const Modal: React.FC<RootScreenProps<'Modal'>> = props => {
   const dispatch = useAppDispatch();
   const {currentSheet, fieldByPosition} = useCurrentSheet();
   const {fields, fieldById} = useFields();
-  const {colors} = useAppTheme();
 
   const {mode} = props.route.params;
 
@@ -122,12 +121,10 @@ const Modal: React.FC<RootScreenProps<'Modal'>> = props => {
         }}
       />
       <View style={styles.indicatorBox}>
-        <Text variant="labelMedium">{textLength} / 64</Text>
-        {error && (
-          <Text variant="labelMedium" style={{color: colors.error}}>
-            Input too short
-          </Text>
-        )}
+        <HelperText type="error" visible={validate(text)}>
+          Input too short!
+        </HelperText>
+        <HelperText type="info">{textLength} / 64</HelperText>
       </View>
       {mode === ModalMode.EDIT_CURRENT_SHEET && (
         <Button
@@ -150,8 +147,7 @@ const styles = StyleSheet.create({
   indicatorBox: {
     display: 'flex',
     justifyContent: 'space-between',
-    flexDirection: 'row-reverse',
-    marginHorizontal: 20,
+    flexDirection: 'row',
   },
   button: {
     marginVertical: 10,
