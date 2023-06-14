@@ -10,7 +10,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import {useAppDispatch} from '../hooks';
 import {useAppTheme} from '../hooks';
-import {toggleCheckedState} from '../stores/currentSheetSlice';
+import {toggleCheckedField} from '../stores/currentSheetSlice';
 import {RgbaColor} from '../utils/rgbaColor';
 
 export interface BingoFieldProps {
@@ -63,7 +63,7 @@ const BingoField = (props: BingoFieldProps) => {
         onPress={() => {
           //state is managed centrally by redux only and we prevent rerender of other items by using memo :)
           dispatch(
-            toggleCheckedState({
+            toggleCheckedField({
               position: props.position,
               checked: !props.checked,
             }),

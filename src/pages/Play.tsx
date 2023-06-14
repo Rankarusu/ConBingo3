@@ -3,18 +3,17 @@ import {Dimensions, StyleSheet, View} from 'react-native';
 import ConfettiCannon from 'react-native-confetti-cannon';
 import {Button} from 'react-native-paper';
 import BingoSheet from '../components/BingoSheet';
-import {useAppDispatch, useAppSelector} from '../hooks';
-import {generateSheet} from '../utils/generateSheet';
-import {useSnackbar} from '../hooks/useSnackbar';
 import Snackbar from '../components/Snackbar';
+import {useAppDispatch} from '../hooks';
+import {useSnackbar} from '../hooks/useSnackbar';
 import {
   resetWin,
-  selectCurrentSheet,
-  selectWin,
-  set,
+  setCurrentSheet,
+  useCurrentSheet,
 } from '../stores/currentSheetSlice';
-import {reset, selectFields} from '../stores/fieldsSlice';
-import {add} from '../stores/savedSheetsSlice';
+import {resetFields, useFields} from '../stores/fieldsSlice';
+import {addSheet} from '../stores/savedSheetsSlice';
+import {generateSheet} from '../utils/generateSheet';
 
 interface ConfettiProps {
   confettiRef: RefObject<ConfettiCannon>;
@@ -34,9 +33,8 @@ const Confetti = memo((props: ConfettiProps) => (
 ));
 
 const Play = () => {
-  const currentSheet = useAppSelector(selectCurrentSheet);
-  const win = useAppSelector(selectWin);
-  const fields = useAppSelector(selectFields);
+  const {currentSheet, win} = useCurrentSheet();
+  const {fields} = useFields();
   const dispatch = useAppDispatch();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -46,7 +44,7 @@ const Play = () => {
 
   const reroll = () => {
     const newSheet = generateSheet(fields);
-    dispatch(set(newSheet));
+    dispatch(setCurrentSheet(newSheet));
   };
 
   const shootConfetti = () => {
@@ -57,7 +55,7 @@ const Play = () => {
   if (fields.length < 24) {
     console.log('not enough fields, resetting');
     //TODO: throw a warning here
-    dispatch(reset());
+    dispatch(resetFields());
   }
   if (!currentSheet || currentSheet.length !== 25) {
     console.log('generating new field, invalid data');
@@ -90,7 +88,7 @@ const Play = () => {
           icon="content-save"
           mode="contained"
           onPress={() => {
-            dispatch(add(currentSheet));
+            dispatch(addSheet(currentSheet));
             showSnackbar('Sheet saved successfully!');
           }}>
           Save

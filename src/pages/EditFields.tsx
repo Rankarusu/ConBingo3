@@ -4,12 +4,11 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {FAB, Searchbar} from 'react-native-paper';
 import BingoFieldList from '../components/BingoFieldList';
-import {useAppSelector} from '../hooks';
 import {StackRouteParameters} from '../routes';
-import {selectFields} from '../stores/fieldsSlice';
+import {useFields} from '../stores/fieldsSlice';
 
 const EditFields = () => {
-  const fields = useAppSelector(selectFields);
+  const {fields} = useFields();
 
   const [searchQuery, setSearchQuery] = React.useState('');
   const navigation = useNavigation<StackNavigationProp<StackRouteParameters>>();
