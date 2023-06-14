@@ -2,42 +2,21 @@ import {
   DrawerContentComponentProps,
   DrawerContentScrollView,
 } from '@react-navigation/drawer';
-import React, {useState} from 'react';
-import {BackHandler, StyleSheet, View} from 'react-native';
+import React from 'react';
+import {StyleSheet, View} from 'react-native';
 import {Drawer, Switch, Text} from 'react-native-paper';
 import {useAppDispatch, useAppSelector} from '../hooks';
-import {INITIAL_ROUTE, appRoutes} from '../navigation/routes';
+import {appRoutes} from '../navigation/routes';
 import {selectTheme, toggle} from '../stores/themeSlice';
-import {useFocusEffect} from '@react-navigation/native';
 
 const DrawerContent: React.FC<DrawerContentComponentProps> = props => {
-  const [active, setActive] = useState(INITIAL_ROUTE);
   const dispatch = useAppDispatch();
   const theme = useAppSelector(selectTheme);
 
-  // Set our drawer state when a user uses their hardware back button
-  // https://reactnavigation.org/docs/custom-android-back-button-handling
-  useFocusEffect(
-    React.useCallback(() => {
-      const onBackPress = () => {
-        /*
-        since we configured our drawer nav so it goes back to the initial route on a hardware
-        back button press, we can use that here.
-        */
-        if (active !== INITIAL_ROUTE) {
-          setActive(INITIAL_ROUTE);
-        }
-        return false;
-      };
-
-      const subscription = BackHandler.addEventListener(
-        'hardwareBackPress',
-        onBackPress,
-      );
-
-      return () => subscription.remove();
-    }, [active]),
-  );
+  const getCurrentRouteName = () => {
+    const {routeNames, index} = props.navigation.getState();
+    return routeNames[index];
+  };
 
   return (
     <DrawerContentScrollView {...props}>
@@ -51,10 +30,9 @@ const DrawerContent: React.FC<DrawerContentComponentProps> = props => {
               key={route.name}
               icon={route.icon}
               label={route.displayName}
-              active={active === route.name}
+              active={route.name === getCurrentRouteName()}
               onPress={() => {
                 props.navigation.navigate(route.name);
-                setActive(route.name);
               }}
             />
           );
