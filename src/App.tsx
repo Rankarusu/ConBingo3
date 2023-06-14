@@ -26,7 +26,7 @@ export default function ErrorBoundaryLayer() {
   //putting the error boundary to highest level so it can also catch redux errors
   return (
     <ErrorBoundary
-      onError={error => Logger.error(error)}
+      onError={error => Logger.error(error, error.stack)}
       fallbackRender={fallbackRender}>
       <ReduxLayer />
     </ErrorBoundary>
