@@ -11,7 +11,7 @@ interface ConfettiProps {
 const Confetti = (props: ConfettiProps) => (
   <ConfettiCannon
     autoStart={false}
-    count={200}
+    count={100}
     explosionSpeed={400}
     fallSpeed={2000}
     origin={{x: width / 2, y: height / 2}}
