@@ -11,6 +11,7 @@ import {useAppSelector} from './hooks';
 import {persistor} from './stores/store';
 import {selectAppTheme} from './stores/themeSlice';
 import {Logger} from './utils/logger';
+
 export default function App() {
   const theme = useAppSelector(selectAppTheme);
 
