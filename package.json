@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
+    "android:release": "react-native run-android --mode=release",
     "description": "A bullshit-bingo-esque to play with your weeb friends at conventions",
     "ios": "react-native run-ios",
     "lint": "eslint .",

@@ -14,7 +14,6 @@ export default function RootNavigation() {
             key={route.name}
             name={route.name}
             component={route.component}
-            //TODO: use paper header here as well
             options={{
               title: route.displayName,
               header: ({navigation}) => (

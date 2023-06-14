@@ -2,15 +2,16 @@ import {
   DrawerContentComponentProps,
   DrawerContentScrollView,
 } from '@react-navigation/drawer';
-import React, {useContext} from 'react';
+import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Drawer, Switch, Text} from 'react-native-paper';
-import {saveTheme} from '../hooks/useAppTheme';
-import {ThemeContext} from '../ThemeContext';
+import {useAppDispatch, useAppSelector} from '../hooks';
 import {drawerRoutes} from '../routes';
+import {selectTheme, toggle} from '../stores/themeSlice';
 export default function DrawerContent(props: DrawerContentComponentProps) {
   const [active, setActive] = React.useState('play');
-  const {isThemeDark, toggleTheme} = useContext(ThemeContext);
+  const dispatch = useAppDispatch();
+  const theme = useAppSelector(selectTheme);
   return (
     <DrawerContentScrollView {...props}>
       <Text style={style.title} variant="titleLarge">
@@ -36,10 +37,9 @@ export default function DrawerContent(props: DrawerContentComponentProps) {
         <View style={style.toggleBox}>
           <Text variant="bodyMedium">Dark Theme</Text>
           <Switch
-            value={isThemeDark}
-            onValueChange={async (value: boolean) => {
-              toggleTheme();
-              await saveTheme(value ? 'dark' : 'light');
+            value={theme === 'dark' ? true : false}
+            onValueChange={() => {
+              dispatch(toggle());
             }}
           />
         </View>

@@ -1,12 +1,12 @@
-import React, {lazy, Suspense, useEffect, useState} from 'react';
-import {ActivityIndicator, Button} from 'react-native-paper';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {Button} from 'react-native-paper';
+import BingoSheet from '../components/BingoSheet';
 import {useAppDispatch, useAppSelector} from '../hooks';
-import {add, reset, selectFields} from '../stores/fieldsSlice';
+import {generateSheet} from '../hooks/useGenerateSheet';
 import {BingoField} from '../models/bingoField';
 import {selectCurrentSheet, set} from '../stores/currentSheetSlice';
-import {generateSheet} from '../hooks/useGenerateSheet';
-import BingoSheet from '../components/BingoSheet';
+import {add, reset, selectFields} from '../stores/fieldsSlice';
 
 const Play = () => {
   const currentSheet = useAppSelector(selectCurrentSheet);
@@ -21,16 +21,14 @@ const Play = () => {
     }
     if (!currentSheet || currentSheet.length !== 25) {
       console.log('generating new field, invalid data');
-      const newSheet = generateSheet(fields);
+      const newSheet = generateSheet(fields); //TODO: do something about initial start. currentyl fields is undefined first time
       dispatch(set(newSheet));
     }
   }, [currentSheet, dispatch, fields]);
 
   return (
     <View style={styles.wrapper}>
-      {/* <Suspense fallback={<ActivityIndicator />}> */}
       <BingoSheet fields={currentSheet} />
-      {/* </Suspense> */}
       <View style={styles.buttonBox}>
         <Button
           style={styles.button}
