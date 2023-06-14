@@ -1,4 +1,4 @@
-package com.rnpaper;
+package com.copnbingo;
 
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;

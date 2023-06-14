@@ -93,9 +93,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.rnpaper"
+    namespace "com.conbingo"
     defaultConfig {
-        applicationId "com.rnpaper"
+        applicationId "com.conbingo"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
