@@ -9,7 +9,6 @@ export type RootNavigationHeaderProps = StackHeaderProps & {
 };
 
 const RootNavigationHeader: React.FC<RootNavigationHeaderProps> = props => {
-  // const title = getHeaderTitle(props.options, props.route.name);
   return (
     <Appbar.Header elevated>
       <Appbar.Action

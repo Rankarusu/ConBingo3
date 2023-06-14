@@ -5,6 +5,7 @@ import {useAppTheme} from '../hooks';
 import {BingoField} from '../models/bingoField';
 
 export type BingoFieldListItemProps = BingoField & {
+  //we pass style as a prop to hide the item if it does not match the search query
   style: ViewStyle;
   edit: () => void;
   delete: () => void;

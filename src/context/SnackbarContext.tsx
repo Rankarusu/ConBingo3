@@ -22,7 +22,7 @@ export const SnackbarProvider: React.FC<PropsWithChildren> = props => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [placeAboveFab, setPlaceAboveFab] = useState(false);
-  // I intended to have separate colors for errors, but react native paper does not really allow than
+  // I intended to have separate colors for errors, but react native paper does not really allow that
   // const [typeColor, setTypeColor] = useState<SnackbarColor>('info');
 
   const showSnackbar = useCallback(

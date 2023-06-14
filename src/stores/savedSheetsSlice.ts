@@ -3,7 +3,7 @@ import {useSelector} from 'react-redux';
 import {BingoSheet} from '../models/bingoSheet';
 import {CheckableBingoField} from '../models/checkableBingoField';
 import {RootState} from './store';
-import {Logger} from '../logger';
+import {Logger} from '../utils/logger';
 
 interface SavedSheetsState {
   value: BingoSheet[];

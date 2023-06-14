@@ -7,6 +7,7 @@ export type DrawerNavigationHeaderProps = DrawerHeaderProps & {
   title: string;
   right?: JSX.Element;
 };
+
 const DrawerNavigationHeader: React.FC<DrawerNavigationHeaderProps> = props => {
   return (
     <Appbar.Header elevated>

@@ -28,11 +28,8 @@ const BingoFieldList: React.FC<BingoFieldListProps> = props => {
   const {openEditModal} = useModal();
   const {showSnackbar} = useSnackbar();
 
-  const queryContains = (text: string) => {
-    if (text.toLowerCase().includes(props.searchQuery.toLowerCase())) {
-      return {};
-    }
-    return styles.hide;
+  const shouldHide = (text: string) => {
+    return !text.toLowerCase().includes(props.searchQuery.toLowerCase());
   };
 
   const deleteField = (id: number) => {
@@ -53,7 +50,7 @@ const BingoFieldList: React.FC<BingoFieldListProps> = props => {
         renderItem={({item}) => {
           return (
             <MemoizedBingoFieldListItem
-              style={queryContains(item.text)}
+              style={shouldHide(item.text) ? styles.hide : {}}
               {...item}
               edit={() => openEditModal(item.id)}
               delete={() => deleteField(item.id)}

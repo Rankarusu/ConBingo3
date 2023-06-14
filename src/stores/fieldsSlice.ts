@@ -3,7 +3,7 @@ import {useSelector} from 'react-redux';
 import defaultFields from '../data/defaultFields.json';
 import {BingoField} from '../models/bingoField';
 import {RootState} from './store';
-import {Logger} from '../logger';
+import {Logger} from '../utils/logger';
 
 interface FieldsState {
   value: BingoField[];
