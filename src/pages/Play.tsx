@@ -1,5 +1,12 @@
 import {useFocusEffect} from '@react-navigation/native';
-import React, {memo, RefObject, useCallback, useEffect, useRef} from 'react';
+import React, {
+  memo,
+  RefObject,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import ConfettiCannon from 'react-native-confetti-cannon';
 import {Button} from 'react-native-paper';
@@ -48,9 +55,29 @@ const Play: React.FC<AppScreenProps<'Play'>> = props => {
     showSnackbar('Sheet saved successfully!');
   };
 
+  const rerollSheet = () => {
+    if (fields.length < 24) {
+      showAlert(alertOptions);
+      return;
+    }
+    dispatch(resetCurrentSheet(fields));
+  };
+
   const shootConfetti = () => {
     confettiRef.current?.start();
   };
+
+  const alertOptions: AlertOptions = useMemo(() => {
+    return {
+      title: 'Reset Fields',
+      content:
+        'You do not have enough fields to generate a new sheet.\nEither add more fields or load the default ones.',
+      confirmText: 'Load defaults',
+      confirmAction: () => dispatch(resetFields()),
+      cancelText: 'Add more fields',
+      cancelAction: () => props.navigation.navigate('EditFields'),
+    };
+  }, [dispatch, props.navigation]);
 
   useEffect(() => {
     if (fields.length >= 24 && currentSheet.length !== 25) {
@@ -69,26 +96,24 @@ const Play: React.FC<AppScreenProps<'Play'>> = props => {
         return;
       }
 
-      if (fields.length < 24) {
-        // we need to check if currentsheet does not exists and maybe call this on reroll
+      if (currentSheet.length !== 25 && fields.length < 24) {
+        // no need to display the popup if current sheet is viable.
+        // e.g. one got generated but afterwards the user deletes all fields
         console.log('not enough fields, showing alert');
-        const alertOptions: AlertOptions = {
-          title: 'Reset Fields',
-          content: 'You do not have enough fields to generate a board.',
-          confirmText: 'Reset',
-          confirmAction: () => dispatch(resetFields()),
-          cancelText: 'Add more fields',
-          // TODO: make this display in sidebar as well
-          cancelAction: () => props.navigation.navigate('EditFields'),
-        };
         showAlert(alertOptions);
       }
-    }, [fields.length, alreadyLaunched, showAlert, dispatch, props.navigation]),
+    }, [
+      fields.length,
+      currentSheet.length,
+      alreadyLaunched,
+      alertOptions,
+      showAlert,
+      dispatch,
+    ]),
   );
 
   useFocusEffect(
     useCallback(() => {
-      // make a focus event here too
       if (win) {
         shootConfetti();
         showSnackbar('Winner, Winner Chicken Dinner!');
@@ -108,9 +133,7 @@ const Play: React.FC<AppScreenProps<'Play'>> = props => {
           style={styles.button}
           icon="reload"
           mode="contained"
-          onPress={() => {
-            dispatch(resetCurrentSheet(fields));
-          }}>
+          onPress={rerollSheet}>
           Reroll
         </Button>
         <Button
