@@ -13,6 +13,7 @@ const EditFields = () => {
 
   const [searchQuery, setSearchQuery] = React.useState('');
   const navigation = useNavigation<StackNavigationProp<StackRouteParameters>>();
+
   const onChangeSearch = (query: string) => {
     setSearchQuery(query);
   };

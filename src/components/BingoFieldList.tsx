@@ -9,6 +9,8 @@ import BingoFieldListItem, {
 } from './BingoFieldListItem';
 import {useAppDispatch} from '../hooks';
 import {remove} from '../stores/fieldsSlice';
+import {useSnackbar} from '../hooks/useSnackbar';
+import Snackbar from './Snackbar';
 
 //we memoize list components so they wont rerender unless their props change.
 const Item = memo((props: BingoFieldListItemProps) => (
@@ -23,6 +25,7 @@ interface BingoFieldListProps {
 
 const BingoFieldList = (props: BingoFieldListProps) => {
   const dispatch = useAppDispatch();
+  const {snackbarRef, showSnackbar} = useSnackbar();
 
   const queryContains = (text: string) => {
     if (text.toLowerCase().includes(props.searchQuery.toLowerCase())) {
@@ -36,24 +39,28 @@ const BingoFieldList = (props: BingoFieldListProps) => {
 
   const deleteField = (id: number) => {
     dispatch(remove(id));
+    showSnackbar('Field deleted!');
   };
 
   return (
-    <FlatList
-      data={props.fields}
-      ListFooterComponent={<View />}
-      ListFooterComponentStyle={styles.footer}
-      renderItem={({item}) => {
-        return (
-          <Item
-            style={queryContains(item.text)}
-            {...item}
-            edit={() => editField(item.id)}
-            delete={() => deleteField(item.id)}
-          />
-        );
-      }}
-    />
+    <>
+      <FlatList
+        data={props.fields}
+        ListFooterComponent={<View />}
+        ListFooterComponentStyle={styles.footer}
+        renderItem={({item}) => {
+          return (
+            <Item
+              style={queryContains(item.text)}
+              {...item}
+              edit={() => editField(item.id)}
+              delete={() => deleteField(item.id)}
+            />
+          );
+        }}
+      />
+      <Snackbar ref={snackbarRef} style={styles.snackbar} />
+    </>
   );
 };
 
@@ -63,6 +70,9 @@ const styles = StyleSheet.create({
   },
   footer: {
     paddingTop: 100,
+  },
+  snackbar: {
+    bottom: 80,
   },
 });
 

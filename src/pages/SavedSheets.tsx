@@ -1,17 +1,26 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Button} from 'react-native-paper';
+import {Button, Text} from 'react-native-paper';
 import SavedSheetsScroller from '../components/SavedSheetsScroller';
-import {useAppSelector} from '../hooks';
-import {selectSavedSheets} from '../stores/savedSheetsSlice';
+import Snackbar from '../components/Snackbar';
+import {useAppDispatch, useAppSelector} from '../hooks';
+import {useSnackbar} from '../hooks/useSnackbar';
+import {remove, selectSavedSheets} from '../stores/savedSheetsSlice';
 
 const SavedSheets = () => {
   const savedSheets = useAppSelector(selectSavedSheets);
+  const dispatch = useAppDispatch();
+
+  const {snackbarRef, showSnackbar} = useSnackbar();
 
   return (
     <View style={styles.wrapper}>
       <View style={styles.center}>
-        <SavedSheetsScroller savedSheets={savedSheets} />
+        {savedSheets.length === 0 ? (
+          <Text>You have no sheets saved at the moment.</Text>
+        ) : (
+          <SavedSheetsScroller savedSheets={savedSheets} />
+        )}
       </View>
       <View style={styles.buttonBox}>
         <Button
@@ -19,7 +28,10 @@ const SavedSheets = () => {
           style={styles.button}
           icon="open-in-new"
           mode="contained"
-          onPress={() => {}}>
+          disabled={savedSheets.length === 0}
+          onPress={() => {
+            showSnackbar('Sheet loaded successfully!');
+          }}>
           Load
         </Button>
         <Button
@@ -27,7 +39,11 @@ const SavedSheets = () => {
           style={styles.button}
           icon="delete"
           mode="contained"
-          onPress={() => {}}>
+          disabled={savedSheets.length === 0}
+          onPress={() => {
+            dispatch(remove(0));
+            showSnackbar('Sheet deleted!');
+          }}>
           Delete
         </Button>
         <Button
@@ -35,7 +51,9 @@ const SavedSheets = () => {
           style={styles.button}
           icon="import"
           mode="contained"
-          onPress={() => {}}>
+          onPress={() => {
+            showSnackbar('Sheet imported successfully!');
+          }}>
           Import
         </Button>
         <Button
@@ -43,10 +61,12 @@ const SavedSheets = () => {
           style={styles.button}
           icon="export"
           mode="contained"
+          disabled={savedSheets.length === 0}
           onPress={() => {}}>
           Export
         </Button>
       </View>
+      <Snackbar ref={snackbarRef} style={styles.snackbar} />
     </View>
   );
 };
@@ -72,5 +92,8 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
+  },
+  snackbar: {
+    bottom: 50,
   },
 });
