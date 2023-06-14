@@ -8,6 +8,7 @@ export class FieldsRepository {
   currentIndex = 0;
 
   async getAll() {
+    await this.reset()
     const str = await AsyncStorage.getItem(this.storageKey);
     const fields: BingoField[] = JSON.parse(str!);
     return fields;
