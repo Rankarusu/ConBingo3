@@ -1,4 +1,4 @@
-package com.copnbingo;
+package com.conbingo;
 
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;
