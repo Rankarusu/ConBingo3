@@ -18,7 +18,7 @@
     "test": "jest",
     "release": "standard-version --no-verify",
     "postinstall": "patch-package",
-    "postversion": "react-native-version",
+    "postrelease": "react-native-version",
     "create-appicon": "iconset create -A -b ./assets/logo_bg.png -f ./assets/logo_fg.png ./assets/logo_full.png"
   },
   "dependencies": {
