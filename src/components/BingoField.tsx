@@ -24,7 +24,6 @@ const BingoField = (props: BingoFieldProps) => {
 
   const primary = RgbaColor.FromString(theme.colors.primary);
   primary.a = 0.2;
-
   const translucentPrimary = primary.toRgbaString();
 
   const progress = useDerivedValue(() => {
@@ -53,7 +52,6 @@ const BingoField = (props: BingoFieldProps) => {
   });
 
   return (
-    // <View  style={styles.bingoField}>
     <Surface style={[styles.bingoField]}>
       <TouchableRipple
         style={[styles.content]}

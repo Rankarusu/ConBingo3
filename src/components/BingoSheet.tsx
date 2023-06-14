@@ -5,7 +5,7 @@ import BingoField, {BingoFieldProps} from '../components/BingoField';
 const Item = memo((props: BingoFieldProps) => <BingoField {...props} />);
 
 const BingoSheet = () => {
-  const [data, setData] = useState<Array<BingoFieldProps>>(
+  const [data, setData] = useState<BingoFieldProps[]>(
     [...Array(25).keys()].map(num => {
       return {
         id: num,

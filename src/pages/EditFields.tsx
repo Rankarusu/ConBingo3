@@ -1,12 +1,32 @@
-import {View, Text} from 'react-native';
 import React from 'react';
+import {Searchbar} from 'react-native-paper';
+import {StyleSheet} from 'react-native';
+import BingoFieldList from '../components/BingoFieldList';
 
 const EditFields = () => {
+  const [searchQuery, setSearchQuery] = React.useState('');
+
+  const onChangeSearch = (query: string) => setSearchQuery(query);
+
   return (
-    <View>
-      <Text>EditFields</Text>
-    </View>
+    <>
+      <Searchbar
+        placeholder="Search"
+        onChangeText={onChangeSearch}
+        value={searchQuery}
+        elevation={1}
+        style={styles.searchBar}
+      />
+      <BingoFieldList filter={searchQuery} />
+    </>
   );
 };
+
+const styles = StyleSheet.create({
+  searchBar: {
+    borderRadius: 0,
+    marginTop: -1,
+  },
+});
 
 export default EditFields;
