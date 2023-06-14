@@ -74,7 +74,7 @@ const Modal: React.FC<RootScreenProps<'Modal'>> = props => {
   const [error, setError] = useState(validate(text));
 
   const saveField = useCallback(() => {
-    saveFn(text);
+    saveFn(text.trim());
     props.navigation.goBack();
   }, [saveFn, props.navigation, text]);
 

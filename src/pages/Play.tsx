@@ -15,7 +15,6 @@ import {
 import {resetFields, useFields} from '../stores/fieldsSlice';
 import {addSheet} from '../stores/savedSheetsSlice';
 import {generateSheet} from '../utils/generateSheet';
-
 interface ConfettiProps {
   confettiRef: RefObject<ConfettiCannon>;
 }
@@ -94,13 +93,6 @@ const Play: React.FC<AppScreenProps<'Play'>> = () => {
           onPress={saveSheet}>
           Save
         </Button>
-        {/* <Button
-          style={styles.button}
-          icon={isEditing ? 'pencil-off' : 'pencil'}
-          mode="contained"
-          onPress={toggleEditMode}>
-          {isEditing ? 'Resume' : 'Edit'}
-        </Button> */}
       </View>
       <Snackbar ref={snackbarRef} style={styles.snackbar} />
     </View>
@@ -109,11 +101,12 @@ const Play: React.FC<AppScreenProps<'Play'>> = () => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    flex: 1,
+    // adjust pan does fuck all
+    // for some reason, the keyboard pushed the buttons and sheet up
+    minHeight: height - 64, // 64 is the default MD3 height
   },
   center: {
     flex: 1,
-    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 6,
