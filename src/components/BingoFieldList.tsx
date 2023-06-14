@@ -1,16 +1,15 @@
 import React, {memo} from 'react';
-import {StackNavigationProp} from '@react-navigation/stack';
 import {StyleSheet, View} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
+import {useAppDispatch} from '../hooks';
+import {useSnackbar} from '../hooks/useSnackbar';
 import {BingoField} from '../models/bingoField';
-import {StackRouteParamList} from '../routes';
+import {removeField} from '../stores/fieldsSlice';
 import BingoFieldListItem, {
   BingoFieldListItemProps,
 } from './BingoFieldListItem';
-import {useAppDispatch} from '../hooks';
-import {removeField} from '../stores/fieldsSlice';
-import {useSnackbar} from '../hooks/useSnackbar';
 import Snackbar from './Snackbar';
+import {AppScreenProps} from '../navigation/types';
 
 //we memoize list components so they wont rerender unless their props change.
 const MemoizedBingoFieldListItem = memo((props: BingoFieldListItemProps) => (
@@ -20,7 +19,7 @@ const MemoizedBingoFieldListItem = memo((props: BingoFieldListItemProps) => (
 interface BingoFieldListProps {
   fields: BingoField[];
   searchQuery: string;
-  navigation: StackNavigationProp<StackRouteParamList>;
+  navigation: AppScreenProps<'EditFields'>['navigation'];
 }
 
 const BingoFieldList: React.FC<BingoFieldListProps> = props => {
@@ -34,7 +33,7 @@ const BingoFieldList: React.FC<BingoFieldListProps> = props => {
     return styles.hide;
   };
   const editField = (id: number) => {
-    props.navigation.navigate('EditModal', {id: id});
+    props.navigation.navigate('Modal', {id: id});
   };
 
   const deleteField = (id: number) => {

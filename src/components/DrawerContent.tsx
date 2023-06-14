@@ -6,8 +6,8 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Drawer, Switch, Text} from 'react-native-paper';
 import {useAppDispatch, useAppSelector} from '../hooks';
-import {drawerRoutes} from '../routes';
 import {selectTheme, toggle} from '../stores/themeSlice';
+import {appRoutes} from '../navigation/routes';
 
 const DrawerContent: React.FC<DrawerContentComponentProps> = props => {
   const [active, setActive] = React.useState('play');
@@ -20,7 +20,7 @@ const DrawerContent: React.FC<DrawerContentComponentProps> = props => {
         Convention Bingo
       </Text>
       <Drawer.Section>
-        {drawerRoutes.map(route => {
+        {appRoutes.map(route => {
           return (
             <Drawer.Item
               key={route.name}

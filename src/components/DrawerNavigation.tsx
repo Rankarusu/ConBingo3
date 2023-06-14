@@ -3,7 +3,7 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import React from 'react';
 import DrawerContent from './DrawerContent';
 import DrawerNavigationHeader from './DrawerNavigationHeader';
-import {drawerRoutes} from '../routes';
+import {appRoutes} from '../navigation/routes';
 
 /*
 We wrap a drawer inside a stack nav here to achieve a neat modal-like effect
@@ -16,7 +16,7 @@ export function DrawerNavigation() {
     <Drawer.Navigator
       initialRouteName="Play"
       drawerContent={props => <DrawerContent {...props} />}>
-      {drawerRoutes.map(route => {
+      {appRoutes.map(route => {
         return (
           <Drawer.Screen
             key={route.name}

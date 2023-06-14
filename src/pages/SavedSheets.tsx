@@ -11,11 +11,11 @@ import {
   useSavedSheets,
 } from '../stores/savedSheetsSlice';
 
-import {load, share} from '../utils/io';
+import {AppScreenProps} from '../navigation/types';
 import {setCurrentSheet} from '../stores/currentSheetSlice';
-import {DrawerRouteScreenProps} from '../routes';
+import {load, share} from '../utils/io';
 
-const SavedSheets: React.FC<DrawerRouteScreenProps<'SavedSheets'>> = () => {
+const SavedSheets: React.FC<AppScreenProps<'SavedSheets'>> = () => {
   const {savedSheets, selectedSheet, selectedSheetIndex} = useSavedSheets();
   const dispatch = useAppDispatch();
   const [snackbarRef, showSnackbar] = useSnackbar();
