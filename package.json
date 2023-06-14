@@ -2,6 +2,10 @@
   "name": "convention-bingo",
   "version": "0.0.1",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Rankarusu/ConBingo3.git"
+  },
   "scripts": {
     "android": "react-native run-android",
     "android:release": "react-native run-android --mode=release",
