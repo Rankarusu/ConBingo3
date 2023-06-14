@@ -1,7 +1,6 @@
 import React from 'react';
 import {Dimensions, StyleSheet} from 'react-native';
 
-import {useNavigation} from '@react-navigation/native';
 import {Surface, Text, TouchableRipple} from 'react-native-paper';
 import Animated, {
   interpolateColor,
@@ -10,7 +9,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import {useAppDispatch, useAppTheme} from '../hooks';
-import {AppScreenProps} from '../navigation/types';
+import {useModal} from '../hooks/useModal';
 import {toggleCheckedField} from '../stores/currentSheetSlice';
 import {RgbaColor} from '../utils/rgbaColor';
 
@@ -23,7 +22,7 @@ export interface BingoFieldProps {
 const BingoField: React.FC<BingoFieldProps> = props => {
   const dispatch = useAppDispatch();
   const theme = useAppTheme();
-  const navigation = useNavigation<AppScreenProps<'Play'>['navigation']>();
+  const {openEditCurrentSheetModal} = useModal();
 
   const primary = RgbaColor.FromString(theme.colors.primary);
   primary.a = 0.2;
@@ -71,7 +70,7 @@ const BingoField: React.FC<BingoFieldProps> = props => {
           );
         }}
         onLongPress={() => {
-          navigation.navigate('Modal', {position: props.position});
+          openEditCurrentSheetModal(props.position);
         }}>
         <Animated.View style={[styles.content, borderStyle]}>
           <Text

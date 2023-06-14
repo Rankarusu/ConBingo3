@@ -14,6 +14,12 @@ import {
   useCurrentSheet,
 } from '../stores/currentSheetSlice';
 
+export enum ModalMode {
+  ADD = 'Add Field',
+  EDIT = 'Edit Field',
+  EDIT_CURRENT_SHEET = 'Edit Bingo Field',
+}
+
 type MemoizedHeaderProps = RootNavigationHeaderProps & {
   error: boolean;
   save: () => void;
@@ -35,44 +41,42 @@ const validate = (input: string) => {
 };
 
 const Modal: React.FC<RootScreenProps<'Modal'>> = props => {
-  const {fieldById} = useFields();
-  const {fieldByPosition} = useCurrentSheet();
   const dispatch = useAppDispatch();
+  const {fieldByPosition} = useCurrentSheet();
+  const {fieldById} = useFields();
+  const {colors} = useAppTheme();
 
-  const position = props.route.params?.position;
-  const id = props.route.params?.id;
+  const {mode} = props.route.params;
 
-  //not the prettiest solution but it lets us reuse this component
-  let title: string;
-  let initialText: string;
-  if (position !== undefined) {
-    title = 'Edit Bingo Field';
-    initialText = fieldByPosition(position)?.text;
-  } else if (id !== undefined) {
-    title = 'Edit Field';
-    initialText = fieldById(id)?.text || '';
-  } else {
-    title = 'Add Field';
-    initialText = '';
+  const title = mode;
+  let initialText = '';
+  let saveFn: (text: string) => void;
+
+  switch (mode) {
+    case ModalMode.EDIT_CURRENT_SHEET:
+      const {position} = props.route.params;
+      initialText = fieldByPosition(position).text;
+      saveFn = (text: string) =>
+        dispatch(updateCurrentSheetField({position, text}));
+      break;
+    case ModalMode.EDIT:
+      const {id} = props.route.params;
+      initialText = initialText = fieldById(id)?.text || '';
+      saveFn = (text: string) => dispatch(updateField({id, text}));
+      break;
+    case ModalMode.ADD:
+      saveFn = (text: string) => dispatch(addField(text));
+      break;
   }
 
   const [text, setText] = React.useState(initialText);
   const [textLength, setTextLength] = useState(initialText.length);
   const [error, setError] = useState(validate(text));
 
-  const {colors} = useAppTheme();
-
   const saveField = useCallback(() => {
-    if (position) {
-      // we only have the id when we call edit but not on add
-      dispatch(updateCurrentSheetField({position, text}));
-    } else if (id) {
-      dispatch(updateField({id, text}));
-    } else {
-      dispatch(addField(text));
-    }
+    saveFn(text);
     props.navigation.goBack();
-  }, [dispatch, text, id, position, props.navigation]);
+  }, [saveFn, props.navigation, text]);
 
   useEffect(() => {
     props.navigation.setOptions({
