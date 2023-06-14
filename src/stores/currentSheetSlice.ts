@@ -15,6 +15,11 @@ interface ToggleCheckedStatePayload {
   checked: boolean;
 }
 
+interface UpdateBingoFieldPayload {
+  position: number;
+  text: string;
+}
+
 const initialState: CurrentSheetState = {
   value: [],
   lastCheckedPos: null,
@@ -51,6 +56,13 @@ export const currentSheetSlice = createSlice({
 
       state.win = checkWin(position, checkedIds);
     },
+    updateCurrentSheetField: (
+      state,
+      action: PayloadAction<UpdateBingoFieldPayload>,
+    ) => {
+      const {position, text} = action.payload;
+      state.value[position].text = text;
+    },
     resetWin: state => {
       state.win = false;
     },
@@ -61,11 +73,18 @@ export function useCurrentSheet() {
   const selectors = {
     currentSheet: useSelector((state: RootState) => state.currentSheet.value),
     win: useSelector((state: RootState) => state.currentSheet.win),
+    fieldByPosition: (position: number) =>
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      useSelector((state: RootState) => state.currentSheet.value[position]),
   };
   return selectors;
 }
 
-export const {setCurrentSheet, toggleCheckedField, resetWin} =
-  currentSheetSlice.actions;
+export const {
+  setCurrentSheet,
+  toggleCheckedField,
+  updateCurrentSheetField,
+  resetWin,
+} = currentSheetSlice.actions;
 
 export default currentSheetSlice.reducer;
