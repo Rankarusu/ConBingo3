@@ -2,15 +2,15 @@ import {
   DrawerContentComponentProps,
   DrawerContentScrollView,
 } from '@react-navigation/drawer';
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Drawer, Switch, Text} from 'react-native-paper';
 import {useAppDispatch, useAppSelector} from '../hooks';
-import {selectTheme, toggle} from '../stores/themeSlice';
 import {appRoutes} from '../navigation/routes';
+import {selectTheme, toggle} from '../stores/themeSlice';
 
 const DrawerContent: React.FC<DrawerContentComponentProps> = props => {
-  const [active, setActive] = React.useState('play');
+  const [active, setActive] = useState('Play');
   const dispatch = useAppDispatch();
   const theme = useAppSelector(selectTheme);
 

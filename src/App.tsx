@@ -7,6 +7,7 @@ import RootNavigation from './components/RootNavigation';
 import {useAppSelector} from './hooks';
 import {persistor} from './stores/store';
 import {selectAppTheme} from './stores/themeSlice';
+import {SnackbarProvider} from './context/SnackbarContext';
 
 export default function App() {
   const theme = useAppSelector(selectAppTheme);
@@ -17,7 +18,9 @@ export default function App() {
     <PersistGate persistor={persistor} loading={<ActivityIndicator />}>
       <NavigationContainer theme={theme}>
         <PaperProvider theme={theme}>
-          <RootNavigation />
+          <SnackbarProvider>
+            <RootNavigation />
+          </SnackbarProvider>
         </PaperProvider>
       </NavigationContainer>
     </PersistGate>
