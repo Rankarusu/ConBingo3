@@ -6,7 +6,7 @@ import BingoFieldList from '../components/BingoFieldList';
 import DrawerNavigationHeader, {
   DrawerNavigationHeaderProps,
 } from '../components/DrawerNavigationHeader';
-import {useAlert} from '../context/AlertContext';
+import {AlertOptions, useAlert} from '../context/AlertContext';
 import {useSnackbar} from '../context/SnackbarContext';
 import {useAppDispatch} from '../hooks';
 import {useModal} from '../hooks/useModal';
@@ -37,15 +37,16 @@ const EditFields: React.FC<AppScreenProps<'EditFields'>> = props => {
 
   // add our reset button to the header
   const confirmAndReset = useCallback(() => {
-    showAlert(
-      'Reset Fields',
-      'This will delete all your added and edited fields. Are you sure?',
-      // this looks funny. SetState tries to invoke another overload if it receives a function, therefore this is necessary
-      () => () => {
+    const alertOptions: AlertOptions = {
+      title: 'Reset Fields',
+      content:
+        'This will discard all your added and edited fields and load the default set.\n Are you sure?',
+      confirmAction: () => {
         dispatch(resetFields());
         showSnackbar('Fields have been reset.', true);
       },
-    );
+    };
+    showAlert(alertOptions);
   }, [dispatch, showAlert, showSnackbar]);
 
   useEffect(() => {

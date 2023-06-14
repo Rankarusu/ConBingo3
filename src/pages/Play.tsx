@@ -1,20 +1,20 @@
-import React, {memo, RefObject, useEffect, useRef} from 'react';
+import React, {memo, RefObject, useCallback, useEffect, useRef} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import ConfettiCannon from 'react-native-confetti-cannon';
 import {Button} from 'react-native-paper';
 import BingoSheet from '../components/BingoSheet';
+import {useSnackbar} from '../context/SnackbarContext';
 import {useAppDispatch} from '../hooks';
 import {AppScreenProps} from '../navigation/types';
 import {
   resetCurrentSheet,
   resetWin,
-  setCurrentSheet,
   useCurrentSheet,
 } from '../stores/currentSheetSlice';
 import {resetFields, useFields} from '../stores/fieldsSlice';
 import {addSheet} from '../stores/savedSheetsSlice';
-import {generateSheet} from '../utils/generateSheet';
-import {useSnackbar} from '../context/SnackbarContext';
+import {AlertOptions, useAlert} from '../context/AlertContext';
+import {useFocusEffect} from '@react-navigation/native';
 
 interface ConfettiProps {
   confettiRef: RefObject<ConfettiCannon>;
@@ -33,11 +33,12 @@ const Confetti = memo((props: ConfettiProps) => (
   />
 ));
 
-const Play: React.FC<AppScreenProps<'Play'>> = () => {
+const Play: React.FC<AppScreenProps<'Play'>> = props => {
   const dispatch = useAppDispatch();
   const {currentSheet, win} = useCurrentSheet();
   const {fields} = useFields();
   const {showSnackbar} = useSnackbar();
+  const {showAlert} = useAlert();
 
   const confettiRef = useRef<ConfettiCannon>(null);
 
@@ -51,25 +52,43 @@ const Play: React.FC<AppScreenProps<'Play'>> = () => {
   };
 
   useEffect(() => {
-    if (fields.length < 24) {
-      console.log('not enough fields, resetting');
-      //TODO: throw alert here
-      dispatch(resetFields());
-    }
-    if (fields.length > 1 && currentSheet.length !== 25) {
+    if (fields.length >= 24 && currentSheet.length !== 25) {
       // our fields are only set on the second rendering. therefore we skip generating a field on the first
       console.log('generating new field, invalid data');
       dispatch(resetCurrentSheet(fields));
     }
   }, [fields, currentSheet, dispatch]);
 
-  useEffect(() => {
-    if (win) {
-      shootConfetti();
-      showSnackbar('Winner, Winner Chicken Dinner!');
-      dispatch(resetWin());
-    }
-  }, [win, dispatch, showSnackbar]);
+  useFocusEffect(
+    useCallback(() => {
+      if (fields.length < 24) {
+        console.log('not enough fields, showing alert');
+
+        const alertOptions: AlertOptions = {
+          title: 'Reset Fields',
+          content: 'You do not have enough fields to generate a board.',
+          confirmText: 'Reset',
+          confirmAction: () => dispatch(resetFields()),
+          cancelText: 'Add more fields',
+          // TODO: make this display in sidebar as well
+          cancelAction: () => props.navigation.navigate('EditFields'),
+        };
+        //TODO: somehow make this not show on very first launch
+        showAlert(alertOptions);
+      }
+    }, [fields.length, showAlert, dispatch, props.navigation]),
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      // make a focus event here too
+      if (win) {
+        shootConfetti();
+        showSnackbar('Winner, Winner Chicken Dinner!');
+        dispatch(resetWin());
+      }
+    }, [win, dispatch, showSnackbar]),
+  );
 
   return (
     <View style={styles.wrapper}>

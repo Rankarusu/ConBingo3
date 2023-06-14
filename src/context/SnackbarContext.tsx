@@ -1,6 +1,7 @@
 import React, {
   PropsWithChildren,
   createContext,
+  useCallback,
   useContext,
   useState,
 } from 'react';
@@ -24,11 +25,14 @@ export const SnackbarProvider: React.FC<PropsWithChildren> = props => {
   // I intended to have separate colors for errors, but react native paper does not really allow than
   // const [typeColor, setTypeColor] = useState<SnackbarColor>('info');
 
-  const showSnackbar = (text: string, aboveFab: boolean = false) => {
-    setMessage(text);
-    setPlaceAboveFab(aboveFab);
-    setOpen(true);
-  };
+  const showSnackbar = useCallback(
+    (text: string, aboveFab: boolean = false) => {
+      setMessage(text);
+      setPlaceAboveFab(aboveFab);
+      setOpen(true);
+    },
+    [],
+  );
 
   const handleClose = () => {
     setOpen(false);
