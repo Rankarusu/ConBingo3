@@ -8,7 +8,6 @@ export class FieldsRepository {
   currentIndex = 0;
 
   async getAll() {
-    await this.reset(); //TODO: remove this
     const str = await AsyncStorage.getItem(this.storageKey);
     const fields: BingoField[] = JSON.parse(str!);
     return fields;
@@ -58,7 +57,7 @@ export class FieldsRepository {
 }
 
 export class CurrentSheetRepository {
-  storageKey = '@fields';
+  storageKey = '@currentSheet';
   currentIndex = 0;
 
   async getAll() {

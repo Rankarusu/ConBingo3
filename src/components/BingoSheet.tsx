@@ -11,8 +11,8 @@ const fieldsRepo = new FieldsRepository();
 const BingoSheet = () => {
   useEffect(() => {
     currentSheetRepo.getAll().then(data => {
-      if (!data || data.length > 25) {
-        console.log('generating new field, either no or too much data.');
+      if (!data || data.length !== 25) {
+        console.log('generating new field, invalid data');
         fieldsRepo
           .getAll()
           .then(fields => generateSheet(fields))
@@ -53,11 +53,10 @@ const BingoSheet = () => {
 
 const styles = StyleSheet.create({
   center: {
-    height: '100%',
+    flex: 1,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 5,
   },
   grid: {
     gap: 2,

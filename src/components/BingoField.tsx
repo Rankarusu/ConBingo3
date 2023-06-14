@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   bingoField: {
     aspectRatio: 1,
     borderRadius: 4,
-    width: Dimensions.get('window').width / 5 - 4,
+    flexBasis: Dimensions.get('window').width / 5 - 4,
     height: 1,
     minHeight: 1,
     minWidth: 1,
