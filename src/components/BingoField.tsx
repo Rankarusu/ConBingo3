@@ -1,11 +1,15 @@
 import React, {useState} from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 
-import {Surface, Text, TouchableRipple, useTheme} from 'react-native-paper';
+import {Surface, Text, TouchableRipple} from 'react-native-paper';
 import Animated, {
   interpolateColor,
   useAnimatedStyle,
+  useDerivedValue,
+  withTiming,
 } from 'react-native-reanimated';
+import {useAppTheme} from '../hooks/useAppTheme';
+import {RgbaColor} from '../utils/rgbaColor';
 
 export interface BingoFieldProps {
   id: number;
@@ -14,32 +18,55 @@ export interface BingoFieldProps {
 }
 
 const BingoField = (props: BingoFieldProps) => {
-  const theme = useTheme();
+  const theme = useAppTheme();
   const {text} = props;
   const [checked, setChecked] = useState(props.checked);
 
-  const rStyle = useAnimatedStyle(() => {
-    const borderColor = interpolateColor(1, [0, 1], ['aqua', 'blue']);
+  const primary = RgbaColor.FromString(theme.colors.primary);
+  primary.a = 0.2;
+
+  const translucentPrimary = primary.toRgbaString();
+
+  const progress = useDerivedValue(() => {
+    return withTiming(checked ? 1 : 0, {
+      duration: 200,
+    });
+  });
+
+  const borderStyle = useAnimatedStyle(() => {
+    const borderColor = interpolateColor(
+      progress.value,
+      [0, 1],
+      ['transparent', theme.colors.primary],
+    );
+    const backgroundColor = interpolateColor(
+      progress.value,
+      [0, 1],
+      ['transparent', translucentPrimary],
+    );
+
     return {
       borderColor,
+      borderWidth: 2,
+      backgroundColor,
     };
   });
 
   return (
     // <View  style={styles.bingoField}>
-    <Surface
-      elevation={1}
-      style={[styles.bingoField, checked && styles.checked]}>
+    <Surface style={[styles.bingoField]}>
       <TouchableRipple
+        style={[styles.content]}
         borderless
-        rippleColor={theme.colors.primary}
+        rippleColor={translucentPrimary}
         onPress={() => {
           setChecked(!checked);
-        }}
-        style={styles.content}>
-        <Text style={styles.text} variant="bodySmall">
-          {text}
-        </Text>
+        }}>
+        <Animated.View style={[styles.content, borderStyle]}>
+          <Text style={styles.text} variant="bodySmall">
+            {text}
+          </Text>
+        </Animated.View>
       </TouchableRipple>
     </Surface>
   );
@@ -53,14 +80,11 @@ const styles = StyleSheet.create({
     height: 1,
     minHeight: 1,
     minWidth: 1,
-    overflow: 'hidden',
+    elevation: 1,
   },
   content: {
     flex: 1,
-  },
-  checked: {
-    borderColor: 'red',
-    borderWidth: 2,
+    borderRadius: 4,
   },
   text: {
     // lineHeight: 1,

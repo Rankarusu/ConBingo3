@@ -34,5 +34,5 @@ const CombinedDarkTheme = {
 
 type AppTheme = typeof CombinedDefaultTheme & typeof CombinedDarkTheme;
 export const useAppTheme = () => useTheme<AppTheme>();
-export const getTheme = (isThemeDark: boolean) =>
+export const getTheme = (isThemeDark: boolean): AppTheme =>
   isThemeDark ? CombinedDarkTheme : CombinedDefaultTheme;

@@ -4,7 +4,7 @@ import {Provider as PaperProvider} from 'react-native-paper';
 
 import {NavigationContainer} from '@react-navigation/native';
 import DrawerNavigation from './components/DrawerNavigation';
-import {getTheme} from './hooks/useTheme';
+import {getTheme} from './hooks/useAppTheme';
 import {ThemeContext} from './ThemeContext';
 
 export default function App() {
