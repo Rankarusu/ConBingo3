@@ -16,6 +16,7 @@ const DrawerNavigation: React.FC = () => {
     <Drawer.Navigator
       initialRouteName={INITIAL_ROUTE}
       backBehavior="initialRoute"
+      detachInactiveScreens={false}
       drawerContent={props => <DrawerContent {...props} />}>
       {appRoutes.map(route => {
         return (
