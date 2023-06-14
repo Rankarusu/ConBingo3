@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import {Dimensions, StyleSheet} from 'react-native';
 
 import {Surface, Text, TouchableRipple} from 'react-native-paper';
@@ -110,4 +110,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BingoField;
+//we memoize list components so they wont rerender unless their props change.
+export default memo(BingoField);

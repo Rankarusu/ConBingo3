@@ -8,7 +8,7 @@ interface ConfettiProps {
   confettiRef: RefObject<ConfettiCannon>;
 }
 
-const Confetti = memo((props: ConfettiProps) => (
+const Confetti = (props: ConfettiProps) => (
   <ConfettiCannon
     autoStart={false}
     count={200}
@@ -19,6 +19,6 @@ const Confetti = memo((props: ConfettiProps) => (
     autoStartDelay={0}
     ref={props.confettiRef}
   />
-));
+);
 
-export default Confetti;
+export default memo(Confetti);
