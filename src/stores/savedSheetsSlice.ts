@@ -20,7 +20,7 @@ export const savedSheetsSlice = createSlice({
   initialState,
   reducers: {
     add: (state, action: PayloadAction<CheckableBingoField[]>) => {
-      state.value.push({id: state.index, content: action.payload});
+      state.value.push({id: state.index, fields: action.payload});
       state.index++;
     },
     remove: (state, action: PayloadAction<number>) => {

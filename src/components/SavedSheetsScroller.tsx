@@ -5,14 +5,13 @@ import {
   FlatList,
   StyleSheet,
   View,
-  ViewabilityConfig,
   ViewToken,
+  ViewabilityConfig,
 } from 'react-native';
 import {ScalingDot} from 'react-native-animated-pagination-dots';
 import {Text} from 'react-native-paper';
 import BingoSheet from '../components/BingoSheet';
-import {useAppDispatch} from '../hooks';
-import {useAppTheme} from '../hooks/useAppTheme';
+import {useAppDispatch, useAppTheme} from '../hooks';
 import {BingoSheet as BingoSheetModel} from '../models/bingoSheet';
 import {setIndex} from '../stores/savedSheetsSlice';
 
@@ -73,9 +72,9 @@ const SavedSheetsScroller = (props: SavedSheetsScrollerProps) => {
             useNativeDriver: false,
           },
         )}
-        renderItem={({item, index}) => (
+        renderItem={({item, index}: {item: BingoSheetModel; index: number}) => (
           <View style={styles.sheet}>
-            <BingoSheet fields={item.content} key={index} readonly />
+            <BingoSheet fields={item.fields} key={index} readonly />
           </View>
         )}
       />

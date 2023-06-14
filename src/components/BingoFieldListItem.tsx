@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, ViewStyle} from 'react-native';
 import {IconButton, List, TouchableRipple} from 'react-native-paper';
-import {useAppTheme} from '../hooks/useAppTheme';
+import {useAppTheme} from '../hooks';
 import {BingoField} from '../models/bingoField';
 
 export type BingoFieldListItemProps = BingoField & {

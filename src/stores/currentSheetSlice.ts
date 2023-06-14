@@ -41,9 +41,12 @@ export const currentSheetSlice = createSlice({
       const {position, checked} = action.payload;
       state.value[position].checked = checked;
 
-      const checkedIds = state.value
-        .filter(item => item.checked === true)
-        .map(item => item.position);
+      const checkedIds = state.value.reduce((a: number[], curr, index) => {
+        if (curr.checked) {
+          a.push(index);
+        }
+        return a;
+      }, []);
 
       state.win = checkWin(position, checkedIds);
     },

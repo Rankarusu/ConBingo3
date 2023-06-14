@@ -4,7 +4,7 @@ import ConfettiCannon from 'react-native-confetti-cannon';
 import {Button} from 'react-native-paper';
 import BingoSheet from '../components/BingoSheet';
 import {useAppDispatch, useAppSelector} from '../hooks';
-import {generateSheet} from '../hooks/useGenerateSheet';
+import {generateSheet} from '../utils/generateSheet';
 import {useSnackbar} from '../hooks/useSnackbar';
 import Snackbar from '../components/Snackbar';
 import {

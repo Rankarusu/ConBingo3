@@ -1,6 +1,4 @@
-import {BingoField} from './bingoField';
-
-export interface CheckableBingoField extends BingoField {
+export interface CheckableBingoField {
+  text: string;
   checked: boolean;
-  position: number;
 }

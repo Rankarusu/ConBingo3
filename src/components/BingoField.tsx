@@ -9,12 +9,12 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import {useAppDispatch} from '../hooks';
-import {useAppTheme} from '../hooks/useAppTheme';
+import {useAppTheme} from '../hooks';
 import {toggleCheckedState} from '../stores/currentSheetSlice';
 import {RgbaColor} from '../utils/rgbaColor';
 
 export interface BingoFieldProps {
-  id: number;
+  // id: number;
   position: number;
   text: string;
   checked?: boolean;
