@@ -1,0 +1,37 @@
+{
+  // Release from this branch
+  "branch": "master",
+  // This isn't an npm package
+  "npmPublish": false,
+  // We're initiating the release from
+  // our local machine. You could set this
+  // to true and set up releasing on every push
+  // to the release branch, but I like
+  // pulling the trigger myself.
+  "ci": false,
+  "plugins": [
+    // Analyzes commit messages and
+    // determines the version
+    "@semantic-release/commit-analyzer",
+    // Builds release notes from commit messages
+    "@semantic-release/release-notes-generator",
+    // Updates the version
+    "@semantic-release/npm",
+    [
+      // Commits, tags, and pushes
+      "@semantic-release/git",
+      {
+        "assets": [
+          "ios/ConventionBingo*/Info.plist",
+          "ios/ConventionBingo.xcodeproj/project.pbxproj",
+          "android/app/build.gradle",
+          "package.json"
+        ],
+        "message": "chore(release): ${nextRelease.version} \n\n${nextRelease.notes}"
+      }
+    ],
+    // Creates the release on GitHub
+    // and posts release notes
+    "@semantic-release/github"
+  ]
+}
