@@ -17,7 +17,6 @@
     "gradle:clean": "cd android && ./gradlew clean && cd ..",
     "test": "jest",
     "release": "semantic-release",
-    "postversion": "react-native-version --never-amend",
     "postinstall": "patch-package",
     "create-appicon": "iconset create -A -b ./assets/logo_bg.png -f ./assets/logo_fg.png ./assets/logo_full.png"
   },

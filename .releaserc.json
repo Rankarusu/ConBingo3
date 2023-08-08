@@ -1,8 +1,6 @@
 {
   "branch": "master",
   "npmPublish": false,
-  "ci": false,
-  "dryRun": false,
   "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
@@ -14,7 +12,8 @@
           "ios/ConventionBingo*/Info.plist",
           "ios/ConventionBingo.xcodeproj/project.pbxproj",
           "android/app/build.gradle",
-          "package.json"
+          "package.json",
+          "android/app/build/outputs/bundle/release/*.aab"
         ],
         "message": "chore(release): ${nextRelease.version} \n\n${nextRelease.notes}"
       }
