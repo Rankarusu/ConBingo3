@@ -1,3 +1,4 @@
+import {useKeyboard} from '@react-native-community/hooks';
 import React, {
   PropsWithChildren,
   createContext,
@@ -6,7 +7,7 @@ import React, {
   useState,
 } from 'react';
 import {Snackbar} from 'react-native-paper';
-import {StyleSheet} from 'react-native';
+import {useAppTheme} from '../stores/themeSlice';
 
 const DURATION = 3000;
 
@@ -22,6 +23,17 @@ export const SnackbarProvider: React.FC<PropsWithChildren> = props => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [placeAboveFab, setPlaceAboveFab] = useState(false);
+  const theme = useAppTheme();
+  const keyboard = useKeyboard();
+
+  const getBottomPosition = () => {
+    if (keyboard.keyboardShown) {
+      return keyboard.keyboardHeight;
+    } else if (placeAboveFab) {
+      return 80;
+    }
+    return 50;
+  };
   // I intended to have separate colors for errors, but react native paper does not really allow that
   // const [typeColor, setTypeColor] = useState<SnackbarColor>('info');
 
@@ -42,7 +54,7 @@ export const SnackbarProvider: React.FC<PropsWithChildren> = props => {
     <SnackbarContext.Provider value={{showSnackbar}}>
       {props.children}
       <Snackbar
-        wrapperStyle={placeAboveFab ? styles.aboveFab : styles.wrapper}
+        wrapperStyle={{bottom: getBottomPosition()}}
         duration={DURATION}
         visible={open}
         onDismiss={handleClose}
@@ -63,12 +75,3 @@ export const useSnackbar = (): SnackBarContextActions => {
   }
   return context;
 };
-
-const styles = StyleSheet.create({
-  wrapper: {
-    bottom: 50,
-  },
-  aboveFab: {
-    bottom: 80,
-  },
-});
