@@ -13,6 +13,7 @@ import {
 } from '../stores/currentSheetSlice';
 import {addField, updateField, useFields} from '../stores/fieldsSlice';
 import {Logger} from '../utils/logger';
+import {useSnackbar} from '../context/SnackbarContext';
 
 export enum ModalMode {
   ADD = 'Add Field',
@@ -44,12 +45,29 @@ const Modal: React.FC<RootScreenProps<'Modal'>> = props => {
   const dispatch = useAppDispatch();
   const {currentSheet, fieldByPosition} = useCurrentSheet();
   const {fields, fieldById} = useFields();
+  const {showSnackbar} = useSnackbar();
 
   const {mode} = props.route.params;
 
   const title = mode;
   let initialText = '';
   let saveFn: (text: string) => void;
+  let duplicateCheckFn: (text: string) => boolean;
+
+  const isDuplicateField = (field: string, id: number | null) => {
+    // we use null as an id when adding a new field
+    const filteredFields =
+      id === null ? fields : fields.filter(field => field.id !== id);
+    const fieldTexts = filteredFields.map(field => field.text.toLowerCase());
+    return fieldTexts.includes(field.trim().toLowerCase());
+  };
+
+  const isDuplicateCurrentSheetField = (field: string, position: number) => {
+    const fieldTexts = currentSheet
+      .filter(field => field.position !== position)
+      .map(field => field.text.toLowerCase());
+    return fieldTexts.includes(field.trim().toLowerCase());
+  };
 
   switch (mode) {
     case ModalMode.EDIT_CURRENT_SHEET:
@@ -57,14 +75,17 @@ const Modal: React.FC<RootScreenProps<'Modal'>> = props => {
       initialText = fieldByPosition(position).text;
       saveFn = (text: string) =>
         dispatch(updateCurrentSheetField({position, text}));
+      duplicateCheckFn = text => isDuplicateCurrentSheetField(text, position);
       break;
     case ModalMode.EDIT:
       const {id} = props.route.params;
       initialText = initialText = fieldById(id)?.text || '';
       saveFn = (text: string) => dispatch(updateField({id, text}));
+      duplicateCheckFn = text => isDuplicateField(text, id);
       break;
     case ModalMode.ADD:
       saveFn = (text: string) => dispatch(addField(text));
+      duplicateCheckFn = text => isDuplicateField(text, null);
       break;
   }
 
@@ -73,8 +94,12 @@ const Modal: React.FC<RootScreenProps<'Modal'>> = props => {
   const [error, setError] = useState(validate(text));
 
   const saveField = useCallback(() => {
-    saveFn(text.trim());
-    props.navigation.goBack();
+    if (duplicateCheckFn(text)) {
+      showSnackbar('You already have a field with the same content');
+    } else {
+      saveFn(text.trim());
+      props.navigation.goBack();
+    }
   }, [saveFn, props.navigation, text]);
 
   const rerollField = () => {
