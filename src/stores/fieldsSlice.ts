@@ -1,9 +1,9 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {useSelector} from 'react-redux';
 import defaultFields from '../data/defaultFields.json';
 import {BingoField} from '../models/bingoField';
-import {RootState} from './store';
 import {Logger} from '../utils/logger';
+import {RootState} from './store';
 
 interface FieldsState {
   value: BingoField[];
@@ -51,15 +51,19 @@ export const fieldsSlice = createSlice({
 });
 
 export function useFields() {
+  // we put this here to memoize the expensive sorting computation and eliminate the warning for it
+  const sortedFields = createSelector(
+    [(state: RootState) => state.fields.value],
+    fields => {
+      //we don't wanna mutate the state here. [...] copies
+      const sorted = [...fields].sort((a, b) => a.text.localeCompare(b.text));
+      return sorted;
+    },
+  );
+
   const selectors = {
     fields: useSelector((state: RootState) => state.fields.value),
-    sortedFields: useSelector((state: RootState) => {
-      //we don't wanna mutate the state here. [...] copies
-      const sorted = [...state.fields.value].sort((a, b) =>
-        a.text.localeCompare(b.text),
-      );
-      return sorted;
-    }),
+    sortedFields: useSelector(sortedFields),
     fieldById: (id: number) =>
       // eslint-disable-next-line react-hooks/rules-of-hooks
       useSelector((state: RootState) =>

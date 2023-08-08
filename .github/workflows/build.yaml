@@ -1,0 +1,27 @@
+name: 'build'
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  tagged-release:
+    name: 'Build'
+    runs-on: 'ubuntu-latest'
+    permissions:
+      contents: write
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Make Gradlew Executable
+        run: cd android && chmod +x ./gradlew
+
+      - name: Build Android App Bundle
+        run: |
+          cd android && ./gradlew bundleRelease --no-daemon
