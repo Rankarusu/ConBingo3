@@ -1,4 +1,4 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {CheckableBingoField} from '../models/checkableBingoField';
 import {winningRows} from '../utils/winningRows';
 import {RootState} from './store';
@@ -100,8 +100,16 @@ export const currentSheetSlice = createSlice({
 });
 
 export function useCurrentSheet() {
+  const currentSheetWithPositions = createSelector(
+    [(state: RootState) => state.currentSheet.value],
+    currentSheet =>
+      currentSheet.map((item, index) => {
+        return {...item, position: index} as CheckableBingoField;
+      }),
+  );
+
   const selectors = {
-    currentSheet: useSelector((state: RootState) => state.currentSheet.value),
+    currentSheet: useSelector(currentSheetWithPositions),
     win: useSelector((state: RootState) => state.currentSheet.win),
     alreadyLaunched: useSelector(
       (state: RootState) => state.currentSheet.alreadyLaunched,
