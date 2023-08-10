@@ -47,6 +47,7 @@ const BingoFieldList: React.FC<BingoFieldListProps> = props => {
       renderItem={({item}) => {
         return (
           <BingoFieldListItem
+            key={item.id}
             style={shouldHide(item.text) ? styles.hide : {}}
             {...item}
             edit={() => openEditModal(item.id)}
