@@ -13,6 +13,8 @@ interface FieldsState {
 
 type UpdateBingoFieldPayload = BingoField;
 
+type AddBingoFieldPayload = Omit<BingoField, 'id'>;
+
 const initialState: FieldsState = {
   value: [],
   index: 0,
@@ -22,8 +24,13 @@ export const fieldsSlice = createSlice({
   name: 'fields',
   initialState,
   reducers: {
-    addField: (state, action: PayloadAction<string>) => {
-      const newField = {id: state.index, text: action.payload} as BingoField;
+    addField: (state, action: PayloadAction<AddBingoFieldPayload>) => {
+      const {text, isCustom} = action.payload;
+      const newField = {
+        id: state.index,
+        text,
+        isCustom,
+      } as BingoField;
       state.value.push(newField);
       state.index++;
       Logger.debug(`field added: ${JSON.stringify(newField)}`);
@@ -35,9 +42,14 @@ export const fieldsSlice = createSlice({
     },
 
     updateField: (state, action: PayloadAction<UpdateBingoFieldPayload>) => {
-      const {id, text} = action.payload;
+      const {id, text, isCustom} = action.payload;
       const idx = state.value.findIndex(item => item.id === id);
+      if (state.value[idx].text === text) {
+        // in case you just open the modal and close it via save, we don't want the field to go to custom fields
+        return;
+      }
       state.value[idx].text = text;
+      state.value[idx].isCustom = isCustom;
       Logger.debug(`field ${id} updated: ${text}`);
     },
 
