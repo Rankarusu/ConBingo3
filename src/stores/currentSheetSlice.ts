@@ -100,16 +100,8 @@ export const currentSheetSlice = createSlice({
 });
 
 export function useCurrentSheet() {
-  const currentSheetWithPositions = createSelector(
-    [(state: RootState) => state.currentSheet.value],
-    currentSheet =>
-      currentSheet.map((item, index) => {
-        return {...item, position: index} as CheckableBingoField;
-      }),
-  );
-
   const selectors = {
-    currentSheet: useSelector(currentSheetWithPositions),
+    currentSheet: useSelector((state: RootState) => state.currentSheet.value),
     win: useSelector((state: RootState) => state.currentSheet.win),
     alreadyLaunched: useSelector(
       (state: RootState) => state.currentSheet.alreadyLaunched,
