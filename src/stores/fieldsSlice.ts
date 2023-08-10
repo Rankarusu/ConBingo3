@@ -2,6 +2,7 @@ import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {useSelector} from 'react-redux';
 import defaultFields from '../data/defaultFields.json';
 import {BingoField} from '../models/bingoField';
+import {FieldSection} from '../models/sectionedFields';
 import {Logger} from '../utils/logger';
 import {RootState} from './store';
 
@@ -61,9 +62,34 @@ export function useFields() {
     },
   );
 
+  // to display custom fields separate from base fields, we need to get the data into a specific
+  // form to use with a SectionedList Component
+  const sectionedFields = createSelector(
+    [(state: RootState) => state.fields.value],
+    fields => {
+      const sorted = [...fields].sort((a, b) => a.text.localeCompare(b.text));
+
+      const base: FieldSection = {title: 'Base Fields', data: []};
+      const custom: FieldSection = {title: 'Custom Fields', data: []};
+      sorted.forEach(field => {
+        if (field.isCustom) {
+          custom.data.push(field);
+        } else {
+          base.data.push(field);
+        }
+      });
+
+      // don't display custom fields section if there are none
+      return [base, custom].filter(
+        section => section.data.length > 0,
+      ) as FieldSection[];
+    },
+  );
+
   const selectors = {
     fields: useSelector((state: RootState) => state.fields.value),
     sortedFields: useSelector(sortedFields),
+    sectionedFields: useSelector(sectionedFields),
     fieldById: (id: number) =>
       // eslint-disable-next-line react-hooks/rules-of-hooks
       useSelector((state: RootState) =>

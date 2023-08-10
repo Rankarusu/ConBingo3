@@ -28,7 +28,7 @@ const MemoizedHeader = memo((props: MemoizedHeaderProps) => {
 
 const EditFields: React.FC<AppScreenProps<'EditFields'>> = props => {
   const dispatch = useAppDispatch();
-  const {sortedFields} = useFields();
+  const {sectionedFields} = useFields();
   const {openAddModal} = useModal();
   const {showAlert} = useAlert();
   const {showSnackbar} = useSnackbar();
@@ -75,7 +75,7 @@ const EditFields: React.FC<AppScreenProps<'EditFields'>> = props => {
         style={styles.searchBar}
       />
       <BingoFieldList
-        fields={sortedFields}
+        sections={sectionedFields}
         searchQuery={searchQuery}
         navigation={props.navigation}
       />
