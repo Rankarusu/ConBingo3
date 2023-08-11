@@ -10,8 +10,10 @@ const FILE_URL = 'file://' + FILE_PATH;
 //TODO: change this to an actual json file once discord learned what that is and how to handle them
 const MIME_TYPE = 'text/plain';
 
-const fieldsJsonRegex =
-  /^\[(({"text":"(.*?)","checked":(true|false)},){24}({"text":"(.*?)","checked":(true|false)}))\]$/;
+const bingoSheetRegex =
+  /^\[(?:(?:{"text":"(?:.*?)","checked":(?:true|false)(?:,"position":(?:[0-9]|1[0-9]|2[0-3]))?},){24}(?:{"text":"(?:.*?)","checked":(?:true|false)(?:,"position":24)?}))\]$/;
+
+const exportedFieldsRegex = /^\[(?:".{3,64}",)+(?:".{3,64}")\]$/; //literally just a string array with lengths between 3 and 64
 
 export const share = async (sheet: CheckableBingoField[]) => {
   const sheetStr = JSON.stringify(sheet);
@@ -37,7 +39,7 @@ export const shareLog = async (text: string) => {
   }).catch(error => Logger.warn(error));
 };
 
-export const load = async () => {
+const pickFile = async () => {
   let file;
   try {
     file = await DocumentPicker.pickSingle({
@@ -46,7 +48,7 @@ export const load = async () => {
       presentationStyle: 'fullScreen',
     });
   } catch (error) {
-    //this throws when use cancels the document picker
+    //this throws when user cancels the document picker
     Logger.warn(error);
   }
 
@@ -55,11 +57,33 @@ export const load = async () => {
   }
 
   const res = await RNFS.readFile(file.uri);
+  return res;
+};
 
-  if (!fieldsJsonRegex.test(res)) {
+export const loadSheetFromFile = async () => {
+  const sheet = await pickFile();
+  if (!sheet) {
+    return;
+  }
+
+  if (!bingoSheetRegex.test(sheet)) {
     throw new Error('File content is not a valid bingo sheet.');
   }
 
-  const jsonField = JSON.parse(res);
-  return jsonField as CheckableBingoField[];
+  const jsonSheet = JSON.parse(sheet);
+  return jsonSheet as CheckableBingoField[];
+};
+
+export const loadFieldsFromFile = async () => {
+  const fields = await pickFile();
+  if (!fields) {
+    return;
+  }
+
+  if (!exportedFieldsRegex.test(fields)) {
+    throw new Error('File content is not valid list of fields');
+  }
+
+  const jsonFields = JSON.parse(fields);
+  return jsonFields as string[];
 };

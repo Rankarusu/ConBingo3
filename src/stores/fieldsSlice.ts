@@ -36,6 +36,19 @@ export const fieldsSlice = createSlice({
       Logger.debug(`field added: ${JSON.stringify(newField)}`);
     },
 
+    addFields: (state, action: PayloadAction<string[]>) => {
+      action.payload.forEach(text => {
+        const newField = {
+          id: state.index,
+          text,
+          isCustom: true,
+        } as BingoField;
+        state.value.push(newField);
+        state.index++;
+      });
+      Logger.debug(`fields added: ${JSON.stringify(action.payload)}`);
+    },
+
     removeField: (state, action: PayloadAction<number>) => {
       state.value = state.value.filter(item => item.id !== action.payload);
       Logger.debug(`field ${action.payload} removed`);
@@ -55,7 +68,7 @@ export const fieldsSlice = createSlice({
 
     resetFields: state => {
       state.value = defaultFields.map((field, index) => {
-        return {id: index, text: field} as BingoField;
+        return {id: index, text: field, isCustom: false} as BingoField;
       });
       state.index = defaultFields.length;
       Logger.info('fields reset');
@@ -111,7 +124,7 @@ export function useFields() {
   return selectors;
 }
 
-export const {addField, removeField, updateField, resetFields} =
+export const {addField, addFields, removeField, updateField, resetFields} =
   fieldsSlice.actions;
 
 export default fieldsSlice.reducer;
