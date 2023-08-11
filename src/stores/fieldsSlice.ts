@@ -9,6 +9,8 @@ import {RootState} from './store';
 interface FieldsState {
   value: BingoField[];
   index: number;
+  selectedFieldIds: number[];
+  multiSelectModeEnabled: boolean;
 }
 
 type UpdateBingoFieldPayload = BingoField;
@@ -18,6 +20,8 @@ type AddBingoFieldPayload = Omit<BingoField, 'id'>;
 const initialState: FieldsState = {
   value: [],
   index: 0,
+  selectedFieldIds: [],
+  multiSelectModeEnabled: false,
 };
 
 export const fieldsSlice = createSlice({
@@ -73,6 +77,27 @@ export const fieldsSlice = createSlice({
       state.index = defaultFields.length;
       Logger.info('fields reset');
     },
+
+    addSelectedField: (state, action: PayloadAction<number>) => {
+      state.selectedFieldIds.push(action.payload);
+      Logger.debug(`field ${action.payload} selected`);
+    },
+
+    removeSelectedField: (state, action: PayloadAction<number>) => {
+      state.selectedFieldIds = state.selectedFieldIds.filter(
+        item => item !== action.payload,
+      );
+      Logger.debug(`field ${action.payload} deselected`);
+    },
+
+    resetSelectedFields: state => {
+      state.selectedFieldIds = [];
+      Logger.info('selected fields reset');
+    },
+
+    toggleMultiselectMode: state => {
+      state.multiSelectModeEnabled = !state.multiSelectModeEnabled;
+    },
   },
 });
 
@@ -120,11 +145,26 @@ export function useFields() {
       useSelector((state: RootState) =>
         state.fields.value.find(field => field.id === id),
       ),
+    selectedFields: useSelector(
+      (state: RootState) => state.fields.selectedFieldIds,
+    ),
+    multiSelectModeEnabled: useSelector(
+      (state: RootState) => state.fields.multiSelectModeEnabled,
+    ),
   };
   return selectors;
 }
 
-export const {addField, addFields, removeField, updateField, resetFields} =
-  fieldsSlice.actions;
+export const {
+  addField,
+  addFields,
+  removeField,
+  updateField,
+  resetFields,
+  addSelectedField,
+  removeSelectedField,
+  resetSelectedFields,
+  toggleMultiselectMode,
+} = fieldsSlice.actions;
 
 export default fieldsSlice.reducer;

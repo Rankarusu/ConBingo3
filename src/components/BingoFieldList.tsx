@@ -6,20 +6,27 @@ import {useAppDispatch} from '../hooks';
 import {useModal} from '../hooks/useModal';
 import {FieldSection} from '../models/sectionedFields';
 import {AppScreenProps} from '../navigation/types';
-import {removeField} from '../stores/fieldsSlice';
+import {
+  addSelectedField,
+  removeField,
+  removeSelectedField,
+  toggleMultiselectMode,
+  useFields,
+} from '../stores/fieldsSlice';
 import BingoFieldListItem from './BingoFieldListItem';
+import {BingoField} from '../models/bingoField';
 
 interface BingoFieldListProps {
   sections: FieldSection[];
   searchQuery: string;
   navigation: AppScreenProps<'EditFields'>['navigation'];
-  onMultiselectMode: () => void;
 }
 
 const BingoFieldList: React.FC<BingoFieldListProps> = props => {
   const dispatch = useAppDispatch();
   const {openEditModal} = useModal();
   const {showSnackbar} = useSnackbar();
+  const {selectedFields, multiSelectModeEnabled} = useFields();
 
   const shouldHide = (text: string) => {
     return !text.toLowerCase().includes(props.searchQuery.toLowerCase());
@@ -28,6 +35,33 @@ const BingoFieldList: React.FC<BingoFieldListProps> = props => {
   const deleteField = (id: number) => {
     dispatch(removeField(id));
     showSnackbar('Field deleted!', true);
+  };
+
+  const enterMultiSelectMode = (id: number) => {
+    if (!multiSelectModeEnabled) {
+      // order matters, this way we don't see a 0 for a split second
+      dispatch(addSelectedField(id));
+      dispatch(toggleMultiselectMode());
+    }
+  };
+
+  const selectField = (id: number) => {
+    if (!multiSelectModeEnabled) {
+      return;
+    }
+    if (selectedFields.includes(id)) {
+      // we exit selection mode when we are about to deselect the last one.
+      if (selectedFields.length === 1) {
+        dispatch(toggleMultiselectMode());
+      }
+      dispatch(removeSelectedField(id));
+      return;
+    }
+    dispatch(addSelectedField(id));
+  };
+
+  const isSelected = (id: number) => {
+    return multiSelectModeEnabled && selectedFields.includes(id);
   };
 
   return (
@@ -45,15 +79,18 @@ const BingoFieldList: React.FC<BingoFieldListProps> = props => {
         </List.Subheader>
       )}
       renderSectionFooter={() => <Divider />}
+      ItemSeparatorComponent={() => <Divider />}
       renderItem={({item}) => {
         return (
           <BingoFieldListItem
             key={item.id}
             style={shouldHide(item.text) ? styles.hide : {}}
             {...item}
+            selected={isSelected(item.id)}
             edit={() => openEditModal(item.id)}
             delete={() => deleteField(item.id)}
-            enterMultiselectMode={props.onMultiselectMode}
+            onPress={() => selectField(item.id)}
+            onLongPress={() => enterMultiSelectMode(item.id)}
           />
         );
       }}
