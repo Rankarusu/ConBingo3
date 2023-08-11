@@ -80,11 +80,12 @@ const Modal: React.FC<RootScreenProps<'Modal'>> = props => {
     case ModalMode.EDIT:
       const {id} = props.route.params;
       initialText = initialText = fieldById(id)?.text || '';
-      saveFn = (text: string) => dispatch(updateField({id, text}));
+      saveFn = (text: string) =>
+        dispatch(updateField({id, text, isCustom: true}));
       duplicateCheckFn = text => isDuplicateField(text, id);
       break;
     case ModalMode.ADD:
-      saveFn = (text: string) => dispatch(addField(text));
+      saveFn = (text: string) => dispatch(addField({text, isCustom: true}));
       duplicateCheckFn = text => isDuplicateField(text, null);
       break;
   }

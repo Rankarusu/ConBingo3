@@ -10,7 +10,7 @@ import {
 } from '../stores/savedSheetsSlice';
 import {AppScreenProps} from '../navigation/types';
 import {setCurrentSheet} from '../stores/currentSheetSlice';
-import {load, share} from '../utils/io';
+import {loadSheetFromFile, share} from '../utils/io';
 import {useSnackbar} from '../context/SnackbarContext';
 import {Logger} from '../utils/logger';
 
@@ -50,7 +50,7 @@ const SavedSheets: React.FC<AppScreenProps<'SavedSheets'>> = () => {
   const importSheet = async () => {
     let file;
     try {
-      file = await load();
+      file = await loadSheetFromFile();
     } catch (error) {
       if (error instanceof Error) {
         showSnackbar(error.message);
@@ -72,7 +72,7 @@ const SavedSheets: React.FC<AppScreenProps<'SavedSheets'>> = () => {
       Logger.error('tried to share empty sheet.');
       return;
     }
-    await share(sheetToLoad.fields);
+    await share(sheetToLoad.fields, 'bingo-sheet.txt');
   };
 
   return (
