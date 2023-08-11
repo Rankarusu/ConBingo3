@@ -13,6 +13,7 @@ interface BingoFieldListProps {
   sections: FieldSection[];
   searchQuery: string;
   navigation: AppScreenProps<'EditFields'>['navigation'];
+  onMultiselectMode: () => void;
 }
 
 const BingoFieldList: React.FC<BingoFieldListProps> = props => {
@@ -52,6 +53,7 @@ const BingoFieldList: React.FC<BingoFieldListProps> = props => {
             {...item}
             edit={() => openEditModal(item.id)}
             delete={() => deleteField(item.id)}
+            enterMultiselectMode={props.onMultiselectMode}
           />
         );
       }}

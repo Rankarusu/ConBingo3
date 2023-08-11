@@ -9,6 +9,7 @@ export type BingoFieldListItemProps = BingoField & {
   style: ViewStyle;
   edit: () => void;
   delete: () => void;
+  enterMultiselectMode: () => void;
 };
 
 export const BingoFieldListItem: React.FC<BingoFieldListItemProps> = props => {
@@ -34,7 +35,11 @@ export const BingoFieldListItem: React.FC<BingoFieldListItemProps> = props => {
   );
 
   return (
-    <TouchableRipple onPress={() => {}} style={props.style}>
+    <TouchableRipple
+      onPress={() => {}}
+      onLongPress={props.enterMultiselectMode}
+      delayLongPress={150}
+      style={props.style}>
       <List.Item
         style={styles.listItem}
         title={props.text}
