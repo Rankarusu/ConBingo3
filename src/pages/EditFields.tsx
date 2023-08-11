@@ -14,13 +14,17 @@ import {useModal} from '../hooks/useModal';
 import {AppScreenProps} from '../navigation/types';
 import {
   addFields,
+  removeFields,
   resetFields,
-  resetSelectedFields,
-  toggleMultiselectMode,
   useFields,
 } from '../stores/fieldsSlice';
-import {loadFieldsFromFile} from '../utils/io';
+import {loadFieldsFromFile, share} from '../utils/io';
 import {Logger} from '../utils/logger';
+import {
+  resetSelectedFields,
+  setMultiselectMode,
+  useSelectedFields,
+} from '../stores/selectedFieldsSlice';
 
 const FADE_DURATION = 300;
 
@@ -75,8 +79,8 @@ const MultiSelectModeHeader = (props: MultiSelectModeHeaderProps) => {
 
 const EditFields: React.FC<AppScreenProps<'EditFields'>> = props => {
   const dispatch = useAppDispatch();
-  const {fields, sectionedFields, selectedFields, multiSelectModeEnabled} =
-    useFields();
+  const {fields, sectionedFields} = useFields();
+  const {selectedFields, multiSelectModeEnabled} = useSelectedFields();
   const {openAddModal} = useModal();
   const {showAlert} = useAlert();
   const {showSnackbar} = useSnackbar();
@@ -97,13 +101,28 @@ const EditFields: React.FC<AppScreenProps<'EditFields'>> = props => {
     showAlert(alertOptions);
   }, [dispatch, showAlert, showSnackbar]);
 
+  const confirmAndDeleteFields = useCallback(() => {
+    const amount = selectedFields.length;
+    const alertOptions: AlertOptions = {
+      title: 'Delete Fields',
+      content: `You are about to delete ${amount} fields. \n Are you sure?`,
+      confirmAction: () => {
+        dispatch(removeFields(selectedFields));
+        dispatch(setMultiselectMode(false));
+        dispatch(resetSelectedFields());
+        showSnackbar(`Deleted ${amount} fields.`, true);
+      },
+    };
+    showAlert(alertOptions);
+  }, [dispatch, showAlert, showSnackbar, selectedFields]);
+
   const importFields = async () => {
     let importedFields;
     try {
       importedFields = await loadFieldsFromFile();
     } catch (error) {
       if (error instanceof Error) {
-        showSnackbar(error.message);
+        showSnackbar(error.message, true);
         Logger.error(error.message);
         return;
       }
@@ -111,15 +130,31 @@ const EditFields: React.FC<AppScreenProps<'EditFields'>> = props => {
     if (!importedFields) {
       return;
     }
+    const fieldTexts = fields.map(field => field.text);
     const deduplicatedFields = importedFields.filter(
-      field => !fields.map(field => field.text).includes(field),
+      field => !fieldTexts.includes(field),
     );
     if (deduplicatedFields.length > 0) {
       dispatch(addFields(deduplicatedFields));
-      showSnackbar(`${fields.length} Fields imported successfully!`);
+      showSnackbar(
+        `${deduplicatedFields.length} Fields imported successfully!`,
+        true,
+      );
     } else {
-      showSnackbar('Nothing to import!');
+      showSnackbar('Nothing to import!', true);
     }
+  };
+
+  const shareFields = async () => {
+    const fieldsToLoad = fields
+      .filter(field => selectedFields.includes(field.id))
+      .map(field => field.text);
+    if (!fieldsToLoad) {
+      showSnackbar('Something went wrong while sharing fields.', true);
+      Logger.error('tried to share empty fields.');
+      return;
+    }
+    await share(fieldsToLoad, 'bingo-fields.txt');
   };
 
   useEffect(() => {
@@ -130,11 +165,11 @@ const EditFields: React.FC<AppScreenProps<'EditFields'>> = props => {
             {...(headerProps as DrawerNavigationHeaderProps)}
             title={`${selectedFields.length} Fields selected`}
             cancelMode={() => {
-              dispatch(toggleMultiselectMode());
+              dispatch(setMultiselectMode(false));
               dispatch(resetSelectedFields());
             }}
-            deleteFields={() => {}}
-            shareFields={() => {}}
+            deleteFields={confirmAndDeleteFields}
+            shareFields={shareFields}
           />
         ),
       });

@@ -6,15 +6,14 @@ import {useAppDispatch} from '../hooks';
 import {useModal} from '../hooks/useModal';
 import {FieldSection} from '../models/sectionedFields';
 import {AppScreenProps} from '../navigation/types';
+import {removeFields, useFields} from '../stores/fieldsSlice';
+import BingoFieldListItem from './BingoFieldListItem';
 import {
   addSelectedField,
-  removeField,
   removeSelectedField,
-  toggleMultiselectMode,
-  useFields,
-} from '../stores/fieldsSlice';
-import BingoFieldListItem from './BingoFieldListItem';
-import {BingoField} from '../models/bingoField';
+  setMultiselectMode,
+  useSelectedFields,
+} from '../stores/selectedFieldsSlice';
 
 interface BingoFieldListProps {
   sections: FieldSection[];
@@ -26,14 +25,14 @@ const BingoFieldList: React.FC<BingoFieldListProps> = props => {
   const dispatch = useAppDispatch();
   const {openEditModal} = useModal();
   const {showSnackbar} = useSnackbar();
-  const {selectedFields, multiSelectModeEnabled} = useFields();
+  const {selectedFields, multiSelectModeEnabled} = useSelectedFields();
 
   const shouldHide = (text: string) => {
     return !text.toLowerCase().includes(props.searchQuery.toLowerCase());
   };
 
   const deleteField = (id: number) => {
-    dispatch(removeField(id));
+    dispatch(removeFields(id));
     showSnackbar('Field deleted!', true);
   };
 
@@ -41,7 +40,7 @@ const BingoFieldList: React.FC<BingoFieldListProps> = props => {
     if (!multiSelectModeEnabled) {
       // order matters, this way we don't see a 0 for a split second
       dispatch(addSelectedField(id));
-      dispatch(toggleMultiselectMode());
+      dispatch(setMultiselectMode(true));
     }
   };
 
@@ -52,7 +51,7 @@ const BingoFieldList: React.FC<BingoFieldListProps> = props => {
     if (selectedFields.includes(id)) {
       // we exit selection mode when we are about to deselect the last one.
       if (selectedFields.length === 1) {
-        dispatch(toggleMultiselectMode());
+        dispatch(setMultiselectMode(false));
       }
       dispatch(removeSelectedField(id));
       return;

@@ -4,9 +4,6 @@ import Share from 'react-native-share';
 import {CheckableBingoField} from '../models/checkableBingoField';
 import {Logger} from './logger';
 
-const FILE_NAME = 'bingo-sheet.txt';
-const FILE_PATH = RNFS.CachesDirectoryPath + '/' + FILE_NAME;
-const FILE_URL = 'file://' + FILE_PATH;
 //TODO: change this to an actual json file once discord learned what that is and how to handle them
 const MIME_TYPE = 'text/plain';
 
@@ -15,13 +12,16 @@ const bingoSheetRegex =
 
 const exportedFieldsRegex = /^\[(?:".{3,64}",)+(?:".{3,64}")\]$/; //literally just a string array with lengths between 3 and 64
 
-export const share = async (sheet: CheckableBingoField[]) => {
-  const sheetStr = JSON.stringify(sheet);
-  await RNFS.writeFile(FILE_PATH, sheetStr, 'utf8');
+export const share = async <T>(data: T, fileName: string) => {
+  const dataStr = JSON.stringify(data);
+
+  const filePath = `${RNFS.CachesDirectoryPath}/${fileName}`;
+
+  await RNFS.writeFile(filePath, dataStr, 'utf8');
 
   await Share.open({
-    filename: FILE_NAME,
-    url: FILE_URL,
+    filename: fileName,
+    url: `file://${filePath}`,
     type: MIME_TYPE,
   }).catch(error => Logger.warn(error));
 };

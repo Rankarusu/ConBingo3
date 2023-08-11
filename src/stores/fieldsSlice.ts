@@ -9,8 +9,6 @@ import {RootState} from './store';
 interface FieldsState {
   value: BingoField[];
   index: number;
-  selectedFieldIds: number[];
-  multiSelectModeEnabled: boolean;
 }
 
 type UpdateBingoFieldPayload = BingoField;
@@ -20,8 +18,6 @@ type AddBingoFieldPayload = Omit<BingoField, 'id'>;
 const initialState: FieldsState = {
   value: [],
   index: 0,
-  selectedFieldIds: [],
-  multiSelectModeEnabled: false,
 };
 
 export const fieldsSlice = createSlice({
@@ -53,8 +49,11 @@ export const fieldsSlice = createSlice({
       Logger.debug(`fields added: ${JSON.stringify(action.payload)}`);
     },
 
-    removeField: (state, action: PayloadAction<number>) => {
-      state.value = state.value.filter(item => item.id !== action.payload);
+    removeFields: (state, action: PayloadAction<number | number[]>) => {
+      const idsToDelete = Array.isArray(action.payload)
+        ? action.payload
+        : [action.payload];
+      state.value = state.value.filter(item => !idsToDelete.includes(item.id));
       Logger.debug(`field ${action.payload} removed`);
     },
 
@@ -76,27 +75,6 @@ export const fieldsSlice = createSlice({
       });
       state.index = defaultFields.length;
       Logger.info('fields reset');
-    },
-
-    addSelectedField: (state, action: PayloadAction<number>) => {
-      state.selectedFieldIds.push(action.payload);
-      Logger.debug(`field ${action.payload} selected`);
-    },
-
-    removeSelectedField: (state, action: PayloadAction<number>) => {
-      state.selectedFieldIds = state.selectedFieldIds.filter(
-        item => item !== action.payload,
-      );
-      Logger.debug(`field ${action.payload} deselected`);
-    },
-
-    resetSelectedFields: state => {
-      state.selectedFieldIds = [];
-      Logger.info('selected fields reset');
-    },
-
-    toggleMultiselectMode: state => {
-      state.multiSelectModeEnabled = !state.multiSelectModeEnabled;
     },
   },
 });
@@ -141,30 +119,14 @@ export function useFields() {
     sortedFields: useSelector(sortedFields),
     sectionedFields: useSelector(sectionedFields),
     fieldById: (id: number) =>
-      // eslint-disable-next-line react-hooks/rules-of-hooks
       useSelector((state: RootState) =>
         state.fields.value.find(field => field.id === id),
       ),
-    selectedFields: useSelector(
-      (state: RootState) => state.fields.selectedFieldIds,
-    ),
-    multiSelectModeEnabled: useSelector(
-      (state: RootState) => state.fields.multiSelectModeEnabled,
-    ),
   };
   return selectors;
 }
 
-export const {
-  addField,
-  addFields,
-  removeField,
-  updateField,
-  resetFields,
-  addSelectedField,
-  removeSelectedField,
-  resetSelectedFields,
-  toggleMultiselectMode,
-} = fieldsSlice.actions;
+export const {addField, addFields, removeFields, updateField, resetFields} =
+  fieldsSlice.actions;
 
 export default fieldsSlice.reducer;

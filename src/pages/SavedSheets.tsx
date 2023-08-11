@@ -72,7 +72,7 @@ const SavedSheets: React.FC<AppScreenProps<'SavedSheets'>> = () => {
       Logger.error('tried to share empty sheet.');
       return;
     }
-    await share(sheetToLoad.fields);
+    await share(sheetToLoad.fields, 'bingo-sheet.txt');
   };
 
   return (

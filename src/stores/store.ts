@@ -20,6 +20,7 @@ import themeSlice from './themeSlice';
 import defaultFields from '../data/defaultFields.json';
 import {CheckableBingoField} from '../models/checkableBingoField';
 import {BingoField} from '../models/bingoField';
+import selectedFieldsSlice from './selectedFieldsSlice';
 
 const migrations: MigrationManifest = {
   0: (state: any) => {
@@ -54,6 +55,7 @@ const persistConfig = {
   storage: AsyncStorage,
   version: 2,
   migrate: createMigrate(migrations, {debug: __DEV__}),
+  blacklist: ['selectedFields'], // it's handy to put into redux, but we don't need to persist it.
 };
 
 const reducer = persistCombineReducers(persistConfig, {
@@ -61,6 +63,7 @@ const reducer = persistCombineReducers(persistConfig, {
   currentSheet: currentSheetSlice,
   savedSheets: savedSheetsSlice,
   theme: themeSlice,
+  selectedFields: selectedFieldsSlice,
 });
 
 export const store = configureStore({

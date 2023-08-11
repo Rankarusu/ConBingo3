@@ -107,7 +107,6 @@ export function useCurrentSheet() {
       (state: RootState) => state.currentSheet.alreadyLaunched,
     ),
     fieldByPosition: (position: number) =>
-      // eslint-disable-next-line react-hooks/rules-of-hooks
       useSelector((state: RootState) => state.currentSheet.value[position]),
   };
   return selectors;
