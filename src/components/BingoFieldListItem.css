@@ -1,0 +1,13 @@
+/* we don't want permanent pointer on all list items */
+.ripple,
+.ripple > * {
+  cursor: default;
+}
+
+.button {
+  pointer-events: all;
+}
+
+.list-item {
+  padding-right: 5px;
+}

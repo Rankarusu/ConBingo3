@@ -11,8 +11,8 @@ import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
 import {ModalMode} from '../pages/Modal';
 
 export type RootRouteParamList = {
-  App: NavigatorScreenParams<AppRouteParamList>;
-  Modal: editCurrentSheetPayload | editPayload | addPayload;
+  game: NavigatorScreenParams<AppRouteParamList>;
+  modal: editCurrentSheetPayload | editPayload | addPayload;
 };
 
 type editCurrentSheetPayload = {
@@ -28,11 +28,11 @@ type addPayload = {
 };
 
 export type AppRouteParamList = {
-  Play: undefined;
-  EditFields: undefined;
-  SavedSheets: undefined;
-  About: undefined;
-  Logs: undefined;
+  play: undefined;
+  'edit-fields': undefined;
+  'saved-sheets': undefined;
+  about: undefined;
+  logs: undefined;
 };
 
 //this is singular! you can use it to type a navigation that you passed to a child via prop

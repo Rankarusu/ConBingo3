@@ -1,5 +1,4 @@
 import React from 'react';
-import {useErrorBoundary} from 'react-error-boundary';
 import {Image, Linking, ScrollView, StyleSheet, View} from 'react-native';
 import {Button, List, Text} from 'react-native-paper';
 
@@ -10,8 +9,6 @@ interface ErrorScreenProps {
 }
 
 const ErrorScreen: React.FC<ErrorScreenProps> = props => {
-  const {resetBoundary} = useErrorBoundary();
-
   const [expanded, setExpanded] = React.useState(false);
 
   const handlePress = () => setExpanded(!expanded);
@@ -46,7 +43,7 @@ const ErrorScreen: React.FC<ErrorScreenProps> = props => {
           mode="outlined"
           style={styles.button}
           icon="arrow-left"
-          onPress={resetBoundary}>
+          onPress={() => {}}>
           Go Back
         </Button>
         <Button

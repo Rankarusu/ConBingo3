@@ -42,7 +42,7 @@ const DrawerContent: React.FC<DrawerContentComponentProps> = props => {
         <View style={style.toggleBox}>
           <Text variant="bodyMedium">Dark Theme</Text>
           <Switch
-            value={theme.dark ? true : false}
+            value={!!theme.dark}
             onValueChange={() => {
               dispatch(toggle());
             }}

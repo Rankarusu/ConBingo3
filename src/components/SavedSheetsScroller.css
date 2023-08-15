@@ -1,0 +1,16 @@
+.swiper-button-next,
+.swiper-button-prev {
+  --swiper-navigation-size: 1.875rem;
+}
+
+.swiper-button-next {
+  right: 5px;
+}
+
+.swiper-button-prev {
+  left: 5px;
+}
+
+.swiper-pagination {
+  --swiper-pagination-bottom: 0
+}

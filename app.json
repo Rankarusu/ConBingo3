@@ -1,4 +1,48 @@
 {
-  "name": "Convention Bingo",
-  "displayName": "Convention Bingo"
+  "expo": {
+    "name": "Convention Bingo",
+    "slug": "ConventionBingo",
+    "scheme": "conbingo",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/logo_full.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/logo_fg.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/logo_fg.png",
+        "backgroundImage": "./assets/logo_bg.png"
+      },
+      "package": "com.conbingo"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "experiments": {
+      "tsconfigPaths": true,
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "7282fb9a-6cc0-4165-9ffb-587cb6c62249"
+      }
+    }
+  }
 }

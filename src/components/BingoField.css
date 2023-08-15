@@ -1,0 +1,5 @@
+.text {
+  white-space: normal;
+  word-break: break-word;
+  hyphens: auto;
+}

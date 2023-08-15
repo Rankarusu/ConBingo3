@@ -1,10 +1,6 @@
-import {useAppDispatch} from '@/hooks';
-import {useModal} from '@/hooks/useModal';
-import {toggleCheckedField} from '@/stores/currentSheetSlice';
-import {useAppTheme} from '@/stores/themeSlice';
-import {RgbaColor} from '@/utils/rgbaColor';
-import React from 'react';
-import {StyleSheet} from 'react-native';
+import React, {memo} from 'react';
+import {Dimensions, StyleSheet} from 'react-native';
+
 import {Surface, Text, TouchableRipple} from 'react-native-paper';
 import Animated, {
   interpolateColor,
@@ -12,8 +8,12 @@ import Animated, {
   useDerivedValue,
   withTiming,
 } from 'react-native-reanimated';
-
-import './BingoField.css';
+import {useAppDispatch} from '../hooks';
+import {useModal} from '../hooks/useModal';
+import {toggleCheckedField} from '../stores/currentSheetSlice';
+import {RgbaColor} from '../utils/rgbaColor';
+import {useAppTheme} from '../stores/themeSlice';
+import {Logger} from '@/utils/logger';
 
 export interface BingoFieldProps {
   position: number;
@@ -76,17 +76,9 @@ const BingoField: React.FC<BingoFieldProps> = props => {
         }}>
         <Animated.View style={[styles.content, borderStyle]}>
           <Text
-            style={[
-              {
-                //@ts-ignore ts does not know expo hacks
-                $$css: true,
-                _: 'text',
-              },
-              styles.text,
-            ]}
             android_hyphenationFrequency="full"
-            ellipsizeMode="tail"
             numberOfLines={6}
+            style={styles.text}
             variant="bodySmall">
             {props.text}
           </Text>
@@ -100,7 +92,9 @@ const styles = StyleSheet.create({
   bingoField: {
     aspectRatio: 1,
     borderRadius: 4,
-    flexBasis: 'calc(20% - 2px)',
+    flexBasis: Dimensions.get('window').width / 5 - 4,
+    height: 1,
+    minHeight: 1,
     minWidth: 1,
     elevation: 1,
   },
@@ -115,10 +109,8 @@ const styles = StyleSheet.create({
     padding: 1,
     textAlign: 'center',
     textAlignVertical: 'center',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });
 
-export default BingoField;
+//we memoize list components so they wont rerender unless their props change.
+export default memo(BingoField);

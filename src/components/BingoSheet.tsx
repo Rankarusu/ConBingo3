@@ -1,16 +1,17 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import BingoField from '../components/BingoField';
-import {CheckableBingoField} from '../models/checkableBingoField';
+import {StyleSheet, View, ViewStyle} from 'react-native';
+import BingoField from './BingoField';
+import {CheckableBingoField} from '@/models/checkableBingoField';
 
 export interface BingoSheetProps {
   fields: CheckableBingoField[];
   readonly?: boolean;
+  style?: ViewStyle;
 }
 
 const BingoSheet: React.FC<BingoSheetProps> = props => {
   return (
-    <View style={styles.grid}>
+    <View style={[styles.grid, props.style]}>
       {props.fields.map((item, index) => {
         return (
           <BingoField
@@ -32,6 +33,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'flex-start',
+    maxHeight: '100%',
   },
 });
 
