@@ -1,9 +1,9 @@
-import {StackHeaderProps} from '@react-navigation/stack';
+import {NativeStackHeaderProps} from '@react-navigation/native-stack';
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Appbar} from 'react-native-paper';
 
-export type RootNavigationHeaderProps = StackHeaderProps & {
+export type RootNavigationHeaderProps = NativeStackHeaderProps & {
   title: string;
   right?: JSX.Element;
 };

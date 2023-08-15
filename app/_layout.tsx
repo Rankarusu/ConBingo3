@@ -1,22 +1,21 @@
-import {ThemeProvider} from '@react-navigation/native';
-import {Slot, Stack} from 'expo-router';
-import {StatusBar} from 'expo-status-bar';
-import React from 'react';
-import {Provider as PaperProvider} from 'react-native-paper';
-import {Provider as ReduxProvider} from 'react-redux';
-import {PersistGate} from 'redux-persist/integration/react';
+import ErrorScreen from '@/components/ErrorScreen';
 import RootNavigationHeader from '@/components/RootNavigationHeader';
 import {AlertProvider} from '@/context/AlertContext';
 import {SnackbarProvider} from '@/context/SnackbarContext';
 import {rootRoutes} from '@/navigation/routes';
 import {persistor, store} from '@/stores/store';
-import {Logger} from '@/utils/logger';
-import ErrorScreen from '@/components/ErrorScreen';
 import {useAppTheme} from '@/stores/themeSlice';
+import {Logger} from '@/utils/logger';
+import {ThemeProvider} from '@react-navigation/native';
+import {Slot, Stack} from 'expo-router';
 import {ErrorBoundaryProps} from 'expo-router/src/exports';
+import {StatusBar} from 'expo-status-bar';
+import React from 'react';
+import {Provider as PaperProvider} from 'react-native-paper';
+import {Provider as ReduxProvider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
 
 export function ErrorBoundary(props: ErrorBoundaryProps) {
-  //putting the error boundary to highest level so it can also catch redux errors
   return <ErrorScreen error={props.error} />;
 }
 
@@ -28,8 +27,6 @@ export default function Layout() {
     </ReduxProvider>
   );
 }
-
-//TODO: do some cool stuff with splashscreen
 
 const AppLayer = () => {
   const theme = useAppTheme();

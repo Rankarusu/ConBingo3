@@ -56,7 +56,15 @@ const BingoField: React.FC<BingoFieldProps> = props => {
   });
 
   return (
-    <Surface style={styles.bingoField}>
+    <Surface
+      style={[
+        {
+          //@ts-ignore ts does not know expo hacks
+          $$css: true,
+          _: 'bingo-field',
+        },
+        styles.bingoField,
+      ]}>
       <TouchableRipple
         style={styles.content}
         borderless
@@ -98,10 +106,6 @@ const BingoField: React.FC<BingoFieldProps> = props => {
 
 const styles = StyleSheet.create({
   bingoField: {
-    aspectRatio: 1,
-    borderRadius: 4,
-    flexBasis: 'calc(20% - 2px)',
-    minWidth: 1,
     elevation: 1,
   },
   content: {

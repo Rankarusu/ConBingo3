@@ -6,6 +6,7 @@ const ISSUE_URL = 'https://github.com/Rankarusu/ConBingo3/issues/new/choose';
 
 interface ErrorScreenProps {
   error: Error;
+  retry?: () => void;
 }
 
 const ErrorScreen: React.FC<ErrorScreenProps> = props => {
@@ -39,13 +40,15 @@ const ErrorScreen: React.FC<ErrorScreenProps> = props => {
         Consider opening an issue on GitHub so the error can be fixed
       </Text>
       <View style={styles.buttonBox}>
-        <Button
-          mode="outlined"
-          style={styles.button}
-          icon="arrow-left"
-          onPress={() => {}}>
-          Go Back
-        </Button>
+        {props.retry && (
+          <Button
+            mode="outlined"
+            style={styles.button}
+            icon="arrow-left"
+            onPress={props.retry}>
+            Go Back
+          </Button>
+        )}
         <Button
           mode="outlined"
           style={styles.button}

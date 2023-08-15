@@ -5,11 +5,14 @@ import {CheckableBingoField} from '@/models/checkableBingoField';
 import {AppScreenProps} from '@/navigation/types';
 import {setCurrentSheet} from '@/stores/currentSheetSlice';
 import {addSheet, removeSheet, useSavedSheets} from '@/stores/savedSheetsSlice';
-import {bingoSheetRegex, loadAndValidate, share} from '@/utils/io';
+import {loadAndValidate, share} from '@/utils/io';
 import {Logger} from '@/utils/logger';
 import React, {createRef, Suspense} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import {ActivityIndicator, Button} from 'react-native-paper';
+
+export const bingoSheetRegex =
+  /^\[(?:(?:{"text":"(?:.*?)","checked":(?:true|false)(?:,"position":(?:[0-9]|1[0-9]|2[0-3]))?},){24}(?:{"text":"(?:.*?)","checked":(?:true|false)(?:,"position":24)?}))\]$/;
 
 const SavedSheets: React.FC<AppScreenProps<'saved-sheets'>> = () => {
   const {savedSheets, selectedSheet, selectedSheetIndex} = useSavedSheets();

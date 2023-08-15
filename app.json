@@ -10,7 +10,7 @@
     "splash": {
       "image": "./assets/logo_fg.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#dc18d3"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -23,7 +23,8 @@
         "foregroundImage": "./assets/logo_fg.png",
         "backgroundImage": "./assets/logo_bg.png"
       },
-      "package": "com.conbingo"
+      "package": "com.conbingo",
+      "playStoreUrl": "https://play.google.com/store/apps/details?id=com.conbingo"
     },
     "web": {
       "favicon": "./assets/favicon.png",

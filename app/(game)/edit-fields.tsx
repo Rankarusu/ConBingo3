@@ -24,11 +24,12 @@ import {
   setMultiselectMode,
   useSelectedFields,
 } from '@/stores/selectedFieldsSlice';
-import {exportedFieldsRegex, loadAndValidate, share} from '@/utils/io';
+import {loadAndValidate, share} from '@/utils/io';
 import {Logger} from '@/utils/logger';
 import {useNavigation} from 'expo-router';
 
 const FADE_DURATION = 300;
+export const exportedFieldsRegex = /^\[(?:".{3,64}",)+(?:".{3,64}")\]$/; //literally just a string array with lengths between 3 and 64
 
 type MemoizedHeaderProps = DrawerNavigationHeaderProps & {
   resetFields: () => void;

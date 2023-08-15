@@ -1,19 +1,20 @@
-import React from 'react';
-import {Dimensions, StyleSheet} from 'react-native';
-import {Text} from 'react-native-paper';
-import {Navigation, Pagination} from 'swiper';
-import {Swiper, SwiperSlide} from 'swiper/react';
 import {useAppDispatch} from '@/hooks';
 import {BingoSheet as BingoSheetModel} from '@/models/bingoSheet';
 import {setSelectedSheet} from '@/stores/savedSheetsSlice';
+import {useAppTheme} from '@/stores/themeSlice';
+import React, {RefObject} from 'react';
+import {FlatList} from 'react-native';
+import {Text} from 'react-native-paper';
+import {Navigation, Pagination} from 'swiper';
+import {Swiper, SwiperSlide} from 'swiper/react';
 import BingoSheet from './BingoSheet';
 
 import 'swiper/swiper-bundle.min.css';
 import './SavedSheetsScroller.css';
-import {useAppTheme} from '@/stores/themeSlice';
 
 interface WebSavedSheetsScrollerProps {
   savedSheets: BingoSheetModel[];
+  flatRef?: RefObject<FlatList>;
 }
 
 const WebSavedSheetsScroller: React.FC<WebSavedSheetsScrollerProps> = props => {
@@ -24,7 +25,7 @@ const WebSavedSheetsScroller: React.FC<WebSavedSheetsScrollerProps> = props => {
     <>
       {props.savedSheets.length > 0 ? (
         <Swiper
-          style={{...styles.swiper, '--swiper-theme-color': primary}}
+          style={{'--swiper-theme-color': primary} as React.CSSProperties}
           spaceBetween={20}
           slidesPerView={1}
           navigation
@@ -34,13 +35,19 @@ const WebSavedSheetsScroller: React.FC<WebSavedSheetsScrollerProps> = props => {
               setSelectedSheet(parseInt(swiper.slides[swiper.activeIndex].id)),
             )
           }
+          // so deletions in a row work properly
+          onSlidesLengthChange={swiper =>
+            dispatch(
+              setSelectedSheet(parseInt(swiper.slides[swiper.activeIndex].id)),
+            )
+          }
           onSwiper={swiper =>
-            dispatch(setSelectedSheet(parseInt(swiper.slides[0].id)))
+            dispatch(setSelectedSheet(parseInt(swiper.slides[0]?.id ?? 0)))
           }
           modules={[Navigation, Pagination]}>
-          {props.savedSheets.map((item, index) => (
+          {props.savedSheets.map(item => (
             <SwiperSlide
-              style={styles.sheet}
+              style={{display: 'flex', justifyContent: 'center'}}
               key={item.id}
               id={item.id.toString()}>
               <BingoSheet
@@ -57,22 +64,5 @@ const WebSavedSheetsScroller: React.FC<WebSavedSheetsScrollerProps> = props => {
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  swiper: {
-    padding: 6,
-    paddingBottom: 20,
-    paddingTop: 20,
-    // display: 'flex',
-    // aspectRatio: 1,
-    //make this not overflow
-    maxWidth: 'calc(100% - 12px)',
-  },
-
-  sheet: {
-    display: 'flex',
-    justifyContent: 'center',
-  },
-});
 
 export default WebSavedSheetsScroller;

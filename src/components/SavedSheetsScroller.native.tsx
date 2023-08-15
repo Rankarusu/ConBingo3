@@ -38,7 +38,8 @@ const SavedSheetsScroller: React.FC<SavedSheetsScrollerProps> = props => {
   const onViewableItemsChanged = useCallback(
     ({viewableItems}: {viewableItems: ViewToken[]}) => {
       const currentId = viewableItems[0]?.item?.id;
-      if (currentId) {
+      console.log(viewableItems);
+      if (currentId !== undefined) {
         /* because we keep our screens mounted and the viewable items change upon
         navigating, we only want to dispatch if something is visible */
         dispatch(setSelectedSheet(currentId));
