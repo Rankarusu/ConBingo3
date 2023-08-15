@@ -1,7 +1,7 @@
 import {AppScreenProps} from '@/navigation/types';
 import {useRouter} from 'expo-router';
 import React from 'react';
-import {Linking, StyleSheet, View} from 'react-native';
+import {Linking, Platform, StyleSheet, View} from 'react-native';
 import {Button, Card, Text} from 'react-native-paper';
 import pkg from '../../package.json';
 
@@ -43,24 +43,30 @@ const About: React.FC<AppScreenProps<'about'>> = () => {
           </Button>
         </Card.Actions>
       </Card>
-      <Button
-        icon="text-long"
-        mode="contained-tonal"
-        onPress={() => {
-          router.push('/(game)/logs');
-        }}>
-        Show Logs
-      </Button>
+      {Platform.OS !== 'web' && (
+        //we don't have access to the file system in the web, therefore logs are irrelevant
+        <Button
+          icon="text-long"
+          mode="contained-tonal"
+          onPress={() => {
+            router.push('/(game)/logs');
+          }}>
+          Show Logs
+        </Button>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   wrapper: {
-    margin: 5,
+    flex: 1,
+    maxWidth: 776,
+    marginHorizontal: 'auto',
+    padding: 5,
   },
   card: {
-    marginVertical: 30,
+    marginVertical: 25,
   },
 });
 

@@ -177,7 +177,10 @@ const Modal: React.FC<RootScreenProps<'modal'>> = () => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    margin: 5,
+    padding: 5,
+    marginHorizontal: 'auto',
+    width: '100%',
+    maxWidth: 1200,
   },
   indicatorBox: {
     display: 'flex',

@@ -1,9 +1,5 @@
-import {useFocusEffect} from '@react-navigation/native';
-import React, {useCallback, useEffect, useMemo, useRef} from 'react';
-import {Dimensions, Platform, StyleSheet, View} from 'react-native';
-import ConfettiCannon from 'react-native-confetti-cannon';
-import {Button} from 'react-native-paper';
 import BingoSheet from '@/components/BingoSheet';
+import Confetti from '@/components/Confetti';
 import {AlertOptions, useAlert} from '@/context/AlertContext';
 import {useSnackbar} from '@/context/SnackbarContext';
 import {useAppDispatch} from '@/hooks';
@@ -16,10 +12,14 @@ import {
 } from '@/stores/currentSheetSlice';
 import {resetFields, useFields} from '@/stores/fieldsSlice';
 import {addSheet} from '@/stores/savedSheetsSlice';
-import Confetti from '@/components/Confetti';
-import {Logger} from '@/utils/logger';
+import {Logger, deleteOldLogs} from '@/utils/logger';
+import {useFocusEffect} from '@react-navigation/native';
 import confetti from 'canvas-confetti';
 import {useNavigation, useRouter} from 'expo-router';
+import React, {useCallback, useEffect, useMemo, useRef} from 'react';
+import {DimensionValue, Platform, StyleSheet, View} from 'react-native';
+import ConfettiCannon from 'react-native-confetti-cannon';
+import {Button} from 'react-native-paper';
 
 const Play: React.FC<AppScreenProps<'play'>> = () => {
   const dispatch = useAppDispatch();
@@ -79,6 +79,12 @@ const Play: React.FC<AppScreenProps<'play'>> = () => {
       dispatch(resetCurrentSheet(fields));
     }
   }, [fields, currentSheet, dispatch]);
+
+  useEffect(() => {
+    if (Platform.OS !== 'web') {
+      deleteOldLogs();
+    }
+  }, []);
 
   useFocusEffect(
     useCallback(() => {
@@ -144,13 +150,8 @@ const Play: React.FC<AppScreenProps<'play'>> = () => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    // height: "100%", //web
-    // justifyContent: "space-between", //web
-    maxWidth: 1200,
+    maxWidth: 'min(calc(100vh - 200px), 100vw)' as DimensionValue,
     marginHorizontal: 'auto',
-    // adjust pan does fuck all
-    // for some reason, the keyboard pushed the buttons and sheet up
-    // minHeight: Platform.OS === 'android' ? height - 64 : 0, // 64 is the default MD3 height
   },
   center: {
     flex: 1,

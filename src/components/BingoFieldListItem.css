@@ -10,4 +10,8 @@
 
 .list-item {
   padding-right: 5px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
 }

@@ -8,7 +8,7 @@ import {addSheet, removeSheet, useSavedSheets} from '@/stores/savedSheetsSlice';
 import {loadAndValidate, share} from '@/utils/io';
 import {Logger} from '@/utils/logger';
 import React, {createRef, Suspense} from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
+import {DimensionValue, FlatList, StyleSheet, View} from 'react-native';
 import {ActivityIndicator, Button} from 'react-native-paper';
 
 export const bingoSheetRegex =
@@ -128,12 +128,7 @@ export default SavedSheets;
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    maxWidth: 1200,
-    width: '100%',
-    // marginLeft: 'auto',
-    // marginRight: 'auto',
-    // justifyContent: 'center',
-    // alignItems: 'center',
+    maxWidth: 'min(calc(100vh - 200px), 100vw)' as DimensionValue,
     marginHorizontal: 'auto',
   },
   center: {
@@ -141,7 +136,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    // padding: 6,
   },
   buttonBox: {
     padding: 6,

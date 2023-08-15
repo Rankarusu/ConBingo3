@@ -43,7 +43,7 @@ export const Logger = logger.createLogger<LogLevels>(config);
 
 async function getLogUris() {
   const files = await FileSystem.readDirectoryAsync(
-    FileSystem.documentDirectory || '',
+    FileSystem.documentDirectory ?? '',
   );
 
   const logs = files

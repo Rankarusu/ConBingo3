@@ -7,7 +7,7 @@ import {share} from '@/utils/io';
 import {getConcatenatedLog} from '@/utils/logger';
 import {useNavigation} from 'expo-router';
 import React, {memo, useEffect, useState} from 'react';
-import {ScrollView, StyleSheet} from 'react-native';
+import {Platform, ScrollView, StyleSheet} from 'react-native';
 import {Appbar, Text} from 'react-native-paper';
 
 type MemoizedHeaderProps = DrawerNavigationHeaderProps & {
@@ -35,7 +35,9 @@ const Logs: React.FC<AppScreenProps<'logs'>> = props => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    getConcatenatedLog().then(text => setLog(text));
+    if (Platform.OS !== 'web') {
+      getConcatenatedLog().then(text => setLog(text));
+    }
   });
 
   useEffect(() => {
