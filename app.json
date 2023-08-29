@@ -3,7 +3,7 @@
     "name": "Convention Bingo",
     "slug": "ConventionBingo",
     "scheme": "conbingo",
-    "version": "1.0.0",
+    "version": "3.0.0",
     "orientation": "portrait",
     "icon": "./assets/logo_full.png",
     "userInterfaceStyle": "automatic",
@@ -24,11 +24,13 @@
         "backgroundImage": "./assets/logo_bg.png"
       },
       "package": "com.conbingo",
-      "playStoreUrl": "https://play.google.com/store/apps/details?id=com.conbingo"
+      "playStoreUrl": "https://play.google.com/store/apps/details?id=com.conbingo",
+      "versionCode": 14
     },
     "web": {
       "favicon": "./assets/favicon.png",
-      "bundler": "metro"
+      "bundler": "metro",
+      "output": "single"
     },
     "plugins": [
       "expo-router"

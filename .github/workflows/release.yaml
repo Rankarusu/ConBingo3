@@ -33,16 +33,21 @@ jobs:
       - name: 'Checkout'
         uses: actions/checkout@v3
 
-      - name: Install dependencies
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Setup Expo and EAS
+        uses: expo/expo-github-action@v7
+        with:
+          token: ${{ secrets.EXPO_TOKEN }}
+          expo-version: latest
+          eas-version: latest
+
+      - name: Install Dependencies
         run: |
           npm install
-
-      - name: Make Gradlew Executable
-        run: cd android && chmod +x ./gradlew
-
-      # bump version numbers
-      - name: React Native Version
-        run: npx react-native-version
 
       - name: Semantic Release
         id: semantic-release
@@ -52,17 +57,21 @@ jobs:
         with:
           extra_plugins: |
             @semantic-release/git
+            semantic-release-expo
 
-      - name: Build Android App Bundle
+      - name: Build App
         run: |
-          cd android && ./gradlew bundleRelease --no-daemon
+          eas build --local \
+            --non-interactive \
+            --output=./conbingo.aab \
+            --platform=android \
+            --profile=production
 
-      ## sign generated apk
       - name: Sign App Bundle
         id: sign_app
         uses: r0adkll/sign-android-release@v1
         with:
-          releaseDirectory: android/app/build/outputs/bundle/release
+          releaseDirectory: ./
           signingKeyBase64: ${{ secrets.ANDROID_SIGNING_KEY }}
           alias: ${{ secrets.ANDROID_ALIAS }}
           keyStorePassword: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
@@ -74,18 +83,30 @@ jobs:
           name: Signed App Bundle
           path: ${{steps.sign_app.outputs.signedReleaseFile}}
 
-      - name: Attach Artifact to Release
-        run: |
-          gh release upload ${{ steps.semantic-release.outputs.new_release_git_tag }} android/app/build/outputs/bundle/release/*.aab --clobber
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Attach Artifact to Release
+      #   run: |
+      #     gh release upload ${{ steps.semantic-release.outputs.new_release_git_tag }} ./app-build/*.aab --clobber
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload App to Google Play
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.ANDROID_SERVICE_ACCOUNT_JSON_TEXT }}
           packageName: com.conbingo
-          releaseFiles: android/app/build/outputs/bundle/release/*.aab
+          releaseFiles: ./*.aab
           track: internal
           status: draft
           inAppUpdatePriority: 2
+
+      - name: Build for Web
+        run: |
+          npm run build:web
+
+      - name: Deploy to Netlify
+        uses: netlify/actions/cli@master
+        with:
+          args: deploy --dir=dist
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}

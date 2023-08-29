@@ -4,16 +4,15 @@
   "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
+    "semantic-release-expo",
     "@semantic-release/npm",
     [
       "@semantic-release/git",
       {
         "assets": [
-          "ios/ConventionBingo*/Info.plist",
-          "ios/ConventionBingo.xcodeproj/project.pbxproj",
-          "android/app/build.gradle",
           "package.json",
-          "android/app/build/outputs/bundle/release/*.aab"
+          "package-lock.json",
+          "app.json"
         ],
         "message": "chore(release): ${nextRelease.version} \n\n${nextRelease.notes}"
       }
