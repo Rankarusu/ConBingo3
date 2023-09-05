@@ -12,7 +12,7 @@
         "assets": [
           "package.json",
           "package-lock.json",
-          "app.json"
+          "app.config.ts"
         ],
         "message": "chore(release): ${nextRelease.version} \n\n${nextRelease.notes}"
       }

@@ -59,19 +59,21 @@ jobs:
             @semantic-release/git
             semantic-release-expo
 
-      - name: Build App
+      - name: Prebuild App (generate native files)
+        run: npx expo prebuild --clean
+
+      - name: Make Gradlew Executable
+        run: cd android && chmod +x ./gradlew
+
+      - name: Build Android App Bundle
         run: |
-          eas build --local \
-            --non-interactive \
-            --output=./conbingo.aab \
-            --platform=android \
-            --profile=production
+          cd android && ./gradlew bundleRelease --no-daemon
 
       - name: Sign App Bundle
         id: sign_app
         uses: r0adkll/sign-android-release@v1
         with:
-          releaseDirectory: ./
+          releaseDirectory: android/app/build/outputs/bundle/release
           signingKeyBase64: ${{ secrets.ANDROID_SIGNING_KEY }}
           alias: ${{ secrets.ANDROID_ALIAS }}
           keyStorePassword: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
@@ -89,15 +91,15 @@ jobs:
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload App to Google Play
-        uses: r0adkll/upload-google-play@v1
-        with:
-          serviceAccountJsonPlainText: ${{ secrets.ANDROID_SERVICE_ACCOUNT_JSON_TEXT }}
-          packageName: com.conbingo
-          releaseFiles: ./*.aab
-          track: internal
-          status: draft
-          inAppUpdatePriority: 2
+      # - name: Upload App to Google Play
+      #   uses: r0adkll/upload-google-play@v1
+      #   with:
+      #     serviceAccountJsonPlainText: ${{ secrets.ANDROID_SERVICE_ACCOUNT_JSON_TEXT }}
+      #     packageName: com.conbingo
+      #     releaseFiles: ./*.aab
+      #     track: internal
+      #     status: draft
+      #     inAppUpdatePriority: 2
 
       - name: Build for Web
         run: |
