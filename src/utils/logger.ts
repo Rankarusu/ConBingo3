@@ -1,5 +1,6 @@
 import {consoleTransport, fileAsyncTransport, logger} from 'react-native-logs';
-import RNFS from 'react-native-fs';
+import * as FileSystem from 'expo-file-system';
+import {Platform} from 'react-native';
 
 const now = new Date();
 const y = now.getFullYear();
@@ -8,11 +9,17 @@ const d = now.getDate().toString().padStart(2, '0');
 
 const fileName = `log_${y}-${m}-${d}.txt`;
 
+const transport = [];
+if (__DEV__) {
+  transport.push(consoleTransport);
+}
+if (Platform.OS !== 'web') {
+  transport.push(fileAsyncTransport);
+}
+
 const config = {
   severity: __DEV__ ? 'debug' : 'error',
-  transport: __DEV__
-    ? [consoleTransport, fileAsyncTransport]
-    : fileAsyncTransport,
+  transport: transport,
   levels: {
     debug: 0,
     info: 1,
@@ -20,7 +27,7 @@ const config = {
     error: 3,
   },
   transportOptions: {
-    FS: RNFS,
+    FS: FileSystem,
     fileName: fileName,
     colors: {
       info: 'blueBright',
@@ -34,22 +41,28 @@ type LogLevels = keyof typeof config.levels;
 
 export const Logger = logger.createLogger<LogLevels>(config);
 
-export async function getLogs() {
-  const files = await RNFS.readDir(RNFS.DocumentDirectoryPath);
+async function getLogUris() {
+  const files = await FileSystem.readDirectoryAsync(
+    FileSystem.documentDirectory ?? '',
+  );
+
   const logs = files
-    .filter(item => item.name.startsWith('log_'))
-    .sort((a, b) => b.name.localeCompare(a.name));
+    .filter(item => item.includes('log_'))
+    .sort((a, b) => b.localeCompare(a));
   return logs;
 }
 
 export async function getConcatenatedLog() {
   let res = '';
-  const logs = await getLogs();
+  const logs = await getLogUris();
+  console.log(logs);
 
   for await (const file of logs) {
-    const content = await RNFS.readFile(file.path);
+    const content = await FileSystem.readAsStringAsync(
+      `${FileSystem.documentDirectory}/${file}`,
+    );
     res += `\n${'-'.repeat(50)}\n`;
-    res += file.name;
+    res += file.replace(FileSystem.documentDirectory || '', '');
     res += '\n';
     // reverse so we have one chronologically sorted log stream
     res += content.split('\n').reverse().join('\n');
@@ -59,12 +72,12 @@ export async function getConcatenatedLog() {
 
 export async function deleteOldLogs() {
   Logger.debug('Cleaning up logs');
-  const logs = await getLogs();
+  const logs = await getLogUris();
   const logsToDelete = logs.slice(5);
   Logger.debug(`found ${logsToDelete.length} logs to delete`);
 
   for await (const file of logsToDelete) {
-    Logger.debug(`deleting ${file.name}`);
-    await RNFS.unlink(file.path);
+    Logger.debug(`deleting ${file}`);
+    await FileSystem.deleteAsync(file);
   }
 }

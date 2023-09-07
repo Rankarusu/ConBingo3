@@ -33,31 +33,36 @@ jobs:
       - name: 'Checkout'
         uses: actions/checkout@v3
 
-      - name: Install dependencies
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
         run: |
           npm install
 
-      - name: Make Gradlew Executable
-        run: cd android && chmod +x ./gradlew
-
-      # bump version numbers
-      - name: React Native Version
-        run: npx react-native-version
-
       - name: Semantic Release
         id: semantic-release
-        uses: cycjimmy/semantic-release-action@v3
+        uses: cycjimmy/semantic-release-action@v4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUNNER_DEBUG: 1
         with:
           extra_plugins: |
             @semantic-release/git
+            semantic-release-replace-plugin
+
+      - name: Prebuild App (generate native files)
+        run: npx expo prebuild --clean
+
+      - name: Make Gradlew Executable
+        run: cd android && chmod +x ./gradlew
 
       - name: Build Android App Bundle
         run: |
           cd android && ./gradlew bundleRelease --no-daemon
 
-      ## sign generated apk
       - name: Sign App Bundle
         id: sign_app
         uses: r0adkll/sign-android-release@v1
@@ -89,3 +94,15 @@ jobs:
           track: internal
           status: draft
           inAppUpdatePriority: 2
+
+      - name: Build for Web
+        run: |
+          npm run build:web
+
+      - name: Deploy to Netlify
+        uses: netlify/actions/cli@master
+        with:
+          args: deploy --dir=dist
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}

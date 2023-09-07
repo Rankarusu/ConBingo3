@@ -1,12 +1,12 @@
 import React from 'react';
 import {SectionList, StyleSheet} from 'react-native';
 import {Divider, List, Text} from 'react-native-paper';
-import {useSnackbar} from '../context/SnackbarContext';
-import {useAppDispatch} from '../hooks';
-import {useModal} from '../hooks/useModal';
-import {FieldSection} from '../models/sectionedFields';
-import {AppScreenProps} from '../navigation/types';
-import {removeFields, useFields} from '../stores/fieldsSlice';
+import {useSnackbar} from '@/context/SnackbarContext';
+import {useAppDispatch} from '@/hooks';
+import {useModal} from '@/hooks/useModal';
+import {FieldSection} from '@/models/sectionedFields';
+import {AppScreenProps} from '@/navigation/types';
+import {removeFields} from '@/stores/fieldsSlice';
 import BingoFieldListItem from './BingoFieldListItem';
 import {
   addSelectedField,
@@ -18,7 +18,6 @@ import {
 interface BingoFieldListProps {
   sections: FieldSection[];
   searchQuery: string;
-  navigation: AppScreenProps<'EditFields'>['navigation'];
 }
 
 const BingoFieldList: React.FC<BingoFieldListProps> = props => {

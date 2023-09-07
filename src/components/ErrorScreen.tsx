@@ -1,5 +1,4 @@
 import React from 'react';
-import {useErrorBoundary} from 'react-error-boundary';
 import {Image, Linking, ScrollView, StyleSheet, View} from 'react-native';
 import {Button, List, Text} from 'react-native-paper';
 
@@ -7,11 +6,10 @@ const ISSUE_URL = 'https://github.com/Rankarusu/ConBingo3/issues/new/choose';
 
 interface ErrorScreenProps {
   error: Error;
+  retry?: () => void;
 }
 
 const ErrorScreen: React.FC<ErrorScreenProps> = props => {
-  const {resetBoundary} = useErrorBoundary();
-
   const [expanded, setExpanded] = React.useState(false);
 
   const handlePress = () => setExpanded(!expanded);
@@ -42,13 +40,15 @@ const ErrorScreen: React.FC<ErrorScreenProps> = props => {
         Consider opening an issue on GitHub so the error can be fixed
       </Text>
       <View style={styles.buttonBox}>
-        <Button
-          mode="outlined"
-          style={styles.button}
-          icon="arrow-left"
-          onPress={resetBoundary}>
-          Go Back
-        </Button>
+        {props.retry && (
+          <Button
+            mode="outlined"
+            style={styles.button}
+            icon="arrow-left"
+            onPress={props.retry}>
+            Go Back
+          </Button>
+        )}
         <Button
           mode="outlined"
           style={styles.button}

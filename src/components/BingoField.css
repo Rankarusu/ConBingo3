@@ -1,0 +1,40 @@
+/* these are not available in react natives css props but need for proper display in browser */
+.bingo-field {
+  aspect-ratio: 1;
+  border-radius: 4px;
+  flex-basis: calc(20% - 2px);
+  min-width: 1px;
+}
+
+.text {
+  white-space: normal;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+@media screen and (max-width: 479px) {
+  .text {
+    font-size: x-small;
+  }
+}
+
+@media screen and (min-width: 480px) {
+  .text {
+    line-height: 1;
+    font-size: small;
+  }
+}
+
+@media screen and (min-width: 576px) {
+  .text {
+    line-height: 1;
+    font-size: medium;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .text {
+    line-height: 1;
+    font-size: large;
+  }
+}

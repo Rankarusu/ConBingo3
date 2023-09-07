@@ -1,77 +1,60 @@
-import {StackNavigationOptions} from '@react-navigation/stack';
-import React from 'react';
-import DrawerNavigation from '../components/DrawerNavigation';
-import About from '../pages/About';
-import EditFields from '../pages/EditFields';
-import Modal from '../pages/Modal';
-import Play from '../pages/Play';
-import SavedSheets from '../pages/SavedSheets';
-import Logs from '../pages/Logs';
+import {NativeStackNavigationOptions} from '@react-navigation/native-stack';
 
 export interface AppRoute {
   name: string;
   displayName: string;
   icon: string;
-  component: React.FC<any>;
 }
 
-export const INITIAL_ROUTE = 'Play';
+export const INITIAL_ROUTE = 'play';
 
 export const appRoutes: AppRoute[] = [
   {
-    name: 'Play',
+    name: 'play',
     displayName: 'Play',
     icon: 'play',
-    component: Play,
   },
   {
-    name: 'EditFields',
+    name: 'edit-fields',
     displayName: 'Edit Fields',
     icon: 'playlist-edit',
-    component: EditFields,
   },
   {
-    name: 'SavedSheets',
+    name: 'saved-sheets',
     displayName: 'Saved Sheets',
     icon: 'file-multiple',
-    component: SavedSheets,
   },
   {
-    name: 'About',
+    name: 'about',
     displayName: 'About',
     icon: 'information',
-    component: About,
   },
 ];
 
 export const hiddenRoutes: AppRoute[] = [
   {
-    name: 'Logs',
+    name: 'logs',
     displayName: 'Logs',
     icon: 'text-long',
-    component: Logs,
   },
 ];
 
 export interface RootRoute {
   name: string;
-  displayName?: string;
-  component: React.FC<any>;
-  options?: StackNavigationOptions;
+  options?: NativeStackNavigationOptions;
 }
 
 export const rootRoutes: RootRoute[] = [
   {
-    name: 'App',
-    component: DrawerNavigation,
+    name: '(game)',
     options: {headerShown: false},
   },
   {
-    name: 'Modal',
-    component: Modal,
+    name: 'modal',
+
     options: {
       presentation: 'modal',
-      headerMode: 'screen',
+      animation: 'slide_from_bottom',
     },
   },
 ];

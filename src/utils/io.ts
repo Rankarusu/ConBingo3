@@ -1,89 +1,54 @@
-import DocumentPicker from 'react-native-document-picker';
-import RNFS from 'react-native-fs';
-import Share from 'react-native-share';
-import {CheckableBingoField} from '../models/checkableBingoField';
 import {Logger} from './logger';
+
+import * as DocumentPicker from 'expo-document-picker';
 
 //TODO: change this to an actual json file once discord learned what that is and how to handle them
 const MIME_TYPE = 'text/plain';
 
-const bingoSheetRegex =
-  /^\[(?:(?:{"text":"(?:.*?)","checked":(?:true|false)(?:,"position":(?:[0-9]|1[0-9]|2[0-3]))?},){24}(?:{"text":"(?:.*?)","checked":(?:true|false)(?:,"position":24)?}))\]$/;
-
-const exportedFieldsRegex = /^\[(?:".{3,64}",)+(?:".{3,64}")\]$/; //literally just a string array with lengths between 3 and 64
-
 export const share = async <T>(data: T, fileName: string) => {
   const dataStr = JSON.stringify(data);
 
-  const filePath = `${RNFS.CachesDirectoryPath}/${fileName}`;
+  const blobConfig = new Blob([dataStr], {type: MIME_TYPE});
 
-  await RNFS.writeFile(filePath, dataStr, 'utf8');
+  const blobUrl = URL.createObjectURL(blobConfig);
 
-  await Share.open({
-    filename: fileName,
-    url: `file://${filePath}`,
-    type: MIME_TYPE,
-  }).catch(error => Logger.warn(error));
-};
+  // Create an a element with blob URL
+  const anchor = document.createElement('a');
+  anchor.href = blobUrl;
+  anchor.target = '_blank';
+  anchor.download = fileName;
 
-export const shareLog = async (text: string) => {
-  await RNFS.writeFile(
-    RNFS.CachesDirectoryPath + '/conbingo-log.txt',
-    text,
-    'utf8',
-  );
-  await Share.open({
-    filename: 'conbingo-log.txt',
-    url: 'file://' + RNFS.CachesDirectoryPath + '/conbingo-log.txt',
-    type: 'text/plain',
-  }).catch(error => Logger.warn(error));
+  // Auto click on a element, trigger the file download
+  anchor.click();
+
+  URL.revokeObjectURL(blobUrl);
 };
 
 const pickFile = async () => {
   let file;
   try {
-    file = await DocumentPicker.pickSingle({
+    file = await DocumentPicker.getDocumentAsync({
+      multiple: false,
       type: MIME_TYPE,
-      mode: 'import',
-      presentationStyle: 'fullScreen',
     });
   } catch (error) {
     //this throws when user cancels the document picker
     Logger.warn(error);
   }
-
-  if (!file) {
+  if (file?.canceled || !file?.assets) {
     return;
   }
-
-  const res = await RNFS.readFile(file.uri);
+  const res = await file.assets[0].file?.text();
   return res;
 };
 
-export const loadSheetFromFile = async () => {
-  const sheet = await pickFile();
-  if (!sheet) {
+export const loadAndValidate = async <T>(validationRegex: RegExp) => {
+  const file = await pickFile();
+  if (!file) {
     return;
   }
-
-  if (!bingoSheetRegex.test(sheet)) {
-    throw new Error('File content is not a valid bingo sheet.');
+  if (!validationRegex.test(file)) {
+    throw new Error('File content not valid');
   }
-
-  const jsonSheet = JSON.parse(sheet);
-  return jsonSheet as CheckableBingoField[];
-};
-
-export const loadFieldsFromFile = async () => {
-  const fields = await pickFile();
-  if (!fields) {
-    return;
-  }
-
-  if (!exportedFieldsRegex.test(fields)) {
-    throw new Error('File content is not valid list of fields');
-  }
-
-  const jsonFields = JSON.parse(fields);
-  return jsonFields as string[];
+  return JSON.parse(file) as T;
 };

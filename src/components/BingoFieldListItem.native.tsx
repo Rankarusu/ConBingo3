@@ -5,8 +5,6 @@ import {BingoField} from '../models/bingoField';
 import {useAppTheme} from '../stores/themeSlice';
 import {RgbaColor} from '../utils/rgbaColor';
 
-import './BingoFieldListItem.css';
-
 export type BingoFieldListItemProps = BingoField & {
   //we pass style as a prop to hide the item if it does not match the search query
   style: ViewStyle;
@@ -26,13 +24,6 @@ export const BingoFieldListItem: React.FC<BingoFieldListItemProps> = props => {
   const buttonGroup = () => (
     <>
       <IconButton
-        style={[
-          {
-            //@ts-ignore ts does not know expo hacks
-            $$css: true,
-            _: 'button',
-          },
-        ]}
         icon="square-edit-outline"
         mode="contained"
         iconColor={theme.colors.onSurface}
@@ -40,13 +31,6 @@ export const BingoFieldListItem: React.FC<BingoFieldListItemProps> = props => {
         onPress={props.edit}
       />
       <IconButton
-        style={[
-          {
-            //@ts-ignore ts does not know expo hacks
-            $$css: true,
-            _: 'button',
-          },
-        ]}
         icon="delete"
         mode="contained"
         iconColor={theme.colors.onSurface}
@@ -58,30 +42,18 @@ export const BingoFieldListItem: React.FC<BingoFieldListItemProps> = props => {
 
   return (
     <TouchableRipple
-      style={[
-        {
-          //@ts-ignore ts does not know expo hacks
-          $$css: true,
-          _: 'ripple',
-        },
-        props.style,
-        props.selected ? {backgroundColor: translucentPrimary} : {},
-      ]}
       onPress={props.onPress}
       onLongPress={props.onLongPress}
-      delayLongPress={150}>
+      delayLongPress={150}
+      style={[
+        props.style,
+        props.selected ? {backgroundColor: translucentPrimary} : {},
+      ]}>
       <List.Item
         titleStyle={
           props.selected ? {color: theme.colors.onPrimaryContainer} : {}
         }
-        style={[
-          {
-            //@ts-ignore ts does not know expo hacks
-            $$css: true,
-            _: 'list-item',
-          },
-          styles.listItem,
-        ]}
+        style={styles.listItem}
         title={props.text}
         titleNumberOfLines={3}
         right={buttonGroup}

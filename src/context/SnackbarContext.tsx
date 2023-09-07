@@ -7,7 +7,6 @@ import React, {
   useState,
 } from 'react';
 import {Snackbar} from 'react-native-paper';
-import {useAppTheme} from '../stores/themeSlice';
 
 const DURATION = 3000;
 
@@ -23,7 +22,6 @@ export const SnackbarProvider: React.FC<PropsWithChildren> = props => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [placeAboveFab, setPlaceAboveFab] = useState(false);
-  const theme = useAppTheme();
   const keyboard = useKeyboard();
 
   const getBottomPosition = () => {
@@ -54,7 +52,7 @@ export const SnackbarProvider: React.FC<PropsWithChildren> = props => {
     <SnackbarContext.Provider value={{showSnackbar}}>
       {props.children}
       <Snackbar
-        wrapperStyle={{bottom: getBottomPosition()}}
+        wrapperStyle={[{bottom: getBottomPosition()}]}
         duration={DURATION}
         visible={open}
         onDismiss={handleClose}

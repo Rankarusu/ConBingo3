@@ -10,7 +10,7 @@
 
 _A bullshit-bingo to play with your weeb friends at conventions._
 
-Because me and a few friends of mine always play some kind of convention bingo with a sheet we pull from google images every time in the last minute, I decided to make our lives a little easier and learn a take the opportunity to learn something new by creating this app.
+Because me and a few friends of mine always play some kind of convention bingo with a sheet we pull from google images every time in the last minute, I decided to make our lives a little easier and take the opportunity to learn something new by creating this app.
 
 This is already the third iteration this application is going through. While the [first one](https://github.com/Rankarusu/ConventionBingo) used only vanilla JS and SCSS, I tried to build this with [Vue and Ionic](https://github.com/Rankarusu/ConBingo2), but I was so disappointed by the performance that I decided to go with a more native approach this time. Because I need to learn React for work soon anyway, React Native was the obvious choice this time.
 
