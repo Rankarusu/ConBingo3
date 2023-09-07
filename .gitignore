@@ -24,3 +24,6 @@ expo-env.d.ts
 # Local Netlify folder
 .netlify
 credentials.json
+# we dont need this because we build native stuff in pipeline
+ios
+android
