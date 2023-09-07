@@ -27,7 +27,7 @@ const config: ExpoConfig = {
     },
     package: 'com.conbingo',
     playStoreUrl: 'https://play.google.com/store/apps/details?id=com.conbingo',
-    versionCode: 15,
+    versionCode: 16,
   },
   web: {
     favicon: './assets/favicon.png',
