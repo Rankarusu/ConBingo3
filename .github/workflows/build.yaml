@@ -15,9 +15,17 @@ jobs:
       - name: 'Checkout'
         uses: actions/checkout@v3
 
-      - name: Install dependencies
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
         run: |
           npm install
+
+      - name: Prebuild App (generate native files)
+        run: npx expo prebuild --clean
 
       - name: Make Gradlew Executable
         run: cd android && chmod +x ./gradlew
@@ -25,3 +33,7 @@ jobs:
       - name: Build Android App Bundle
         run: |
           cd android && ./gradlew bundleRelease --no-daemon
+
+      - name: Build for Web
+        run: |
+          npm run build:web
