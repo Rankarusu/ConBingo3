@@ -30,7 +30,7 @@ const config: ExpoConfig = {
     versionCode: 16,
   },
   web: {
-    favicon: './assets/favicon.png',
+    favicon: './assets/favicon_dark.png',
     bundler: 'metro',
     output: 'single',
   },
