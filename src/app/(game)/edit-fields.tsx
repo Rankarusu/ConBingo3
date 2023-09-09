@@ -142,7 +142,9 @@ const EditFields: React.FC<AppScreenProps<'edit-fields'>> = () => {
     if (deduplicatedFields.length > 0) {
       dispatch(addFields(deduplicatedFields));
       showSnackbar(
-        `${deduplicatedFields.length} Fields imported successfully!`,
+        `${deduplicatedFields.length} Field${
+          deduplicatedFields.length > 1 ? 's' : ''
+        } imported successfully!`,
         true,
       );
     } else {
