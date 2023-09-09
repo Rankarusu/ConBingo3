@@ -3,7 +3,7 @@ import {useRouter} from 'expo-router';
 import React from 'react';
 import {Linking, Platform, StyleSheet, View} from 'react-native';
 import {Button, Card, Text} from 'react-native-paper';
-import pkg from '../../package.json';
+import pkg from '../../../package.json';
 
 const About: React.FC<AppScreenProps<'about'>> = () => {
   const router = useRouter();
