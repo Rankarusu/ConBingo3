@@ -1,15 +1,14 @@
+import Constants from 'expo-constants';
 import React from 'react';
 import {ImageBackground, Linking, Pressable, StyleSheet} from 'react-native';
+
+const {playstoreUrl} = Constants.expoConfig?.extra ?? {};
 
 const GooglePlayAd = () => {
   return (
     <Pressable
       style={styles.image}
-      onPress={() =>
-        Linking.openURL(
-          'https://play.google.com/store/apps/details?id=com.conbingo',
-        )
-      }>
+      onPress={() => Linking.openURL(playstoreUrl)}>
       <ImageBackground
         style={styles.image}
         alt="Get it on Google Play"

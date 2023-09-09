@@ -1,8 +1,9 @@
+import Constants from 'expo-constants';
 import React from 'react';
 import {Image, Linking, ScrollView, StyleSheet, View} from 'react-native';
 import {Button, List, Text} from 'react-native-paper';
 
-const ISSUE_URL = 'https://github.com/Rankarusu/ConBingo3/issues/new/choose';
+const {githubIssuesUrl} = Constants.expoConfig?.extra ?? {};
 
 interface ErrorScreenProps {
   error: Error;
@@ -53,7 +54,7 @@ const ErrorScreen: React.FC<ErrorScreenProps> = props => {
           mode="outlined"
           style={styles.button}
           icon="github"
-          onPress={() => Linking.openURL(ISSUE_URL)}>
+          onPress={() => Linking.openURL(githubIssuesUrl)}>
           Open Issue
         </Button>
       </View>
