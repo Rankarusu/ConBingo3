@@ -130,6 +130,7 @@ const styles = StyleSheet.create({
     flex: 1,
     maxWidth: 'min(calc(100vh - 200px), 100vw)' as DimensionValue,
     marginHorizontal: 'auto',
+    width: '100%',
   },
   center: {
     flex: 1,
