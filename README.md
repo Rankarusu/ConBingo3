@@ -3,6 +3,7 @@
 
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/Rankarusu/ConBingo3)
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/Rankarusu/ConBingo3/release.yaml)
+[![Website status](https://img.shields.io/website-up-down-green-red/https/con.bingo.svg?label=Website%20status)](https://con.bingo)
 
 </div>
 
@@ -12,7 +13,9 @@ _A bullshit-bingo to play with your weeb friends at conventions._
 
 Because me and a few friends of mine always play some kind of convention bingo with a sheet we pull from google images every time in the last minute, I decided to make our lives a little easier and take the opportunity to learn something new by creating this app.
 
-This is already the third iteration this application is going through. While the [first one](https://github.com/Rankarusu/ConventionBingo) used only vanilla JS and SCSS, I tried to build this with [Vue and Ionic](https://github.com/Rankarusu/ConBingo2), but I was so disappointed by the performance that I decided to go with a more native approach this time. Because I need to learn React for work soon anyway, React Native was the obvious choice this time.
+This is already the third iteration this application is going through. While the [first one](https://github.com/Rankarusu/ConventionBingo) used only vanilla JS and SCSS, I tried to build this with [Vue and Ionic](https://github.com/Rankarusu/ConBingo2), but I was so disappointed by the performance that I decided to go with a more native approach this time. Because I needed to learn React for work soon anyway, React Native was the obvious choice this time.
+
+I switched from a bare workflow to using expo because I could not get react-native-web to work otherwise. I wanted a web version because Apple developer licenses are hilariously expensive. This way iOS users can still use this app without me having to maintain two codebases. I'm still no the greatest fan of expo itself and try to rely on their (build) tooling as little as possible.
 
 <div align="center">
  <img height="50" src="https://user-images.githubusercontent.com/25181517/183890598-19a0ac2d-e88a-4005-a8df-1ee36782fde1.png" alt="TypeScript" title="TypeScript" />
@@ -30,8 +33,13 @@ This is already the third iteration this application is going through. While the
 - Sheets (including their progress) can be saved, loaded, imported and shared
 - You are free to edit, remove or add new fields as you see fit.
 - Persistence via Redux and AsyncStorage
+- Runs on Android and in the Web
 
 ## Installation
+
+### Web
+
+Thanks to expo and react-native-web, this project runs in the web as well: **<https://con.bingo>**
 
 ### Android
 
@@ -39,9 +47,7 @@ This is already the third iteration this application is going through. While the
 
 ### iOS
 
-An Apple Developer License costs 100€/year, which is way too expensive for a fun little app like this.
-
-I'll try to get this project to build for the web as well, so you'll have to use this.
+An Apple Developer License costs 100€/year, which is way too expensive for a fun little app like this. A PWA is planned as substitute once expo updates their documentation on how to build one with metro. Until then you can use the web version.
 
 ## Screenshots
 
