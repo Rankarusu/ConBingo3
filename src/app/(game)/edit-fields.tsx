@@ -27,6 +27,7 @@ import {
 import {loadAndValidate, share} from '@/utils/io';
 import {Logger} from '@/utils/logger';
 import {useNavigation} from 'expo-router';
+import {normalizeWhitespace} from '@/utils/text';
 
 const FADE_DURATION = 300;
 export const exportedFieldsRegex = /^\[(?:".{3,64}",)+(?:".{3,64}")\]$/; //literally just a string array with lengths between 3 and 64
@@ -80,7 +81,7 @@ const MultiSelectModeHeader = (props: MultiSelectModeHeaderProps) => {
   );
 };
 
-const EditFields: React.FC<AppScreenProps<'edit-fields'>> = props => {
+const EditFields: React.FC<AppScreenProps<'edit-fields'>> = () => {
   const dispatch = useAppDispatch();
   const {fields, sectionedFields} = useFields();
   const {selectedFields, multiSelectModeEnabled} = useSelectedFields();
@@ -134,14 +135,16 @@ const EditFields: React.FC<AppScreenProps<'edit-fields'>> = props => {
     if (!importedFields) {
       return;
     }
-    const fieldTexts = fields.map(field => field.text);
+    const fieldTexts = fields.map(field => normalizeWhitespace(field.text));
     const deduplicatedFields = importedFields.filter(
-      field => !fieldTexts.includes(field),
+      field => !fieldTexts.includes(field) || !field,
     );
     if (deduplicatedFields.length > 0) {
       dispatch(addFields(deduplicatedFields));
       showSnackbar(
-        `${deduplicatedFields.length} Fields imported successfully!`,
+        `${deduplicatedFields.length} Field${
+          deduplicatedFields.length > 1 ? 's' : ''
+        } imported successfully!`,
         true,
       );
     } else {

@@ -3,8 +3,8 @@ import {useModal} from '@/hooks/useModal';
 import {toggleCheckedField} from '@/stores/currentSheetSlice';
 import {useAppTheme} from '@/stores/themeSlice';
 import {RgbaColor} from '@/utils/rgbaColor';
-import React from 'react';
-import {StyleSheet} from 'react-native';
+import React, {memo} from 'react';
+import {Dimensions, Platform, StyleSheet} from 'react-native';
 import {Surface, Text, TouchableRipple} from 'react-native-paper';
 import Animated, {
   interpolateColor,
@@ -85,7 +85,8 @@ const BingoField: React.FC<BingoFieldProps> = props => {
         <Animated.View style={[styles.content, borderStyle]}>
           <Text
             style={[
-              {
+              // for some reason this throws an error on mobile. But only for the text component
+              Platform.OS === 'web' && {
                 //@ts-ignore ts does not know expo hacks
                 $$css: true,
                 _: 'text',
@@ -106,6 +107,12 @@ const BingoField: React.FC<BingoFieldProps> = props => {
 
 const styles = StyleSheet.create({
   bingoField: {
+    aspectRatio: 1,
+    borderRadius: 4,
+    flexBasis: Dimensions.get('window').width / 5 - 4,
+    height: Platform.OS === 'web' ? undefined : 1,
+    minHeight: 1,
+    minWidth: 1,
     elevation: 1,
   },
   content: {
@@ -125,4 +132,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BingoField;
+//we memoize list components so they wont rerender unless their props change.
+export default memo(BingoField);

@@ -1,5 +1,5 @@
 import {useNavigation} from 'expo-router';
-import {ModalMode} from 'app/modal';
+import {ModalMode} from '@/app/modal';
 import {Logger} from '@/utils/logger';
 
 export function useModal() {

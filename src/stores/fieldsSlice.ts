@@ -108,9 +108,7 @@ export function useFields() {
       });
 
       // don't display custom fields section if there are none
-      return [base, custom].filter(
-        section => section.data.length > 0,
-      ) as FieldSection[];
+      return [base, custom].filter(section => section.data.length > 0);
     },
   );
 

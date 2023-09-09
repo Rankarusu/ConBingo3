@@ -1,3 +1,4 @@
+import {ModalMode} from '@/app/modal';
 import {
   DrawerNavigationProp,
   DrawerScreenProps,
@@ -8,7 +9,6 @@ import {
   NavigatorScreenParams,
 } from '@react-navigation/native';
 import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
-import {ModalMode} from '../pages/Modal';
 
 export type RootRouteParamList = {
   game: NavigatorScreenParams<AppRouteParamList>;

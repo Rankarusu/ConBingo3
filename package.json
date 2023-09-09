@@ -7,7 +7,7 @@
     "type": "git",
     "url": "https://github.com/Rankarusu/ConBingo3.git"
   },
-  "homepage": "https://rankarusu.github.io/ConBingo3/",
+  "homepage": "https:con.bingo",
   "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
@@ -32,7 +32,7 @@
     "@reduxjs/toolkit": "^1.9.3",
     "@types/canvas-confetti": "^1.6.0",
     "canvas-confetti": "^1.6.0",
-    "expo": "^49.0.7",
+    "expo": "^49.0.9",
     "expo-constants": "~14.4.2",
     "expo-dev-client": "~2.4.8",
     "expo-document-picker": "~11.5.4",

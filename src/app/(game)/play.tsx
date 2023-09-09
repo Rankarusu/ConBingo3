@@ -1,5 +1,6 @@
 import BingoSheet from '@/components/BingoSheet';
 import Confetti from '@/components/Confetti';
+import GooglePlayAd from '@/components/GooglePlayAd';
 import {AlertOptions, useAlert} from '@/context/AlertContext';
 import {useSnackbar} from '@/context/SnackbarContext';
 import {useAppDispatch} from '@/hooks';
@@ -39,11 +40,40 @@ const Play: React.FC<AppScreenProps<'play'>> = () => {
 
   const rerollSheet = () => {
     if (fields.length < 24) {
-      showAlert(alertOptions);
+      showAlert(notEnoughFieldsAlert);
+      return;
+    }
+    // show a confirmation if there is progress on the sheet
+    const checkedFields = currentSheet.filter(field => field.checked);
+    if (checkedFields.length > 1 && checkedFields[0].text === 'FREE SPACE') {
+      showAlert(rerollSheetAlert);
       return;
     }
     dispatch(resetCurrentSheet(fields));
   };
+
+  const rerollSheetAlert: AlertOptions = useMemo(() => {
+    return {
+      title: 'Reroll',
+      content:
+        'You have already made progress on this sheet.\nAre you sure you want to reroll?',
+      confirmText: 'Reroll',
+      confirmAction: () => dispatch(resetCurrentSheet(fields)),
+      cancelText: 'Cancel',
+    };
+  }, [dispatch]);
+
+  const notEnoughFieldsAlert: AlertOptions = useMemo(() => {
+    return {
+      title: 'Reset Fields',
+      content:
+        'You do not have enough fields to generate a new sheet.\nEither add more fields or load the default ones.',
+      confirmText: 'Load defaults',
+      confirmAction: () => dispatch(resetFields()),
+      cancelText: 'Add more fields',
+      cancelAction: () => router.push('/(game)/edit-fields'),
+    };
+  }, [dispatch, navigation]);
 
   const shootConfetti = () => {
     if (Platform.OS === 'web') {
@@ -57,18 +87,6 @@ const Play: React.FC<AppScreenProps<'play'>> = () => {
     }
     confettiRef.current?.start();
   };
-
-  const alertOptions: AlertOptions = useMemo(() => {
-    return {
-      title: 'Reset Fields',
-      content:
-        'You do not have enough fields to generate a new sheet.\nEither add more fields or load the default ones.',
-      confirmText: 'Load defaults',
-      confirmAction: () => dispatch(resetFields()),
-      cancelText: 'Add more fields',
-      cancelAction: () => router.push('/(game)/edit-fields'),
-    };
-  }, [dispatch, navigation]);
 
   useEffect(() => {
     if (fields.length >= 24 && currentSheet.length !== 25) {
@@ -99,13 +117,13 @@ const Play: React.FC<AppScreenProps<'play'>> = () => {
         // no need to display the popup if current sheet is viable.
         // e.g. one got generated but afterwards the user deletes all fields
         Logger.info('not enough fields, showing alert');
-        showAlert(alertOptions);
+        showAlert(notEnoughFieldsAlert);
       }
     }, [
       fields.length,
       currentSheet.length,
       alreadyLaunched,
-      alertOptions,
+      notEnoughFieldsAlert,
       showAlert,
       dispatch,
     ]),
@@ -123,6 +141,12 @@ const Play: React.FC<AppScreenProps<'play'>> = () => {
 
   return (
     <View style={styles.wrapper}>
+      {Platform.OS === 'web' && (
+        <View style={styles.end}>
+          <GooglePlayAd />
+        </View>
+      )}
+
       <View style={styles.center}>
         <BingoSheet fields={currentSheet} />
       </View>
@@ -168,6 +192,9 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
+  },
+  end: {
+    alignItems: 'flex-end',
   },
 });
 

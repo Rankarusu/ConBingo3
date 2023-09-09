@@ -4,6 +4,7 @@ import {IconButton, List, TouchableRipple} from 'react-native-paper';
 import {BingoField} from '../models/bingoField';
 import {useAppTheme} from '../stores/themeSlice';
 import {RgbaColor} from '../utils/rgbaColor';
+import {useSelectedFields} from '@/stores/selectedFieldsSlice';
 
 import './BingoFieldListItem.css';
 
@@ -19,6 +20,8 @@ export type BingoFieldListItemProps = BingoField & {
 
 export const BingoFieldListItem: React.FC<BingoFieldListItemProps> = props => {
   const theme = useAppTheme();
+  const {multiSelectModeEnabled} = useSelectedFields();
+
   const primary = RgbaColor.FromString(theme.colors.inversePrimary);
   primary.a = 0.3;
   const translucentPrimary = primary.toRgbaString();
@@ -37,6 +40,7 @@ export const BingoFieldListItem: React.FC<BingoFieldListItemProps> = props => {
         mode="contained"
         iconColor={theme.colors.onSurface}
         size={20}
+        disabled={multiSelectModeEnabled}
         onPress={props.edit}
       />
       <IconButton
@@ -51,6 +55,7 @@ export const BingoFieldListItem: React.FC<BingoFieldListItemProps> = props => {
         mode="contained"
         iconColor={theme.colors.onSurface}
         size={20}
+        disabled={multiSelectModeEnabled}
         onPress={props.delete}
       />
     </>

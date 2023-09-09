@@ -3,7 +3,10 @@ import {useRouter} from 'expo-router';
 import React from 'react';
 import {Linking, Platform, StyleSheet, View} from 'react-native';
 import {Button, Card, Text} from 'react-native-paper';
-import pkg from '../../package.json';
+import Constants from 'expo-constants';
+
+const {version} = Constants.expoConfig ?? {};
+const {playstoreUrl, githubUrl, webUrl} = Constants.expoConfig?.extra ?? {};
 
 const About: React.FC<AppScreenProps<'about'>> = () => {
   const router = useRouter();
@@ -14,7 +17,7 @@ const About: React.FC<AppScreenProps<'about'>> = () => {
         <Card.Title
           title="About this App"
           titleVariant="headlineSmall"
-          subtitle={`Version: ${pkg.version}`}
+          subtitle={`Version: ${version}`}
         />
         <Card.Content>
           <Text variant="bodyMedium">
@@ -36,9 +39,21 @@ const About: React.FC<AppScreenProps<'about'>> = () => {
         </Card.Content>
         <Card.Actions>
           <Button
+            icon="web"
+            mode="outlined"
+            onPress={() => Linking.openURL(webUrl)}>
+            Web
+          </Button>
+          <Button
+            icon="google-play"
+            mode="outlined"
+            onPress={() => Linking.openURL(playstoreUrl)}>
+            Google Play
+          </Button>
+          <Button
             icon="github"
             mode="outlined"
-            onPress={() => Linking.openURL(pkg.homepage)}>
+            onPress={() => Linking.openURL(githubUrl)}>
             Github
           </Button>
         </Card.Actions>

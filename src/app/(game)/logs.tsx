@@ -30,7 +30,7 @@ const MemoizedHeader = memo((props: MemoizedHeaderProps) => {
   );
 });
 
-const Logs: React.FC<AppScreenProps<'logs'>> = props => {
+const Logs: React.FC<AppScreenProps<'logs'>> = () => {
   const [log, setLog] = useState('');
   const navigation = useNavigation();
 

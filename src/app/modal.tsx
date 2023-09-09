@@ -11,6 +11,7 @@ import {
 } from '@/stores/currentSheetSlice';
 import {addField, updateField, useFields} from '@/stores/fieldsSlice';
 import {Logger} from '@/utils/logger';
+import {normalizeString, normalizeWhitespace} from '@/utils/text';
 import {useLocalSearchParams, useNavigation} from 'expo-router';
 import React, {memo, useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
@@ -39,7 +40,7 @@ const MemoizedHeader = memo((props: MemoizedHeaderProps) => (
 ));
 
 const validate = (input: string) => {
-  return input.length < 3;
+  return normalizeWhitespace(input).length < 3;
 };
 
 const Modal: React.FC<RootScreenProps<'modal'>> = () => {
@@ -65,15 +66,15 @@ const Modal: React.FC<RootScreenProps<'modal'>> = () => {
     // we use null as an id when adding a new field
     const filteredFields =
       id === null ? fields : fields.filter(field => field.id !== id);
-    const fieldTexts = filteredFields.map(field => field.text.toLowerCase());
-    return fieldTexts.includes(field.trim().toLowerCase());
+    const fieldTexts = filteredFields.map(field => normalizeString(field.text));
+    return fieldTexts.includes(normalizeString(field));
   };
 
   const isDuplicateCurrentSheetField = (field: string, position: number) => {
     const fieldTexts = currentSheet
       .filter(field => field.position !== position)
-      .map(field => field.text.toLowerCase());
-    return fieldTexts.includes(field.trim().toLowerCase());
+      .map(field => normalizeString(field.text));
+    return fieldTexts.includes(normalizeString(field));
   };
 
   switch (mode) {
@@ -85,6 +86,7 @@ const Modal: React.FC<RootScreenProps<'modal'>> = () => {
         dispatch(updateCurrentSheetField({position, text}));
       duplicateCheckFn = text => isDuplicateCurrentSheetField(text, position);
       break;
+
     case ModalMode.EDIT:
       const {id: idStr} = params;
       const id = parseInt(idStr ?? '');
@@ -93,6 +95,7 @@ const Modal: React.FC<RootScreenProps<'modal'>> = () => {
         dispatch(updateField({id, text, isCustom: true}));
       duplicateCheckFn = text => isDuplicateField(text, id);
       break;
+
     case ModalMode.ADD:
       saveFn = (text: string) => dispatch(addField({text, isCustom: true}));
       duplicateCheckFn = text => isDuplicateField(text, null);
@@ -107,7 +110,7 @@ const Modal: React.FC<RootScreenProps<'modal'>> = () => {
     if (duplicateCheckFn(text)) {
       showSnackbar('You already have a field with the same content');
     } else {
-      saveFn(text.trim());
+      saveFn(normalizeWhitespace(text));
       navigation.goBack();
     }
   }, [saveFn, navigation, text]);
@@ -151,7 +154,7 @@ const Modal: React.FC<RootScreenProps<'modal'>> = () => {
         error={error}
         onChangeText={input => {
           setText(input);
-          setTextLength(input.length);
+          setTextLength(normalizeWhitespace(input).length);
           setError(validate(input));
         }}
       />

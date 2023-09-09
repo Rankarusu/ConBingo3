@@ -13,7 +13,7 @@ const config: ExpoConfig = {
   splash: {
     image: './assets/logo_fg.png',
     resizeMode: 'contain',
-    backgroundColor: '#dc18d3',
+    backgroundColor: '#7F5AE6',
   },
   assetBundlePatterns: ['**/*'],
   ios: {
@@ -30,7 +30,7 @@ const config: ExpoConfig = {
     versionCode: 16,
   },
   web: {
-    favicon: './assets/favicon.png',
+    favicon: './assets/favicon_dark.png',
     bundler: 'metro',
     output: 'single',
   },
@@ -40,6 +40,10 @@ const config: ExpoConfig = {
     typedRoutes: true,
   },
   extra: {
+    playstoreUrl: 'https://play.google.com/store/apps/details?id=com.conbingo', // the android config is not readable in web
+    githubUrl: 'https://github.com/Rankarusu/ConBingo3',
+    githubIssuesUrl: 'https://github.com/Rankarusu/ConBingo3/issues/new/choose',
+    webUrl: 'https://con.bingo',
     router: {
       origin: false,
     },
