@@ -27,6 +27,7 @@ import {
 import {loadAndValidate, share} from '@/utils/io';
 import {Logger} from '@/utils/logger';
 import {useNavigation} from 'expo-router';
+import {normalizeWhitespace} from '@/utils/text';
 
 const FADE_DURATION = 300;
 export const exportedFieldsRegex = /^\[(?:".{3,64}",)+(?:".{3,64}")\]$/; //literally just a string array with lengths between 3 and 64
@@ -134,9 +135,9 @@ const EditFields: React.FC<AppScreenProps<'edit-fields'>> = () => {
     if (!importedFields) {
       return;
     }
-    const fieldTexts = fields.map(field => field.text);
+    const fieldTexts = fields.map(field => normalizeWhitespace(field.text));
     const deduplicatedFields = importedFields.filter(
-      field => !fieldTexts.includes(field),
+      field => !fieldTexts.includes(field) || !field,
     );
     if (deduplicatedFields.length > 0) {
       dispatch(addFields(deduplicatedFields));

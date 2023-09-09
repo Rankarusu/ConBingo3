@@ -7,12 +7,22 @@ import {setCurrentSheet} from '@/stores/currentSheetSlice';
 import {addSheet, removeSheet, useSavedSheets} from '@/stores/savedSheetsSlice';
 import {loadAndValidate, share} from '@/utils/io';
 import {Logger} from '@/utils/logger';
+import {normalizeWhitespace} from '@/utils/text';
 import React, {createRef, Suspense} from 'react';
 import {DimensionValue, FlatList, StyleSheet, View} from 'react-native';
 import {ActivityIndicator, Button} from 'react-native-paper';
 
 export const bingoSheetRegex =
-  /^\[(?:(?:{"text":"(?:.*?)","checked":(?:true|false)(?:,"position":(?:[0-9]|1[0-9]|2[0-3]))?},){24}(?:{"text":"(?:.*?)","checked":(?:true|false)(?:,"position":24)?}))\]$/;
+  /^\[(?:(?:{"text":"(?:.{3,64}?)","checked":(?:true|false)(?:,"position":(?:\d|1\d|2[0-3]))?},){24}(?:{"text":"(?:.{3,64})","checked":(?:true|false)(?:,"position":24)?}))\]$/;
+
+const validateSheetFields = (fields: CheckableBingoField[]) => {
+  const allFieldsValid = fields.every(
+    field => normalizeWhitespace(field.text) !== '',
+  );
+  if (!allFieldsValid) {
+    throw new Error('one or more fields are not valid.');
+  }
+};
 
 const SavedSheets: React.FC<AppScreenProps<'saved-sheets'>> = () => {
   const {savedSheets, selectedSheet, selectedSheetIndex} = useSavedSheets();
@@ -51,6 +61,7 @@ const SavedSheets: React.FC<AppScreenProps<'saved-sheets'>> = () => {
     let file;
     try {
       file = await loadAndValidate<CheckableBingoField[]>(bingoSheetRegex);
+      validateSheetFields(file ?? []);
     } catch (error) {
       if (error instanceof Error) {
         showSnackbar(error.message);
