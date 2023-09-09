@@ -80,7 +80,7 @@ const MultiSelectModeHeader = (props: MultiSelectModeHeaderProps) => {
   );
 };
 
-const EditFields: React.FC<AppScreenProps<'edit-fields'>> = props => {
+const EditFields: React.FC<AppScreenProps<'edit-fields'>> = () => {
   const dispatch = useAppDispatch();
   const {fields, sectionedFields} = useFields();
   const {selectedFields, multiSelectModeEnabled} = useSelectedFields();
