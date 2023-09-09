@@ -1,5 +1,6 @@
 import BingoSheet from '@/components/BingoSheet';
 import Confetti from '@/components/Confetti';
+import GooglePlayAd from '@/components/GooglePlayAd';
 import {AlertOptions, useAlert} from '@/context/AlertContext';
 import {useSnackbar} from '@/context/SnackbarContext';
 import {useAppDispatch} from '@/hooks';
@@ -123,6 +124,12 @@ const Play: React.FC<AppScreenProps<'play'>> = () => {
 
   return (
     <View style={styles.wrapper}>
+      {Platform.OS === 'web' && (
+        <View style={styles.end}>
+          <GooglePlayAd />
+        </View>
+      )}
+
       <View style={styles.center}>
         <BingoSheet fields={currentSheet} />
       </View>
@@ -168,6 +175,9 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
+  },
+  end: {
+    alignItems: 'flex-end',
   },
 });
 
