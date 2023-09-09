@@ -7,6 +7,7 @@ import {Platform} from 'react-native';
 const DrawerNavigation: React.FC = () => {
   return (
     <Drawer
+      defaultStatus="closed"
       initialRouteName={INITIAL_ROUTE}
       backBehavior={Platform.OS === 'web' ? undefined : 'initialRoute'}
       drawerContent={props => <DrawerContent {...props} />}>
