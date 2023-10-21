@@ -8,6 +8,7 @@ import {Drawer, Switch, Text} from 'react-native-paper';
 import {useAppDispatch} from '../hooks';
 import {appRoutes} from '../navigation/routes';
 import {toggle, useAppTheme} from '../stores/themeSlice';
+import Logo from '../../assets/logo.svg';
 
 const DrawerContent: React.FC<DrawerContentComponentProps> = props => {
   const dispatch = useAppDispatch();
@@ -20,9 +21,18 @@ const DrawerContent: React.FC<DrawerContentComponentProps> = props => {
 
   return (
     <DrawerContentScrollView {...props}>
-      <Text style={style.title} variant="titleLarge">
-        Convention Bingo
-      </Text>
+      <View style={style.titleBox}>
+        <Logo
+          height={40}
+          width={40}
+          color={theme.colors.text}
+          fill={theme.colors.text}
+          stroke={theme.colors.text}
+        />
+        <Text style={style.title} variant="titleLarge">
+          Convention Bingo
+        </Text>
+      </View>
       <Drawer.Section>
         {appRoutes.map(route => {
           return (
@@ -57,6 +67,14 @@ const style = StyleSheet.create({
   title: {
     paddingVertical: 20,
     textAlign: 'center',
+  },
+  titleBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 12,
+    gap: 10,
+    marginVertical: 15,
   },
   toggleBox: {
     display: 'flex',
