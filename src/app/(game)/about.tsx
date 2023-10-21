@@ -1,9 +1,10 @@
+import ThemeAwareLogo from '@/components/ThemeAwareLogo';
 import {AppScreenProps} from '@/navigation/types';
+import Constants from 'expo-constants';
 import {useRouter} from 'expo-router';
 import React from 'react';
 import {Linking, Platform, StyleSheet, View} from 'react-native';
 import {Button, Card, Text} from 'react-native-paper';
-import Constants from 'expo-constants';
 
 const {version} = Constants.expoConfig ?? {};
 const {playstoreUrl, githubUrl, webUrl} = Constants.expoConfig?.extra ?? {};
@@ -15,11 +16,13 @@ const About: React.FC<AppScreenProps<'about'>> = () => {
     <View style={styles.wrapper}>
       <Card onPress={() => {}} style={styles.card}>
         <Card.Title
+          right={() => <ThemeAwareLogo height={48} width={48} />}
+          rightStyle={styles.logo}
           title="About this App"
           titleVariant="headlineSmall"
           subtitle={`Version: ${version}`}
         />
-        <Card.Content>
+        <Card.Content style={styles.cardContent}>
           <Text variant="bodyMedium">
             Hi there!
             {'\n\n'}
@@ -82,6 +85,12 @@ const styles = StyleSheet.create({
   },
   card: {
     marginVertical: 25,
+  },
+  cardContent: {
+    paddingVertical: 10,
+  },
+  logo: {
+    paddingRight: 10,
   },
 });
 

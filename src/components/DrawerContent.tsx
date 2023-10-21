@@ -8,7 +8,7 @@ import {Drawer, Switch, Text} from 'react-native-paper';
 import {useAppDispatch} from '../hooks';
 import {appRoutes} from '../navigation/routes';
 import {toggle, useAppTheme} from '../stores/themeSlice';
-import Logo from '../../assets/logo.svg';
+import ThemeAwareLogo from './ThemeAwareLogo';
 
 const DrawerContent: React.FC<DrawerContentComponentProps> = props => {
   const dispatch = useAppDispatch();
@@ -22,13 +22,7 @@ const DrawerContent: React.FC<DrawerContentComponentProps> = props => {
   return (
     <DrawerContentScrollView {...props}>
       <View style={style.titleBox}>
-        <Logo
-          height={40}
-          width={40}
-          color={theme.colors.text}
-          fill={theme.colors.text}
-          stroke={theme.colors.text}
-        />
+        <ThemeAwareLogo height={40} width={40} />
         <Text style={style.title} variant="titleLarge">
           Convention Bingo
         </Text>
