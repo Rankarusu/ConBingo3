@@ -5,7 +5,8 @@ import React, {
   useContext,
   useState,
 } from 'react';
-import {Button, Dialog, Portal, Text} from 'react-native-paper';
+
+import { Button, Dialog, Portal, Text } from 'react-native-paper';
 
 export interface AlertOptions {
   title: string;
@@ -24,7 +25,7 @@ const AlertContext = createContext<AlertContextActions>(
   {} as AlertContextActions,
 );
 
-export const AlertProvider: React.FC<PropsWithChildren> = props => {
+export const AlertProvider: React.FC<PropsWithChildren> = (props) => {
   const [open, setOpen] = useState(false);
 
   const [alertOptions, setAlertOptions] = useState<AlertOptions>({
@@ -56,7 +57,7 @@ export const AlertProvider: React.FC<PropsWithChildren> = props => {
   };
 
   return (
-    <AlertContext.Provider value={{showAlert}}>
+    <AlertContext.Provider value={{ showAlert }}>
       {props.children}
       <Portal>
         <Dialog visible={open} onDismiss={handleDismiss}>

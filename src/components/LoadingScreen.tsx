@@ -1,6 +1,8 @@
-import {StyleSheet, View} from 'react-native';
 import React from 'react';
-import {ActivityIndicator} from 'react-native-paper';
+
+import { StyleSheet, View } from 'react-native';
+
+import { ActivityIndicator } from 'react-native-paper';
 
 const LoadingScreen = () => {
   return (

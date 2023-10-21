@@ -1,23 +1,30 @@
+import React, { createRef, Suspense } from 'react';
+
+import { DimensionValue, FlatList, StyleSheet, View } from 'react-native';
+
+import { ActivityIndicator, Button } from 'react-native-paper';
+
 import SavedSheetsScroller from '@/components/SavedSheetsScroller';
-import {useSnackbar} from '@/context/SnackbarContext';
-import {useAppDispatch} from '@/hooks';
-import {CheckableBingoField} from '@/models/checkableBingoField';
-import {AppScreenProps} from '@/navigation/types';
-import {setCurrentSheet} from '@/stores/currentSheetSlice';
-import {addSheet, removeSheet, useSavedSheets} from '@/stores/savedSheetsSlice';
-import {loadAndValidate, share} from '@/utils/io';
-import {Logger} from '@/utils/logger';
-import {normalizeWhitespace} from '@/utils/text';
-import React, {createRef, Suspense} from 'react';
-import {DimensionValue, FlatList, StyleSheet, View} from 'react-native';
-import {ActivityIndicator, Button} from 'react-native-paper';
+import { useSnackbar } from '@/context/SnackbarContext';
+import { useAppDispatch } from '@/hooks';
+import { CheckableBingoField } from '@/models/checkableBingoField';
+import { AppScreenProps } from '@/navigation/types';
+import { setCurrentSheet } from '@/stores/currentSheetSlice';
+import {
+  addSheet,
+  removeSheet,
+  useSavedSheets,
+} from '@/stores/savedSheetsSlice';
+import { loadAndValidate, share } from '@/utils/io';
+import { Logger } from '@/utils/logger';
+import { normalizeWhitespace } from '@/utils/text';
 
 export const bingoSheetRegex =
   /^\[(?:(?:{"text":"(?:.{3,64}?)","checked":(?:true|false)(?:,"position":(?:\d|1\d|2[0-3]))?},){24}(?:{"text":"(?:.{3,64})","checked":(?:true|false)(?:,"position":24)?}))\]$/;
 
 const validateSheetFields = (fields: CheckableBingoField[]) => {
   const allFieldsValid = fields.every(
-    field => normalizeWhitespace(field.text) !== '',
+    (field) => normalizeWhitespace(field.text) !== '',
   );
   if (!allFieldsValid) {
     throw new Error('one or more fields are not valid.');
@@ -25,9 +32,9 @@ const validateSheetFields = (fields: CheckableBingoField[]) => {
 };
 
 const SavedSheets: React.FC<AppScreenProps<'saved-sheets'>> = () => {
-  const {savedSheets, selectedSheet, selectedSheetIndex} = useSavedSheets();
+  const { savedSheets, selectedSheet, selectedSheetIndex } = useSavedSheets();
   const dispatch = useAppDispatch();
-  const {showSnackbar} = useSnackbar();
+  const { showSnackbar } = useSnackbar();
   const flatRef = createRef<FlatList>();
 
   const loadSheet = () => {
@@ -100,7 +107,8 @@ const SavedSheets: React.FC<AppScreenProps<'saved-sheets'>> = () => {
           icon="open-in-new"
           mode="contained"
           disabled={savedSheets.length === 0}
-          onPress={loadSheet}>
+          onPress={loadSheet}
+        >
           Load
         </Button>
         <Button
@@ -109,7 +117,8 @@ const SavedSheets: React.FC<AppScreenProps<'saved-sheets'>> = () => {
           icon="delete"
           mode="contained"
           disabled={savedSheets.length === 0}
-          onPress={deleteSheet}>
+          onPress={deleteSheet}
+        >
           Delete
         </Button>
         <Button
@@ -117,7 +126,8 @@ const SavedSheets: React.FC<AppScreenProps<'saved-sheets'>> = () => {
           style={styles.button}
           icon="import"
           mode="contained"
-          onPress={importSheet}>
+          onPress={importSheet}
+        >
           Import
         </Button>
         <Button
@@ -126,7 +136,8 @@ const SavedSheets: React.FC<AppScreenProps<'saved-sheets'>> = () => {
           icon="share-variant"
           mode="contained"
           disabled={savedSheets.length === 0}
-          onPress={shareSheet}>
+          onPress={shareSheet}
+        >
           Share
         </Button>
       </View>

@@ -1,17 +1,20 @@
-import {useAppTheme} from '@/stores/themeSlice';
-import Logo from '@assets/logo.svg';
 import React from 'react';
+
+import { StyleSheet } from 'react-native';
+
+import { useAppTheme } from '@/stores/themeSlice';
+import Logo from '@assets/logo.svg';
 
 interface ThemeAwareLogoProps {
   height: number;
   width: number;
 }
 
-const ThemeAwareLogo: React.FC<ThemeAwareLogoProps> = props => {
+const ThemeAwareLogo: React.FC<ThemeAwareLogoProps> = (props) => {
   const theme = useAppTheme();
   return (
     <Logo
-      style={{paddingEnd: 20}}
+      style={styles.logo}
       height={props.height}
       width={props.width}
       color={theme.colors.text}
@@ -20,5 +23,11 @@ const ThemeAwareLogo: React.FC<ThemeAwareLogoProps> = props => {
     />
   );
 };
+
+const styles = StyleSheet.create({
+  logo: {
+    paddingEnd: 20,
+  },
+});
 
 export default ThemeAwareLogo;

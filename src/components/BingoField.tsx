@@ -1,11 +1,10 @@
-import {useAppDispatch} from '@/hooks';
-import {useModal} from '@/hooks/useModal';
-import {toggleCheckedField} from '@/stores/currentSheetSlice';
-import {useAppTheme} from '@/stores/themeSlice';
-import {RgbaColor} from '@/utils/rgbaColor';
-import React, {memo} from 'react';
-import {Dimensions, Platform, StyleSheet} from 'react-native';
-import {Surface, Text, TouchableRipple} from 'react-native-paper';
+// expo web css hacks
+/* eslint-disable react-native/no-inline-styles */
+import React, { memo } from 'react';
+
+import { Dimensions, Platform, StyleSheet } from 'react-native';
+
+import { Surface, Text, TouchableRipple } from 'react-native-paper';
 import Animated, {
   interpolateColor,
   useAnimatedStyle,
@@ -13,7 +12,13 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-import './BingoField.css';
+import { useAppDispatch } from '@/hooks';
+import { useModal } from '@/hooks/useModal';
+import { toggleCheckedField } from '@/stores/currentSheetSlice';
+import { useAppTheme } from '@/stores/themeSlice';
+import { RgbaColor } from '@/utils/rgbaColor';
+
+import '@/components/BingoField.css';
 
 export interface BingoFieldProps {
   position: number;
@@ -21,10 +26,10 @@ export interface BingoFieldProps {
   checked?: boolean;
   readonly?: boolean;
 }
-const BingoField: React.FC<BingoFieldProps> = props => {
+const BingoField: React.FC<BingoFieldProps> = (props) => {
   const dispatch = useAppDispatch();
   const theme = useAppTheme();
-  const {openEditCurrentSheetModal} = useModal();
+  const { openEditCurrentSheetModal } = useModal();
 
   const primary = RgbaColor.FromString(theme.colors.primary);
   primary.a = 0.2;
@@ -64,7 +69,8 @@ const BingoField: React.FC<BingoFieldProps> = props => {
           _: 'bingo-field',
         },
         styles.bingoField,
-      ]}>
+      ]}
+    >
       <TouchableRipple
         style={styles.content}
         borderless
@@ -81,7 +87,8 @@ const BingoField: React.FC<BingoFieldProps> = props => {
         }}
         onLongPress={() => {
           openEditCurrentSheetModal(props.position);
-        }}>
+        }}
+      >
         <Animated.View style={[styles.content, borderStyle]}>
           <Text
             style={[
@@ -96,7 +103,8 @@ const BingoField: React.FC<BingoFieldProps> = props => {
             android_hyphenationFrequency="full"
             ellipsizeMode="tail"
             numberOfLines={6}
-            variant="bodySmall">
+            variant="bodySmall"
+          >
             {props.text}
           </Text>
         </Animated.View>

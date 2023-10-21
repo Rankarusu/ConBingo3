@@ -1,33 +1,36 @@
 /* eslint-disable react/no-unstable-nested-components */
-import React, {memo, useCallback, useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Appbar, FAB, Searchbar} from 'react-native-paper';
+import React, { memo, useCallback, useEffect, useState } from 'react';
+
+import { StyleSheet, View } from 'react-native';
+
+import { Appbar, FAB, Searchbar } from 'react-native-paper';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import { useNavigation } from 'expo-router';
+
 import BingoFieldList from '@/components/BingoFieldList';
 import DrawerNavigationHeader, {
   DrawerNavigationHeaderProps,
 } from '@/components/DrawerNavigationHeader';
-import {AlertOptions, useAlert} from '@/context/AlertContext';
-import {useSnackbar} from '@/context/SnackbarContext';
-import {useAppDispatch} from '@/hooks';
-import {useModal} from '@/hooks/useModal';
-import {AppScreenProps} from '@/navigation/types';
+import { AlertOptions, useAlert } from '@/context/AlertContext';
+import { useSnackbar } from '@/context/SnackbarContext';
+import { useAppDispatch } from '@/hooks';
+import { useModal } from '@/hooks/useModal';
+import { AppScreenProps } from '@/navigation/types';
 import {
   addFields,
   removeFields,
   resetFields,
   useFields,
 } from '@/stores/fieldsSlice';
-import Animated, {FadeIn, FadeOut} from 'react-native-reanimated';
-import {useAppTheme} from '@/stores/themeSlice';
+import { useAppTheme } from '@/stores/themeSlice';
 import {
   resetSelectedFields,
   setMultiselectMode,
   useSelectedFields,
 } from '@/stores/selectedFieldsSlice';
-import {loadAndValidate, share} from '@/utils/io';
-import {Logger} from '@/utils/logger';
-import {useNavigation} from 'expo-router';
-import {normalizeWhitespace} from '@/utils/text';
+import { loadAndValidate, share } from '@/utils/io';
+import { Logger } from '@/utils/logger';
+import { normalizeWhitespace } from '@/utils/text';
 
 const FADE_DURATION = 300;
 export const exportedFieldsRegex = /^\[(?:".{3,64}",)+(?:".{3,64}")\]$/; //literally just a string array with lengths between 3 and 64
@@ -40,7 +43,8 @@ type MemoizedHeaderProps = DrawerNavigationHeaderProps & {
 const MemoizedHeader = memo((props: MemoizedHeaderProps) => {
   return (
     <Animated.View //we animate this so we can have a nice transition when going into multiselect mode
-      exiting={FadeOut.duration(FADE_DURATION)}>
+      exiting={FadeOut.duration(FADE_DURATION)}
+    >
       <DrawerNavigationHeader
         {...props}
         right={
@@ -66,12 +70,16 @@ const MultiSelectModeHeader = (props: MultiSelectModeHeaderProps) => {
   return (
     <Animated.View
       entering={FadeIn.duration(FADE_DURATION)}
-      exiting={FadeOut.duration(FADE_DURATION)}>
+      exiting={FadeOut.duration(FADE_DURATION)}
+    >
       <Appbar.Header
+        // not worth it to create a custom hook with theme just for this
+        // eslint-disable-next-line react-native/no-inline-styles
         style={{
           borderBottomColor: theme.colors.primary,
           borderBottomWidth: 2,
-        }}>
+        }}
+      >
         <Appbar.BackAction onPress={props.cancelMode} />
         <Appbar.Content title={props.title} style={styles.title} />
         <Appbar.Action icon="share-variant" onPress={props.shareFields} />
@@ -83,14 +91,14 @@ const MultiSelectModeHeader = (props: MultiSelectModeHeaderProps) => {
 
 const EditFields: React.FC<AppScreenProps<'edit-fields'>> = () => {
   const dispatch = useAppDispatch();
-  const {fields, sectionedFields} = useFields();
-  const {selectedFields, multiSelectModeEnabled} = useSelectedFields();
-  const {openAddModal} = useModal();
-  const {showAlert} = useAlert();
-  const {showSnackbar} = useSnackbar();
+  const { fields, sectionedFields } = useFields();
+  const { selectedFields, multiSelectModeEnabled } = useSelectedFields();
+  const { openAddModal } = useModal();
+  const { showAlert } = useAlert();
+  const { showSnackbar } = useSnackbar();
   const navigation = useNavigation();
 
-  const [searchQuery, setSearchQuery] = React.useState('');
+  const [searchQuery, setSearchQuery] = useState('');
 
   // add our reset button to the header
   const confirmAndResetFields = useCallback(() => {
@@ -121,7 +129,7 @@ const EditFields: React.FC<AppScreenProps<'edit-fields'>> = () => {
     showAlert(alertOptions);
   }, [dispatch, showAlert, showSnackbar, selectedFields]);
 
-  const importFields = async () => {
+  const importFields = useCallback(async () => {
     let importedFields;
     try {
       importedFields = await loadAndValidate<string[]>(exportedFieldsRegex);
@@ -135,9 +143,9 @@ const EditFields: React.FC<AppScreenProps<'edit-fields'>> = () => {
     if (!importedFields) {
       return;
     }
-    const fieldTexts = fields.map(field => normalizeWhitespace(field.text));
+    const fieldTexts = fields.map((field) => normalizeWhitespace(field.text));
     const deduplicatedFields = importedFields.filter(
-      field => !fieldTexts.includes(field) || !field,
+      (field) => !fieldTexts.includes(field) || !field,
     );
     if (deduplicatedFields.length > 0) {
       dispatch(addFields(deduplicatedFields));
@@ -150,19 +158,19 @@ const EditFields: React.FC<AppScreenProps<'edit-fields'>> = () => {
     } else {
       showSnackbar('Nothing to import!', true);
     }
-  };
+  }, [dispatch, fields, showSnackbar]);
 
-  const shareFields = async () => {
+  const shareFields = useCallback(async () => {
     const fieldsToLoad = fields
-      .filter(field => selectedFields.includes(field.id))
-      .map(field => field.text);
+      .filter((field) => selectedFields.includes(field.id))
+      .map((field) => field.text);
     if (!fieldsToLoad) {
       showSnackbar('Something went wrong while sharing fields.', true);
       Logger.error('tried to share empty fields.');
       return;
     }
     await share(fieldsToLoad, 'bingo-fields.txt');
-  };
+  }, [fields, selectedFields, showSnackbar]);
 
   useEffect(() => {
     if (multiSelectModeEnabled) {
@@ -197,6 +205,10 @@ const EditFields: React.FC<AppScreenProps<'edit-fields'>> = () => {
     confirmAndResetFields,
     multiSelectModeEnabled,
     selectedFields,
+    confirmAndDeleteFields,
+    shareFields,
+    dispatch,
+    importFields,
   ]);
   const onChangeSearch = (query: string) => {
     setSearchQuery(query);

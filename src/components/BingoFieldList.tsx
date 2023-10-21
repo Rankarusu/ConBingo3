@@ -1,30 +1,32 @@
 import React from 'react';
-import {SectionList, StyleSheet} from 'react-native';
-import {Divider, List, Text} from 'react-native-paper';
-import {useSnackbar} from '@/context/SnackbarContext';
-import {useAppDispatch} from '@/hooks';
-import {useModal} from '@/hooks/useModal';
-import {FieldSection} from '@/models/sectionedFields';
-import {AppScreenProps} from '@/navigation/types';
-import {removeFields} from '@/stores/fieldsSlice';
-import BingoFieldListItem from './BingoFieldListItem';
+
+import { SectionList, StyleSheet } from 'react-native';
+
+import { Divider, List, Text } from 'react-native-paper';
+
+import { useSnackbar } from '@/context/SnackbarContext';
+import { useAppDispatch } from '@/hooks';
+import { useModal } from '@/hooks/useModal';
+import { FieldSection } from '@/models/sectionedFields';
+import { removeFields } from '@/stores/fieldsSlice';
 import {
   addSelectedField,
   removeSelectedField,
   setMultiselectMode,
   useSelectedFields,
-} from '../stores/selectedFieldsSlice';
+} from '@/stores/selectedFieldsSlice';
+import BingoFieldListItem from '@/components/BingoFieldListItem';
 
 interface BingoFieldListProps {
   sections: FieldSection[];
   searchQuery: string;
 }
 
-const BingoFieldList: React.FC<BingoFieldListProps> = props => {
+export const BingoFieldList: React.FC<BingoFieldListProps> = (props) => {
   const dispatch = useAppDispatch();
-  const {openEditModal} = useModal();
-  const {showSnackbar} = useSnackbar();
-  const {selectedFields, multiSelectModeEnabled} = useSelectedFields();
+  const { openEditModal } = useModal();
+  const { showSnackbar } = useSnackbar();
+  const { selectedFields, multiSelectModeEnabled } = useSelectedFields();
 
   const shouldHide = (text: string) => {
     return !text.toLowerCase().includes(props.searchQuery.toLowerCase());
@@ -67,18 +69,18 @@ const BingoFieldList: React.FC<BingoFieldListProps> = props => {
       sections={props.sections}
       ListFooterComponent={
         <Text style={styles.text} variant="labelMedium">
-          {props.sections.flatMap(section => section.data).length} fields
+          {props.sections.flatMap((section) => section.data).length} fields
         </Text>
       }
       ListFooterComponentStyle={styles.footer}
-      renderSectionHeader={({section}) => (
+      renderSectionHeader={({ section }) => (
         <List.Subheader>
           {section.title} ({section.data.length})
         </List.Subheader>
       )}
       renderSectionFooter={() => <Divider />}
-      ItemSeparatorComponent={() => <Divider />}
-      renderItem={({item}) => {
+      ItemSeparatorComponent={Divider}
+      renderItem={({ item }) => {
         return (
           <BingoFieldListItem
             key={item.id}

@@ -1,9 +1,11 @@
-import {createSlice} from '@reduxjs/toolkit';
-import {Appearance, ColorSchemeName} from 'react-native';
-import {CombinedDarkTheme, CombinedDefaultTheme} from '../utils/theme';
-import {RootState} from './store';
-import {Logger} from '../utils/logger';
-import {useSelector} from 'react-redux';
+import { Appearance, ColorSchemeName } from 'react-native';
+
+import { createSlice } from '@reduxjs/toolkit';
+import { useSelector } from 'react-redux';
+
+import { CombinedDarkTheme, CombinedDefaultTheme } from '@/utils/theme';
+import { RootState } from '@/stores/store';
+import { Logger } from '@/utils/logger';
 
 interface ThemeState {
   value: ColorSchemeName;
@@ -17,7 +19,7 @@ export const themeSlice = createSlice({
   name: 'theme',
   initialState,
   reducers: {
-    toggle: state => {
+    toggle: (state) => {
       state.value = state.value === 'light' ? 'dark' : 'light';
       Logger.debug(`theme toggled: ${state.value}`);
     },
@@ -30,6 +32,6 @@ export function useAppTheme() {
   );
   return selector;
 }
-export const {toggle} = themeSlice.actions;
+export const { toggle } = themeSlice.actions;
 
 export default themeSlice.reducer;

@@ -1,8 +1,8 @@
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
-import {Logger} from './logger';
-
 import * as DocumentPicker from 'expo-document-picker';
+
+import { Logger } from '@/utils/logger';
 
 //TODO: change this to an actual json file once discord learned what that is and how to handle them
 const MIME_TYPE = 'text/plain';
@@ -20,12 +20,12 @@ export const share = async <T>(data: T, fileName: string) => {
   }
   const dataStr = JSON.stringify(data);
   const filePath = `${FileSystem.cacheDirectory}/${fileName}`;
-  await FileSystem.writeAsStringAsync(filePath, dataStr, {encoding: 'utf8'});
+  await FileSystem.writeAsStringAsync(filePath, dataStr, { encoding: 'utf8' });
   Logger.debug(`Attempting to share file ${filePath}`);
   await Sharing.shareAsync(filePath, {
     mimeType: MIME_TYPE,
     dialogTitle: fileName,
-  }).catch(error => Logger.warn(error));
+  }).catch((error) => Logger.warn(error));
 };
 
 const pickFile = async () => {

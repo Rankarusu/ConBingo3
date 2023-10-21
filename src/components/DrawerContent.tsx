@@ -1,21 +1,24 @@
+import React from 'react';
+
+import { StyleSheet, View } from 'react-native';
+
 import {
   DrawerContentComponentProps,
   DrawerContentScrollView,
 } from '@react-navigation/drawer';
-import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Drawer, Switch, Text} from 'react-native-paper';
-import {useAppDispatch} from '../hooks';
-import {appRoutes} from '../navigation/routes';
-import {toggle, useAppTheme} from '../stores/themeSlice';
-import ThemeAwareLogo from './ThemeAwareLogo';
+import { Drawer, Switch, Text } from 'react-native-paper';
 
-const DrawerContent: React.FC<DrawerContentComponentProps> = props => {
+import { useAppDispatch } from '@/hooks';
+import { appRoutes } from '@/navigation/routes';
+import { toggle, useAppTheme } from '@/stores/themeSlice';
+import ThemeAwareLogo from '@/components/ThemeAwareLogo';
+
+const DrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
   const dispatch = useAppDispatch();
   const theme = useAppTheme();
 
   const getCurrentRouteName = () => {
-    const {routeNames, index} = props.navigation.getState();
+    const { routeNames, index } = props.navigation.getState();
     return routeNames[index];
   };
 
@@ -28,7 +31,7 @@ const DrawerContent: React.FC<DrawerContentComponentProps> = props => {
         </Text>
       </View>
       <Drawer.Section>
-        {appRoutes.map(route => {
+        {appRoutes.map((route) => {
           return (
             <Drawer.Item
               key={route.name}

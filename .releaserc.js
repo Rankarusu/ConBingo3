@@ -1,5 +1,5 @@
 module.exports = {
-  branches: [{name: 'master'}],
+  branches: [{ name: 'master' }],
   npmPublish: false,
   plugins: [
     '@semantic-release/commit-analyzer',
@@ -17,7 +17,7 @@ module.exports = {
           {
             files: ['app.config.ts'],
             from: `versionCode: [^,]*`,
-            to: match =>
+            to: (match) =>
               `versionCode: ${parseInt(match.split(':')[1].trim()) + 1}`,
           },
         ],

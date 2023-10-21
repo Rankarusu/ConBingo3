@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Action, configureStore, ThunkAction} from '@reduxjs/toolkit';
+import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import {
   createMigrate,
   FLUSH,
@@ -7,20 +7,20 @@ import {
   PAUSE,
   PERSIST,
   persistCombineReducers,
-  PersistedState,
   persistStore,
   PURGE,
   REGISTER,
   REHYDRATE,
 } from 'redux-persist';
-import currentSheetSlice from './currentSheetSlice';
-import fieldsSlice from './fieldsSlice';
-import savedSheetsSlice from './savedSheetsSlice';
-import themeSlice from './themeSlice';
-import defaultFields from '../data/defaultFields.json';
-import {CheckableBingoField} from '../models/checkableBingoField';
-import {BingoField} from '../models/bingoField';
-import selectedFieldsSlice from './selectedFieldsSlice';
+
+import defaultFields from '@/data/defaultFields.json';
+import { BingoField } from '@/models/bingoField';
+import { CheckableBingoField } from '@/models/checkableBingoField';
+import currentSheetSlice from '@/stores/currentSheetSlice';
+import fieldsSlice from '@/stores/fieldsSlice';
+import savedSheetsSlice from '@/stores/savedSheetsSlice';
+import selectedFieldsSlice from '@/stores/selectedFieldsSlice';
+import themeSlice from '@/stores/themeSlice';
 
 const migrations: MigrationManifest = {
   0: (state: any) => {
@@ -54,7 +54,7 @@ const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
   version: 2,
-  migrate: createMigrate(migrations, {debug: __DEV__}),
+  migrate: createMigrate(migrations, { debug: __DEV__ }),
   blacklist: ['selectedFields'], // it's handy to put into redux, but we don't need to persist it.
 };
 
@@ -68,7 +68,7 @@ const reducer = persistCombineReducers(persistConfig, {
 
 export const store = configureStore({
   reducer: reducer,
-  middleware: getDefaultMiddleware =>
+  middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],

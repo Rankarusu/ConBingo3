@@ -1,4 +1,3 @@
-import {useKeyboard} from '@react-native-community/hooks';
 import React, {
   PropsWithChildren,
   createContext,
@@ -6,7 +5,9 @@ import React, {
   useContext,
   useState,
 } from 'react';
-import {Snackbar} from 'react-native-paper';
+
+import { useKeyboard } from '@react-native-community/hooks';
+import { Snackbar } from 'react-native-paper';
 
 const DURATION = 3000;
 
@@ -18,7 +19,7 @@ const SnackbarContext = createContext<SnackBarContextActions>(
   {} as SnackBarContextActions,
 );
 
-export const SnackbarProvider: React.FC<PropsWithChildren> = props => {
+export const SnackbarProvider: React.FC<PropsWithChildren> = (props) => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [placeAboveFab, setPlaceAboveFab] = useState(false);
@@ -49,16 +50,17 @@ export const SnackbarProvider: React.FC<PropsWithChildren> = props => {
   };
 
   return (
-    <SnackbarContext.Provider value={{showSnackbar}}>
+    <SnackbarContext.Provider value={{ showSnackbar }}>
       {props.children}
       <Snackbar
-        wrapperStyle={[{bottom: getBottomPosition()}]}
+        wrapperStyle={[{ bottom: getBottomPosition() }]}
         duration={DURATION}
         visible={open}
         onDismiss={handleClose}
         action={{
           label: 'Dismiss',
-        }}>
+        }}
+      >
         {message}
       </Snackbar>
     </SnackbarContext.Provider>

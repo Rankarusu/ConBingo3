@@ -1,34 +1,36 @@
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+
+import { DimensionValue, Platform, StyleSheet, View } from 'react-native';
+
+import { useFocusEffect } from '@react-navigation/native';
+import confetti from 'canvas-confetti';
+import { useRouter } from 'expo-router';
+import ConfettiCannon from 'react-native-confetti-cannon';
+import { Button } from 'react-native-paper';
+
 import BingoSheet from '@/components/BingoSheet';
 import Confetti from '@/components/Confetti';
 import GooglePlayAd from '@/components/GooglePlayAd';
-import {AlertOptions, useAlert} from '@/context/AlertContext';
-import {useSnackbar} from '@/context/SnackbarContext';
-import {useAppDispatch} from '@/hooks';
-import {AppScreenProps} from '@/navigation/types';
+import { AlertOptions, useAlert } from '@/context/AlertContext';
+import { useSnackbar } from '@/context/SnackbarContext';
+import { useAppDispatch } from '@/hooks';
+import { AppScreenProps } from '@/navigation/types';
 import {
   resetCurrentSheet,
   resetWin,
   setAlreadyLaunched,
   useCurrentSheet,
 } from '@/stores/currentSheetSlice';
-import {resetFields, useFields} from '@/stores/fieldsSlice';
-import {addSheet} from '@/stores/savedSheetsSlice';
-import {Logger, deleteOldLogs} from '@/utils/logger';
-import {useFocusEffect} from '@react-navigation/native';
-import confetti from 'canvas-confetti';
-import {useNavigation, useRouter} from 'expo-router';
-import React, {useCallback, useEffect, useMemo, useRef} from 'react';
-import {DimensionValue, Platform, StyleSheet, View} from 'react-native';
-import ConfettiCannon from 'react-native-confetti-cannon';
-import {Button} from 'react-native-paper';
+import { resetFields, useFields } from '@/stores/fieldsSlice';
+import { addSheet } from '@/stores/savedSheetsSlice';
+import { Logger, deleteOldLogs } from '@/utils/logger';
 
 const Play: React.FC<AppScreenProps<'play'>> = () => {
   const dispatch = useAppDispatch();
-  const {currentSheet, win, alreadyLaunched} = useCurrentSheet();
-  const {fields} = useFields();
-  const {showSnackbar} = useSnackbar();
-  const {showAlert} = useAlert();
-  const navigation = useNavigation();
+  const { currentSheet, win, alreadyLaunched } = useCurrentSheet();
+  const { fields } = useFields();
+  const { showSnackbar } = useSnackbar();
+  const { showAlert } = useAlert();
   const router = useRouter();
 
   const confettiRef = useRef<ConfettiCannon>(null);
@@ -44,7 +46,7 @@ const Play: React.FC<AppScreenProps<'play'>> = () => {
       return;
     }
     // show a confirmation if there is progress on the sheet
-    const checkedFields = currentSheet.filter(field => field.checked);
+    const checkedFields = currentSheet.filter((field) => field.checked);
     if (checkedFields.length > 1 && checkedFields[0].text === 'FREE SPACE') {
       showAlert(rerollSheetAlert);
       return;
@@ -61,7 +63,7 @@ const Play: React.FC<AppScreenProps<'play'>> = () => {
       confirmAction: () => dispatch(resetCurrentSheet(fields)),
       cancelText: 'Cancel',
     };
-  }, [dispatch]);
+  }, [dispatch, fields]);
 
   const notEnoughFieldsAlert: AlertOptions = useMemo(() => {
     return {
@@ -73,7 +75,7 @@ const Play: React.FC<AppScreenProps<'play'>> = () => {
       cancelText: 'Add more fields',
       cancelAction: () => router.push('/(game)/edit-fields'),
     };
-  }, [dispatch, navigation]);
+  }, [dispatch, router]);
 
   const shootConfetti = () => {
     if (Platform.OS === 'web') {
@@ -156,14 +158,16 @@ const Play: React.FC<AppScreenProps<'play'>> = () => {
           style={styles.button}
           icon="reload"
           mode="contained"
-          onPress={rerollSheet}>
+          onPress={rerollSheet}
+        >
           Reroll
         </Button>
         <Button
           style={styles.button}
           icon="content-save"
           mode="contained"
-          onPress={saveSheet}>
+          onPress={saveSheet}
+        >
           Save
         </Button>
       </View>

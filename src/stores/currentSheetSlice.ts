@@ -1,11 +1,12 @@
-import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {CheckableBingoField} from '../models/checkableBingoField';
-import {winningRows} from '../utils/winningRows';
-import {RootState} from './store';
-import {useSelector} from 'react-redux';
-import {generateSheet} from '../utils/generateSheet';
-import {BingoField} from '../models/bingoField';
-import {Logger} from '../utils/logger';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { useSelector } from 'react-redux';
+
+import { BingoField } from '@/models/bingoField';
+import { CheckableBingoField } from '@/models/checkableBingoField';
+import { RootState } from '@/stores/store';
+import { generateSheet } from '@/utils/generateSheet';
+import { Logger } from '@/utils/logger';
+import { winningRows } from '@/utils/winningRows';
 
 interface CurrentSheetState {
   value: CheckableBingoField[];
@@ -33,8 +34,8 @@ const initialState: CurrentSheetState = {
 
 const checkWin = (pos: number, checkedPos: number[]) => {
   const result = winningRows
-    .filter(row => row.every(entry => checkedPos.includes(entry)))
-    .find(arr => arr.includes(pos)); // see if the newly selected field is in the winning row
+    .filter((row) => row.every((entry) => checkedPos.includes(entry)))
+    .find((arr) => arr.includes(pos)); // see if the newly selected field is in the winning row
   if (result) {
     Logger.info('bingo achieved');
   }
@@ -60,7 +61,7 @@ export const currentSheetSlice = createSlice({
       state,
       action: PayloadAction<ToggleCheckedStatePayload>,
     ) => {
-      const {position, checked} = action.payload;
+      const { position, checked } = action.payload;
       state.value[position].checked = checked;
       Logger.debug(
         `bingo field ${position} state changed: ${state.value[position].checked}`,
@@ -80,19 +81,19 @@ export const currentSheetSlice = createSlice({
       state,
       action: PayloadAction<UpdateBingoFieldPayload>,
     ) => {
-      const {position, text} = action.payload;
+      const { position, text } = action.payload;
       state.value[position].text = text;
       Logger.debug(
         `bingo field ${position} text changed: ${state.value[position].text}`,
       );
     },
 
-    resetWin: state => {
+    resetWin: (state) => {
       state.win = false;
       Logger.debug('win state reset');
     },
 
-    setAlreadyLaunched: state => {
+    setAlreadyLaunched: (state) => {
       state.alreadyLaunched = true;
       Logger.info('alreadyLaunched state set');
     },
@@ -107,6 +108,8 @@ export function useCurrentSheet() {
       (state: RootState) => state.currentSheet.alreadyLaunched,
     ),
     fieldByPosition: (position: number) =>
+      // this is literally what the redux docs said
+      // eslint-disable-next-line react-hooks/rules-of-hooks
       useSelector((state: RootState) => state.currentSheet.value[position]),
   };
   return selectors;

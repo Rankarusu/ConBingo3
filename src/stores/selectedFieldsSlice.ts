@@ -1,7 +1,8 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {useSelector} from 'react-redux';
-import {Logger} from '../utils/logger';
-import {RootState} from './store';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { useSelector } from 'react-redux';
+
+import { RootState } from '@/stores/store';
+import { Logger } from '@/utils/logger';
 
 interface SelectedFieldsState {
   value: number[];
@@ -23,11 +24,11 @@ export const selectedFieldsSlice = createSlice({
     },
 
     removeSelectedField: (state, action: PayloadAction<number>) => {
-      state.value = state.value.filter(item => item !== action.payload);
+      state.value = state.value.filter((item) => item !== action.payload);
       Logger.debug(`field ${action.payload} deselected`);
     },
 
-    resetSelectedFields: state => {
+    resetSelectedFields: (state) => {
       state.value = [];
       Logger.info('selected fields reset');
     },

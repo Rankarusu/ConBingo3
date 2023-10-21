@@ -1,12 +1,16 @@
-import React, {memo} from 'react';
-import {StyleSheet, ViewStyle} from 'react-native';
-import {IconButton, List, TouchableRipple} from 'react-native-paper';
-import {BingoField} from '../models/bingoField';
-import {useAppTheme} from '../stores/themeSlice';
-import {RgbaColor} from '../utils/rgbaColor';
-import {useSelectedFields} from '@/stores/selectedFieldsSlice';
+/* eslint-disable react-native/no-inline-styles */
+import React, { memo } from 'react';
 
-import './BingoFieldListItem.css';
+import { StyleSheet, ViewStyle } from 'react-native';
+
+import { IconButton, List, TouchableRipple } from 'react-native-paper';
+
+import { BingoField } from '@/models/bingoField';
+import { useSelectedFields } from '@/stores/selectedFieldsSlice';
+import { useAppTheme } from '@/stores/themeSlice';
+import { RgbaColor } from '@/utils/rgbaColor';
+
+import '@/components/BingoFieldListItem.css';
 
 export type BingoFieldListItemProps = BingoField & {
   //we pass style as a prop to hide the item if it does not match the search query
@@ -18,9 +22,9 @@ export type BingoFieldListItemProps = BingoField & {
   onLongPress: () => void;
 };
 
-export const BingoFieldListItem: React.FC<BingoFieldListItemProps> = props => {
+const BingoFieldListItem: React.FC<BingoFieldListItemProps> = (props) => {
   const theme = useAppTheme();
-  const {multiSelectModeEnabled} = useSelectedFields();
+  const { multiSelectModeEnabled } = useSelectedFields();
 
   const primary = RgbaColor.FromString(theme.colors.inversePrimary);
   primary.a = 0.3;
@@ -70,14 +74,15 @@ export const BingoFieldListItem: React.FC<BingoFieldListItemProps> = props => {
           _: 'ripple',
         },
         props.style,
-        props.selected ? {backgroundColor: translucentPrimary} : {},
+        props.selected ? { backgroundColor: translucentPrimary } : {},
       ]}
       onPress={props.onPress}
       onLongPress={props.onLongPress}
-      delayLongPress={150}>
+      delayLongPress={150}
+    >
       <List.Item
         titleStyle={
-          props.selected ? {color: theme.colors.onPrimaryContainer} : {}
+          props.selected ? { color: theme.colors.onPrimaryContainer } : {}
         }
         style={[
           {

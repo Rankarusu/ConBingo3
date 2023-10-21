@@ -1,14 +1,17 @@
-import Constants from 'expo-constants';
 import React from 'react';
-import {ImageBackground, Linking, Pressable, StyleSheet} from 'react-native';
 
-const {playstoreUrl} = Constants.expoConfig?.extra ?? {};
+import { ImageBackground, Linking, Pressable, StyleSheet } from 'react-native';
+
+import Constants from 'expo-constants';
+
+const { playstoreUrl } = Constants.expoConfig?.extra ?? {};
 
 const GooglePlayAd = () => {
   return (
     <Pressable
       style={styles.image}
-      onPress={() => Linking.openURL(playstoreUrl)}>
+      onPress={() => Linking.openURL(playstoreUrl)}
+    >
       <ImageBackground
         style={styles.image}
         alt="Get it on Google Play"

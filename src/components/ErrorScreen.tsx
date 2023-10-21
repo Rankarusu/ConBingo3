@@ -1,37 +1,38 @@
-import Constants from 'expo-constants';
-import React from 'react';
-import {Image, Linking, ScrollView, StyleSheet, View} from 'react-native';
-import {Button, List, Text} from 'react-native-paper';
+import React, { useState } from 'react';
 
-const {githubIssuesUrl} = Constants.expoConfig?.extra ?? {};
+import { Image, Linking, ScrollView, StyleSheet, View } from 'react-native';
+
+import Constants from 'expo-constants';
+import { Button, List, Text } from 'react-native-paper';
+
+const { githubIssuesUrl } = Constants.expoConfig?.extra ?? {};
 
 interface ErrorScreenProps {
   error: Error;
   retry?: () => void;
 }
 
-const ErrorScreen: React.FC<ErrorScreenProps> = props => {
-  const [expanded, setExpanded] = React.useState(false);
+const ErrorScreen: React.FC<ErrorScreenProps> = (props) => {
+  const [expanded, setExpanded] = useState(false);
 
   const handlePress = () => setExpanded(!expanded);
 
   return (
     <ScrollView contentContainerStyle={styles.wrapper}>
-      <Image source={require('../../assets/astolfo-plushy.gif')} />
+      <Image source={require('@assets/astolfo-plushy.gif')} />
       <Text variant="headlineLarge" style={styles.centerText}>
         Oh no, you broke it!
       </Text>
       <Text
         variant="bodyMedium"
-        style={[
-          styles.spacer,
-          styles.error,
-        ]}>{`${props.error.name}: ${props.error.message}`}</Text>
+        style={[styles.spacer, styles.error]}
+      >{`${props.error.name}: ${props.error.message}`}</Text>
 
       <List.Accordion
         title={expanded ? 'Hide Stacktrace' : 'Show Stacktrace'}
         expanded={expanded}
-        onPress={handlePress}>
+        onPress={handlePress}
+      >
         <Text variant="bodyMedium" style={[styles.spacer, styles.error]}>
           {props.error.stack}
         </Text>
@@ -46,7 +47,8 @@ const ErrorScreen: React.FC<ErrorScreenProps> = props => {
             mode="outlined"
             style={styles.button}
             icon="arrow-left"
-            onPress={props.retry}>
+            onPress={props.retry}
+          >
             Go Back
           </Button>
         )}
@@ -54,7 +56,8 @@ const ErrorScreen: React.FC<ErrorScreenProps> = props => {
           mode="outlined"
           style={styles.button}
           icon="github"
-          onPress={() => Linking.openURL(githubIssuesUrl)}>
+          onPress={() => Linking.openURL(githubIssuesUrl)}
+        >
           Open Issue
         </Button>
       </View>

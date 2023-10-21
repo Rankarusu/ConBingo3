@@ -1,20 +1,23 @@
+import React from 'react';
+
+import { Platform } from 'react-native';
+
+import { ThemeProvider } from '@react-navigation/native';
+import { Slot, SplashScreen, Stack } from 'expo-router';
+import { ErrorBoundaryProps } from 'expo-router/src/exports';
+import { StatusBar } from 'expo-status-bar';
+import { Provider as PaperProvider } from 'react-native-paper';
+import { Provider as ReduxProvider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+
 import ErrorScreen from '@/components/ErrorScreen';
 import RootNavigationHeader from '@/components/RootNavigationHeader';
-import {AlertProvider} from '@/context/AlertContext';
-import {SnackbarProvider} from '@/context/SnackbarContext';
-import {rootRoutes} from '@/navigation/routes';
-import {persistor, store} from '@/stores/store';
-import {useAppTheme} from '@/stores/themeSlice';
-import {Logger} from '@/utils/logger';
-import {ThemeProvider} from '@react-navigation/native';
-import {Slot, SplashScreen, Stack} from 'expo-router';
-import {ErrorBoundaryProps} from 'expo-router/src/exports';
-import {StatusBar} from 'expo-status-bar';
-import React from 'react';
-import {Platform} from 'react-native';
-import {Provider as PaperProvider} from 'react-native-paper';
-import {Provider as ReduxProvider} from 'react-redux';
-import {PersistGate} from 'redux-persist/integration/react';
+import { AlertProvider } from '@/context/AlertContext';
+import { SnackbarProvider } from '@/context/SnackbarContext';
+import { rootRoutes } from '@/navigation/routes';
+import { persistor, store } from '@/stores/store';
+import { useAppTheme } from '@/stores/themeSlice';
+import { Logger } from '@/utils/logger';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -48,18 +51,21 @@ const AppLayer = () => {
     <PersistGate
       persistor={persistor}
       loading={<Slot />}
-      onBeforeLift={() => Logger.debug('Persist gate lifting.')}>
+      onBeforeLift={() => Logger.debug('Persist gate lifting.')}
+    >
       <ThemeProvider value={theme}>
         <PaperProvider theme={theme}>
           <SnackbarProvider>
             <AlertProvider>
               <Stack
                 screenOptions={{
-                  header: props => (
+                  // eslint-disable-next-line react/no-unstable-nested-components
+                  header: (props) => (
                     <RootNavigationHeader title="Modal" {...props} />
                   ),
-                }}>
-                {rootRoutes.map(route => {
+                }}
+              >
+                {rootRoutes.map((route) => {
                   return (
                     <Stack.Screen
                       key={route.name}

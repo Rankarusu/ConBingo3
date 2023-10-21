@@ -1,4 +1,4 @@
-import {BingoField} from './bingoField';
+import { BingoField } from '@/models/bingoField';
 
 export type SectionTitle = 'Base Fields' | 'Custom Fields';
 

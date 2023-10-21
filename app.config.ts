@@ -1,4 +1,4 @@
-import {ExpoConfig} from 'expo/config';
+import { ExpoConfig } from 'expo/config';
 
 const withSigningConfig = require('./signing-config-plugin');
 

@@ -1,6 +1,11 @@
-import {consoleTransport, fileAsyncTransport, logger} from 'react-native-logs';
+import { Platform } from 'react-native';
+
+import {
+  consoleTransport,
+  fileAsyncTransport,
+  logger,
+} from 'react-native-logs';
 import * as FileSystem from 'expo-file-system';
-import {Platform} from 'react-native';
 
 const now = new Date();
 const y = now.getFullYear();
@@ -47,7 +52,7 @@ async function getLogUris() {
   );
 
   const logs = files
-    .filter(item => item.includes('log_'))
+    .filter((item) => item.includes('log_'))
     .sort((a, b) => b.localeCompare(a));
   return logs;
 }

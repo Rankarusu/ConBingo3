@@ -1,14 +1,18 @@
-import {DrawerHeaderProps} from '@react-navigation/drawer';
 import React from 'react';
-import {StyleSheet} from 'react-native';
-import {Appbar} from 'react-native-paper';
+
+import { StyleSheet } from 'react-native';
+
+import { DrawerHeaderProps } from '@react-navigation/drawer';
+import { Appbar } from 'react-native-paper';
 
 export type DrawerNavigationHeaderProps = DrawerHeaderProps & {
   title: string;
   right?: JSX.Element;
 };
 
-const DrawerNavigationHeader: React.FC<DrawerNavigationHeaderProps> = props => {
+const DrawerNavigationHeader: React.FC<DrawerNavigationHeaderProps> = (
+  props,
+) => {
   return (
     <Appbar.Header elevated>
       <Appbar.Action

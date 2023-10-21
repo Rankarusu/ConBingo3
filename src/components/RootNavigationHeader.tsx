@@ -1,14 +1,16 @@
-import {NativeStackHeaderProps} from '@react-navigation/native-stack';
 import React from 'react';
-import {StyleSheet} from 'react-native';
-import {Appbar} from 'react-native-paper';
+
+import { StyleSheet } from 'react-native';
+
+import { NativeStackHeaderProps } from '@react-navigation/native-stack';
+import { Appbar } from 'react-native-paper';
 
 export type RootNavigationHeaderProps = NativeStackHeaderProps & {
   title: string;
   right?: JSX.Element;
 };
 
-const RootNavigationHeader: React.FC<RootNavigationHeaderProps> = props => {
+const RootNavigationHeader: React.FC<RootNavigationHeaderProps> = (props) => {
   return (
     <Appbar.Header elevated>
       <Appbar.Action

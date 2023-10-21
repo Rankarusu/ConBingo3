@@ -1,4 +1,5 @@
-import React, {RefObject, useCallback} from 'react';
+import React, { RefObject, useCallback, useRef } from 'react';
+
 import {
   Animated,
   Dimensions,
@@ -8,13 +9,15 @@ import {
   ViewToken,
   ViewabilityConfig,
 } from 'react-native';
-import {ScalingDot} from 'react-native-animated-pagination-dots';
-import {Text} from 'react-native-paper';
-import BingoSheet from './BingoSheet';
-import {useAppDispatch} from '@/hooks';
-import {BingoSheet as BingoSheetModel} from '@/models/bingoSheet';
-import {setSelectedSheet} from '@/stores/savedSheetsSlice';
-import {useAppTheme} from '@/stores/themeSlice';
+
+import { ScalingDot } from 'react-native-animated-pagination-dots';
+import { Text } from 'react-native-paper';
+
+import BingoSheet from '@/components/BingoSheet';
+import { useAppDispatch } from '@/hooks';
+import { BingoSheet as BingoSheetModel } from '@/models/bingoSheet';
+import { setSelectedSheet } from '@/stores/savedSheetsSlice';
+import { useAppTheme } from '@/stores/themeSlice';
 
 const width = Dimensions.get('window').width;
 
@@ -28,15 +31,15 @@ const viewabilityConfig: ViewabilityConfig = {
   waitForInteraction: false,
 };
 
-const SavedSheetsScroller: React.FC<SavedSheetsScrollerProps> = props => {
+const SavedSheetsScroller: React.FC<SavedSheetsScrollerProps> = (props) => {
   const dispatch = useAppDispatch();
 
-  const {primary} = useAppTheme().colors;
-  const scrollX = React.useRef(new Animated.Value(0)).current;
+  const { primary } = useAppTheme().colors;
+  const scrollX = useRef(new Animated.Value(0)).current;
 
   // using useCallback to circumvent "changing onViewableItemsChanged on the fly is not supported"-error
   const onViewableItemsChanged = useCallback(
-    ({viewableItems}: {viewableItems: ViewToken[]}) => {
+    ({ viewableItems }: { viewableItems: ViewToken[] }) => {
       const currentId = viewableItems[0]?.item?.id;
       console.log(viewableItems);
       if (currentId !== undefined) {
@@ -73,12 +76,18 @@ const SavedSheetsScroller: React.FC<SavedSheetsScrollerProps> = props => {
         onViewableItemsChanged={onViewableItemsChanged}
         viewabilityConfig={viewabilityConfig}
         onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {x: scrollX}}}],
+          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
           {
             useNativeDriver: false,
           },
         )}
-        renderItem={({item, index}: {item: BingoSheetModel; index: number}) => (
+        renderItem={({
+          item,
+          index,
+        }: {
+          item: BingoSheetModel;
+          index: number;
+        }) => (
           <View style={styles.sheet}>
             <BingoSheet fields={item.fields} key={index} readonly />
           </View>

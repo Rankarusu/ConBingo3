@@ -1,13 +1,18 @@
-import ThemeAwareLogo from '@/components/ThemeAwareLogo';
-import {AppScreenProps} from '@/navigation/types';
-import Constants from 'expo-constants';
-import {useRouter} from 'expo-router';
 import React from 'react';
-import {Linking, Platform, StyleSheet, View} from 'react-native';
-import {Button, Card, Text} from 'react-native-paper';
 
-const {version} = Constants.expoConfig ?? {};
-const {playstoreUrl, githubUrl, webUrl} = Constants.expoConfig?.extra ?? {};
+import { Linking, Platform, StyleSheet, View } from 'react-native';
+
+import Constants from 'expo-constants';
+import { useRouter } from 'expo-router';
+import { Button, Card, Text } from 'react-native-paper';
+
+import { AppScreenProps } from '@/navigation/types';
+import ThemeAwareLogo from '@/components/ThemeAwareLogo';
+
+const { version } = Constants.expoConfig ?? {};
+const { playstoreUrl, githubUrl, webUrl } = Constants.expoConfig?.extra ?? {};
+
+const Icon = () => <ThemeAwareLogo height={48} width={48} />;
 
 const About: React.FC<AppScreenProps<'about'>> = () => {
   const router = useRouter();
@@ -16,7 +21,7 @@ const About: React.FC<AppScreenProps<'about'>> = () => {
     <View style={styles.wrapper}>
       <Card onPress={() => {}} style={styles.card}>
         <Card.Title
-          right={() => <ThemeAwareLogo height={48} width={48} />}
+          right={Icon}
           rightStyle={styles.logo}
           title="About this App"
           titleVariant="headlineSmall"
@@ -44,19 +49,22 @@ const About: React.FC<AppScreenProps<'about'>> = () => {
           <Button
             icon="web"
             mode="outlined"
-            onPress={() => Linking.openURL(webUrl)}>
+            onPress={() => Linking.openURL(webUrl)}
+          >
             Web
           </Button>
           <Button
             icon="google-play"
             mode="outlined"
-            onPress={() => Linking.openURL(playstoreUrl)}>
+            onPress={() => Linking.openURL(playstoreUrl)}
+          >
             Google Play
           </Button>
           <Button
             icon="github"
             mode="outlined"
-            onPress={() => Linking.openURL(githubUrl)}>
+            onPress={() => Linking.openURL(githubUrl)}
+          >
             Github
           </Button>
         </Card.Actions>
@@ -68,7 +76,8 @@ const About: React.FC<AppScreenProps<'about'>> = () => {
           mode="contained-tonal"
           onPress={() => {
             router.push('/(game)/logs');
-          }}>
+          }}
+        >
           Show Logs
         </Button>
       )}

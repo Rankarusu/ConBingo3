@@ -3,7 +3,7 @@ module.exports = function (api) {
   return {
     presets: ['babel-preset-expo'],
     plugins: [
-      ['react-native-platform-specific-extensions', {extensions: ['css']}],
+      ['react-native-platform-specific-extensions', { extensions: ['css'] }],
       '@babel/plugin-proposal-export-namespace-from',
       'expo-router/babel',
       'react-native-reanimated/plugin',

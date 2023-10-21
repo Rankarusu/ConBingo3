@@ -1,9 +1,9 @@
-const {withAppBuildGradle} = require('expo/config-plugins');
+const { withAppBuildGradle } = require('expo/config-plugins');
 
 // We build a config plugin that modifies the signing config of our build.gradle.
 // With this we can avoid checking the whole native stuff in an just let it be generated in the pipeline
 module.exports = function withSigningConfig(config) {
-  return withAppBuildGradle(config, config => {
+  return withAppBuildGradle(config, (config) => {
     console.log('modifying signing config in build.gradle');
     const signingConfigRelease = `release {
       if (project.hasProperty('CONBINGO_UPLOAD_STORE_FILE')) {

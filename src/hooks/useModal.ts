@@ -1,6 +1,7 @@
-import {useNavigation} from 'expo-router';
-import {ModalMode} from '@/app/modal';
-import {Logger} from '@/utils/logger';
+import { useNavigation } from 'expo-router';
+
+import { ModalMode } from '@/app/modal';
+import { Logger } from '@/utils/logger';
 
 export function useModal() {
   const navigation = useNavigation();
@@ -8,7 +9,7 @@ export function useModal() {
   const methods = {
     openAddModal: () => {
       Logger.debug('opening Add Modal');
-      navigation.navigate('modal', {mode: ModalMode.ADD});
+      navigation.navigate('modal', { mode: ModalMode.ADD });
     },
 
     openEditModal: (id: number) => {

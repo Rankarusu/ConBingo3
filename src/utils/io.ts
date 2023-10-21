@@ -1,6 +1,6 @@
-import {Logger} from './logger';
-
 import * as DocumentPicker from 'expo-document-picker';
+
+import { Logger } from '@/utils/logger';
 
 //TODO: change this to an actual json file once discord learned what that is and how to handle them
 const MIME_TYPE = 'text/plain';
@@ -8,7 +8,7 @@ const MIME_TYPE = 'text/plain';
 export const share = async <T>(data: T, fileName: string) => {
   const dataStr = JSON.stringify(data);
 
-  const blobConfig = new Blob([dataStr], {type: MIME_TYPE});
+  const blobConfig = new Blob([dataStr], { type: MIME_TYPE });
 
   const blobUrl = URL.createObjectURL(blobConfig);
 

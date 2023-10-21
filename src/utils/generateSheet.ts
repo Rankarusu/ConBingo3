@@ -1,5 +1,5 @@
-import {BingoField} from '../models/bingoField';
-import {CheckableBingoField} from '../models/checkableBingoField';
+import { BingoField } from '@/models/bingoField';
+import { CheckableBingoField } from '@/models/checkableBingoField';
 
 export function generateSheet(fields: BingoField[]) {
   const indices = generateUniqueRandomNumbers(24, fields.length);

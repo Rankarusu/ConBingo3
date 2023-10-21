@@ -1,10 +1,11 @@
-import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {useSelector} from 'react-redux';
-import defaultFields from '../data/defaultFields.json';
-import {BingoField} from '../models/bingoField';
-import {FieldSection} from '../models/sectionedFields';
-import {Logger} from '../utils/logger';
-import {RootState} from './store';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { useSelector } from 'react-redux';
+
+import defaultFields from '@/data/defaultFields.json';
+import { BingoField } from '@/models/bingoField';
+import { FieldSection } from '@/models/sectionedFields';
+import { RootState } from '@/stores/store';
+import { Logger } from '@/utils/logger';
 
 interface FieldsState {
   value: BingoField[];
@@ -25,7 +26,7 @@ export const fieldsSlice = createSlice({
   initialState,
   reducers: {
     addField: (state, action: PayloadAction<AddBingoFieldPayload>) => {
-      const {text, isCustom} = action.payload;
+      const { text, isCustom } = action.payload;
       const newField = {
         id: state.index,
         text,
@@ -37,7 +38,7 @@ export const fieldsSlice = createSlice({
     },
 
     addFields: (state, action: PayloadAction<string[]>) => {
-      action.payload.forEach(text => {
+      action.payload.forEach((text) => {
         const newField = {
           id: state.index,
           text,
@@ -53,13 +54,15 @@ export const fieldsSlice = createSlice({
       const idsToDelete = Array.isArray(action.payload)
         ? action.payload
         : [action.payload];
-      state.value = state.value.filter(item => !idsToDelete.includes(item.id));
+      state.value = state.value.filter(
+        (item) => !idsToDelete.includes(item.id),
+      );
       Logger.debug(`field ${action.payload} removed`);
     },
 
     updateField: (state, action: PayloadAction<UpdateBingoFieldPayload>) => {
-      const {id, text, isCustom} = action.payload;
-      const idx = state.value.findIndex(item => item.id === id);
+      const { id, text, isCustom } = action.payload;
+      const idx = state.value.findIndex((item) => item.id === id);
       if (state.value[idx].text === text) {
         // in case you just open the modal and close it via save, we don't want the field to go to custom fields
         return;
@@ -69,9 +72,9 @@ export const fieldsSlice = createSlice({
       Logger.debug(`field ${id} updated: ${text}`);
     },
 
-    resetFields: state => {
+    resetFields: (state) => {
       state.value = defaultFields.map((field, index) => {
-        return {id: index, text: field, isCustom: false} as BingoField;
+        return { id: index, text: field, isCustom: false } as BingoField;
       });
       state.index = defaultFields.length;
       Logger.info('fields reset');
@@ -83,7 +86,7 @@ export function useFields() {
   // we put this here to memoize the expensive sorting computation and eliminate the warning for it
   const sortedFields = createSelector(
     [(state: RootState) => state.fields.value],
-    fields => {
+    (fields) => {
       //we don't wanna mutate the state here. [...] copies
       const sorted = [...fields].sort((a, b) => a.text.localeCompare(b.text));
       return sorted;
@@ -94,12 +97,12 @@ export function useFields() {
   // form to use with a SectionedList Component
   const sectionedFields = createSelector(
     [(state: RootState) => state.fields.value],
-    fields => {
+    (fields) => {
       const sorted = [...fields].sort((a, b) => a.text.localeCompare(b.text));
 
-      const base: FieldSection = {title: 'Base Fields', data: []};
-      const custom: FieldSection = {title: 'Custom Fields', data: []};
-      sorted.forEach(field => {
+      const base: FieldSection = { title: 'Base Fields', data: [] };
+      const custom: FieldSection = { title: 'Custom Fields', data: [] };
+      sorted.forEach((field) => {
         if (field.isCustom) {
           custom.data.push(field);
         } else {
@@ -108,7 +111,7 @@ export function useFields() {
       });
 
       // don't display custom fields section if there are none
-      return [base, custom].filter(section => section.data.length > 0);
+      return [base, custom].filter((section) => section.data.length > 0);
     },
   );
 
@@ -117,14 +120,16 @@ export function useFields() {
     sortedFields: useSelector(sortedFields),
     sectionedFields: useSelector(sectionedFields),
     fieldById: (id: number) =>
+      // this is literally what the redux docs said.
+      // eslint-disable-next-line react-hooks/rules-of-hooks
       useSelector((state: RootState) =>
-        state.fields.value.find(field => field.id === id),
+        state.fields.value.find((field) => field.id === id),
       ),
   };
   return selectors;
 }
 
-export const {addField, addFields, removeFields, updateField, resetFields} =
+export const { addField, addFields, removeFields, updateField, resetFields } =
   fieldsSlice.actions;
 
 export default fieldsSlice.reducer;

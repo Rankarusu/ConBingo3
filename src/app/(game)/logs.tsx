@@ -1,14 +1,17 @@
 /* eslint-disable react/no-unstable-nested-components */
+import React, { memo, useEffect, useState } from 'react';
+
+import { Platform, ScrollView, StyleSheet } from 'react-native';
+
+import { useNavigation } from 'expo-router';
+import { Appbar, Text } from 'react-native-paper';
+
 import DrawerNavigationHeader, {
   DrawerNavigationHeaderProps,
 } from '@/components/DrawerNavigationHeader';
-import {AppScreenProps} from '@/navigation/types';
-import {share} from '@/utils/io';
-import {getConcatenatedLog} from '@/utils/logger';
-import {useNavigation} from 'expo-router';
-import React, {memo, useEffect, useState} from 'react';
-import {Platform, ScrollView, StyleSheet} from 'react-native';
-import {Appbar, Text} from 'react-native-paper';
+import { AppScreenProps } from '@/navigation/types';
+import { share } from '@/utils/io';
+import { getConcatenatedLog } from '@/utils/logger';
 
 type MemoizedHeaderProps = DrawerNavigationHeaderProps & {
   disabled: boolean;
@@ -36,7 +39,7 @@ const Logs: React.FC<AppScreenProps<'logs'>> = () => {
 
   useEffect(() => {
     if (Platform.OS !== 'web') {
-      getConcatenatedLog().then(text => setLog(text));
+      getConcatenatedLog().then((text) => setLog(text));
     }
   });
 

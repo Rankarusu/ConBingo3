@@ -1,4 +1,4 @@
-import {NativeStackNavigationOptions} from '@react-navigation/native-stack';
+import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 
 export interface AppRoute {
   name: string;
@@ -47,7 +47,7 @@ export interface RootRoute {
 export const rootRoutes: RootRoute[] = [
   {
     name: '(game)',
-    options: {headerShown: false},
+    options: { headerShown: false },
   },
   {
     name: 'modal',
