@@ -2,7 +2,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { memo } from 'react';
 
-import { Dimensions, Platform, StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
 import { Surface, Text, TouchableRipple } from 'react-native-paper';
 import Animated, {
@@ -117,11 +117,8 @@ const styles = StyleSheet.create({
   bingoField: {
     aspectRatio: 1,
     borderRadius: 4,
-    flexBasis: Dimensions.get('window').width / 5 - 4,
-    height: Platform.OS === 'web' ? undefined : 1,
-    minHeight: 1,
-    minWidth: 1,
     elevation: 1,
+    flex: 1,
   },
   content: {
     flex: 1,

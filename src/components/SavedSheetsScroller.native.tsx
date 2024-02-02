@@ -19,8 +19,6 @@ import { BingoSheet as BingoSheetModel } from '@/models/bingoSheet';
 import { setSelectedSheet } from '@/stores/savedSheetsSlice';
 import { useAppTheme } from '@/stores/themeSlice';
 
-const width = Dimensions.get('window').width;
-
 interface SavedSheetsScrollerProps {
   savedSheets: BingoSheetModel[];
   flatRef: RefObject<FlatList>;
@@ -32,6 +30,7 @@ const viewabilityConfig: ViewabilityConfig = {
 };
 
 const SavedSheetsScroller: React.FC<SavedSheetsScrollerProps> = (props) => {
+  const { width } = Dimensions.get('window');
   const dispatch = useAppDispatch();
 
   const { primary } = useAppTheme().colors;
@@ -56,7 +55,7 @@ const SavedSheetsScroller: React.FC<SavedSheetsScrollerProps> = (props) => {
       <FlatList
         ref={props.flatRef}
         data={props.savedSheets}
-        style={styles.swiper}
+        style={{ maxHeight: width + 6 }}
         horizontal
         initialNumToRender={1}
         getItemLayout={(_, index) => ({
@@ -88,7 +87,7 @@ const SavedSheetsScroller: React.FC<SavedSheetsScrollerProps> = (props) => {
           item: BingoSheetModel;
           index: number;
         }) => (
-          <View style={styles.sheet}>
+          <View style={{ height: width, width: width }}>
             <BingoSheet fields={item.fields} key={index} readonly />
           </View>
         )}
@@ -107,16 +106,6 @@ const SavedSheetsScroller: React.FC<SavedSheetsScrollerProps> = (props) => {
 };
 
 const styles = StyleSheet.create({
-  swiper: {
-    padding: 6,
-    maxHeight: width + 6,
-  },
-
-  sheet: {
-    width: width,
-    height: width,
-  },
-
   dot: {
     width: 10,
     height: 10,
