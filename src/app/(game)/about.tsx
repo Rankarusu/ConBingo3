@@ -36,13 +36,14 @@ const About: React.FC<AppScreenProps<'about'>> = () => {
             bullshit bingo at conventions I wanted to digitize that process by
             creating some kind of app for it.
             {'\n'}
-            This is already the third iteration of this application is going
+            This is already the third iteration this application is going
             through. While the first one used only vanilla JS and SCSS, I tried
             to build this with Vue and Ionic, but I was very disappointed by the
             performance. So here we go again. This time in React Native.
             {'\n\n'}
-            Should you have an idea to improve this app or come across any bugs,
-            please let me know on the GitHub page below. Thanks for downloading!
+            Should you have an idea on how to improve this app or come across
+            any bugs, please let me know on the GitHub page below. Thanks for
+            downloading!
           </Text>
         </Card.Content>
         <Card.Actions>
