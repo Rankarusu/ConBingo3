@@ -3,7 +3,8 @@ import React from 'react';
 import { Platform } from 'react-native';
 
 import { ThemeProvider } from '@react-navigation/native';
-import { Slot, SplashScreen, Stack } from 'expo-router';
+import { Slot, Stack } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
 import { ErrorBoundaryProps } from 'expo-router/src/exports';
 import { StatusBar } from 'expo-status-bar';
 import { Provider as PaperProvider } from 'react-native-paper';
