@@ -1,18 +1,23 @@
 import React from 'react';
 
-import { Linking, Platform, StyleSheet, View } from 'react-native';
+import { Image, Linking, Platform, StyleSheet, View } from 'react-native';
 
 import Constants from 'expo-constants';
 import { useRouter } from 'expo-router';
 import { Button, Card, Text } from 'react-native-paper';
 
 import { AppScreenProps } from '@/navigation/types';
-import ThemeAwareLogo from '@/components/ThemeAwareLogo';
 
 const { version } = Constants.expoConfig ?? {};
 const { playstoreUrl, githubUrl, webUrl } = Constants.expoConfig?.extra ?? {};
 
-const Icon = () => <ThemeAwareLogo height={48} width={48} />;
+const Icon = () => (
+  <Image
+    resizeMode="contain"
+    style={styles.image}
+    source={require('@assets/logo_full_round_no_border.png')}
+  />
+);
 
 const About: React.FC<AppScreenProps<'about'>> = () => {
   const router = useRouter();
@@ -101,6 +106,12 @@ const styles = StyleSheet.create({
   },
   logo: {
     paddingRight: 10,
+  },
+  image: {
+    marginVertical: 20,
+    marginHorizontal: 10,
+    height: 86,
+    width: 86,
   },
 });
 

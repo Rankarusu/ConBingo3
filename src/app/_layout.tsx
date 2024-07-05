@@ -1,14 +1,15 @@
 import React from 'react';
 
-import { Platform } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
 import { ThemeProvider } from '@react-navigation/native';
-import { Slot, SplashScreen, Stack } from 'expo-router';
-import { ErrorBoundaryProps } from 'expo-router/src/exports';
+import { ErrorBoundaryProps, Slot, Stack } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { Provider as ReduxProvider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import ErrorScreen from '@/components/ErrorScreen';
 import RootNavigationHeader from '@/components/RootNavigationHeader';
@@ -21,7 +22,7 @@ import { Logger } from '@/utils/logger';
 
 SplashScreen.preventAutoHideAsync();
 
-export function ErrorBoundary(props: ErrorBoundaryProps) {
+export function ErrorBoundary(props: Readonly<ErrorBoundaryProps>) {
   return <ErrorScreen error={props.error} />;
 }
 
@@ -55,31 +56,39 @@ const AppLayer = () => {
     >
       <ThemeProvider value={theme}>
         <PaperProvider theme={theme}>
-          <SnackbarProvider>
-            <AlertProvider>
-              <Stack
-                screenOptions={{
-                  // eslint-disable-next-line react/no-unstable-nested-components
-                  header: (props) => (
-                    <RootNavigationHeader title="Modal" {...props} />
-                  ),
-                }}
-              >
-                {rootRoutes.map((route) => {
-                  return (
-                    <Stack.Screen
-                      key={route.name}
-                      name={route.name}
-                      options={route.options}
-                    />
-                  );
-                })}
-              </Stack>
-              <StatusBar style={theme.dark ? 'light' : 'dark'} animated />
-            </AlertProvider>
-          </SnackbarProvider>
+          <GestureHandlerRootView style={styles.container}>
+            <SnackbarProvider>
+              <AlertProvider>
+                <Stack
+                  screenOptions={{
+                    // eslint-disable-next-line react/no-unstable-nested-components
+                    header: (props) => (
+                      <RootNavigationHeader title="Modal" {...props} />
+                    ),
+                  }}
+                >
+                  {rootRoutes.map((route) => {
+                    return (
+                      <Stack.Screen
+                        key={route.name}
+                        name={route.name}
+                        options={route.options}
+                      />
+                    );
+                  })}
+                </Stack>
+                <StatusBar style={theme.dark ? 'light' : 'dark'} animated />
+              </AlertProvider>
+            </SnackbarProvider>
+          </GestureHandlerRootView>
         </PaperProvider>
       </ThemeProvider>
     </PersistGate>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});

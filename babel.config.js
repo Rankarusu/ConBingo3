@@ -5,8 +5,6 @@ module.exports = function (api) {
     plugins: [
       ['react-native-platform-specific-extensions', { extensions: ['css'] }],
       '@babel/plugin-proposal-export-namespace-from',
-      'expo-router/babel',
-      'react-native-reanimated/plugin',
     ],
     env: {
       production: {
