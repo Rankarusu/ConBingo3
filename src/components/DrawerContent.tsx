@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 
 import {
   DrawerContentComponentProps,
@@ -11,7 +11,6 @@ import { Drawer, Switch, Text } from 'react-native-paper';
 import { useAppDispatch } from '@/hooks';
 import { appRoutes } from '@/navigation/routes';
 import { toggle, useAppTheme } from '@/stores/themeSlice';
-import ThemeAwareLogo from '@/components/ThemeAwareLogo';
 
 const DrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
   const dispatch = useAppDispatch();
@@ -25,7 +24,11 @@ const DrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
   return (
     <DrawerContentScrollView {...props}>
       <View style={style.titleBox}>
-        <ThemeAwareLogo height={40} width={40} />
+        <Image
+          resizeMode="contain"
+          style={style.image}
+          source={require('@assets/logo_full_round_no_border.png')}
+        />
         <Text style={style.title} variant="titleLarge">
           Convention Bingo
         </Text>
@@ -68,9 +71,8 @@ const style = StyleSheet.create({
   titleBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    marginHorizontal: 12,
-    gap: 10,
+    marginHorizontal: 24,
+    gap: 15,
     marginVertical: 15,
   },
   toggleBox: {
@@ -78,6 +80,10 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 30,
+  },
+  image: {
+    height: 40,
+    width: 40,
   },
 });
 

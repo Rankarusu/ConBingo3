@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     maxWidth: 'min(calc(100vh - 200px), 100vw)' as DimensionValue,
-    marginHorizontal: 'auto',
+    marginHorizontal: Platform.OS === 'web' ? 'auto' : undefined,
   },
   center: {
     flex: 1,

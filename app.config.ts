@@ -11,9 +11,9 @@ const config: ExpoConfig = {
   icon: './assets/logo_full.png',
   userInterfaceStyle: 'automatic',
   splash: {
-    image: './assets/logo_fg.png',
+    image: './assets/splash.png',
     resizeMode: 'contain',
-    backgroundColor: '#7F5AE6',
+    backgroundColor: '#FFF',
   },
   assetBundlePatterns: ['**/*'],
   ios: {
@@ -34,7 +34,21 @@ const config: ExpoConfig = {
     bundler: 'metro',
     output: 'single',
   },
-  plugins: ['expo-router', './signing-config-plugin'],
+  plugins: [
+    'expo-router',
+    './signing-config-plugin',
+    [
+      'expo-build-properties',
+      {
+        ios: {
+          newArchEnabled: true,
+        },
+        android: {
+          newArchEnabled: true,
+        },
+      },
+    ],
+  ],
   experiments: {
     tsconfigPaths: true,
     typedRoutes: true,
