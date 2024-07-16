@@ -1,5 +1,3 @@
-// does not work any other way
-/* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
 
 import { Platform } from 'react-native';

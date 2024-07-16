@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unstable-nested-components */
 import React, { memo, useEffect, useState } from 'react';
 
 import { Platform, ScrollView, StyleSheet } from 'react-native';
