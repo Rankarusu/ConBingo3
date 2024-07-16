@@ -47,7 +47,7 @@ const Play: React.FC<AppScreenProps<'play'>> = () => {
     }
     // show a confirmation if there is progress on the sheet
     const checkedFields = currentSheet.filter((field) => field.checked);
-    if (checkedFields.length > 1 && checkedFields[0].text === 'FREE SPACE') {
+    if (checkedFields.length > 1) {
       showAlert(rerollSheetAlert);
       return;
     }

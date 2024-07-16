@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
   extends: [
-    '@react-native-community',
+    '@react-native',
     'plugin:import/recommended',
     'plugin:import/typescript',
   ],
@@ -36,5 +36,11 @@ module.exports = {
     ],
     'import/no-named-as-default': 'off',
     radix: 'off',
+    'react/no-unstable-nested-components': [
+      'warn',
+      {
+        allowAsProps: true,
+      },
+    ],
   },
 };

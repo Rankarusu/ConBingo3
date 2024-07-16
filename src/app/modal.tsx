@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unstable-nested-components */
 import React, { memo, useCallback, useEffect, useState } from 'react';
 
 import { StyleSheet, View } from 'react-native';
