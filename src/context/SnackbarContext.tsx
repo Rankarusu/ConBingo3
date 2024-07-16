@@ -52,17 +52,21 @@ export const SnackbarProvider: React.FC<PropsWithChildren> = (props) => {
   return (
     <SnackbarContext.Provider value={{ showSnackbar }}>
       {props.children}
-      <Snackbar
-        wrapperStyle={[{ bottom: getBottomPosition() }]}
-        duration={DURATION}
-        visible={open}
-        onDismiss={handleClose}
-        action={{
-          label: 'Dismiss',
-        }}
-      >
-        {message}
-      </Snackbar>
+      {/* TODO: Remove this once this PR is merged: https://github.com/callstack/react-native-paper/issues/3775 */}
+      {open && (
+        <Snackbar
+          wrapperStyle={[{ bottom: getBottomPosition() }]}
+          duration={DURATION}
+          // visible={open}
+          visible={true}
+          onDismiss={handleClose}
+          action={{
+            label: 'Dismiss',
+          }}
+        >
+          {message}
+        </Snackbar>
+      )}
     </SnackbarContext.Provider>
   );
 };
