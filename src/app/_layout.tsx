@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 
 import { ThemeProvider } from '@react-navigation/native';
 import { ErrorBoundaryProps, Slot, Stack } from 'expo-router';
@@ -44,9 +44,8 @@ export default function Layout() {
 const AppLayer = () => {
   const theme = useAppTheme();
 
-  //TODO: remove once issue is resolved: https://github.com/expo/router/issues/837
-  //workaround to hide twitching of drawer on startup
-  setTimeout(() => SplashScreen.hideAsync(), 1200);
+  //this is just here to hide the initial twitch when screens mount
+  setTimeout(() => SplashScreen.hideAsync(), 500);
 
   return (
     <PersistGate
@@ -56,31 +55,39 @@ const AppLayer = () => {
     >
       <ThemeProvider value={theme}>
         <PaperProvider theme={theme}>
-          <GestureHandlerRootView style={styles.container}>
-            <SnackbarProvider>
-              <AlertProvider>
-                <Stack
-                  screenOptions={{
-                    // eslint-disable-next-line react/no-unstable-nested-components
-                    header: (props) => (
-                      <RootNavigationHeader title="Modal" {...props} />
-                    ),
-                  }}
+          <SnackbarProvider>
+            <AlertProvider>
+              <GestureHandlerRootView>
+                <View
+                  // TODO: remove this workaround once expo router fixed the flickering with modals.
+                  // this just makes it less noticeable
+                  style={[
+                    styles.rootView,
+                    { backgroundColor: theme.colors.background },
+                  ]}
                 >
-                  {rootRoutes.map((route) => {
-                    return (
-                      <Stack.Screen
-                        key={route.name}
-                        name={route.name}
-                        options={route.options}
-                      />
-                    );
-                  })}
-                </Stack>
+                  <Stack
+                    screenOptions={{
+                      header: (props) => (
+                        <RootNavigationHeader title="Modal" {...props} />
+                      ),
+                    }}
+                  >
+                    {rootRoutes.map((route) => {
+                      return (
+                        <Stack.Screen
+                          key={route.name}
+                          name={route.name}
+                          options={route.options}
+                        />
+                      );
+                    })}
+                  </Stack>
+                </View>
                 <StatusBar style={theme.dark ? 'light' : 'dark'} animated />
-              </AlertProvider>
-            </SnackbarProvider>
-          </GestureHandlerRootView>
+              </GestureHandlerRootView>
+            </AlertProvider>
+          </SnackbarProvider>
         </PaperProvider>
       </ThemeProvider>
     </PersistGate>
@@ -88,7 +95,7 @@ const AppLayer = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  rootView: {
     flex: 1,
   },
 });
