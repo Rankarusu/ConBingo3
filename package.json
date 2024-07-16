@@ -1,7 +1,7 @@
 {
   "name": "convention-bingo",
   "description": "A bullshit-bingo-esque to play with your weeb friends at conventions",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "private": true,
   "repository": {
     "type": "git",
