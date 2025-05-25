@@ -10,6 +10,7 @@ const config: ExpoConfig = {
   orientation: 'portrait',
   icon: './assets/logo_full.png',
   userInterfaceStyle: 'automatic',
+  newArchEnabled: true,
   splash: {
     image: './assets/splash.png',
     resizeMode: 'contain',
@@ -34,21 +35,7 @@ const config: ExpoConfig = {
     bundler: 'metro',
     output: 'single',
   },
-  plugins: [
-    'expo-router',
-    './signing-config-plugin',
-    [
-      'expo-build-properties',
-      {
-        ios: {
-          newArchEnabled: true,
-        },
-        android: {
-          newArchEnabled: true,
-        },
-      },
-    ],
-  ],
+  plugins: ['expo-router', './signing-config-plugin'],
   experiments: {
     tsconfigPaths: true,
     typedRoutes: true,

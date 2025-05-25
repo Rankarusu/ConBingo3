@@ -14,7 +14,6 @@ import { AlertOptions, useAlert } from '@/context/AlertContext';
 import { useSnackbar } from '@/context/SnackbarContext';
 import { useAppDispatch } from '@/hooks';
 import { useModal } from '@/hooks/useModal';
-import { AppScreenProps } from '@/navigation/types';
 import {
   addFields,
   removeFields,
@@ -88,7 +87,7 @@ const MultiSelectModeHeader = (props: MultiSelectModeHeaderProps) => {
   );
 };
 
-const EditFields: React.FC<AppScreenProps<'edit-fields'>> = () => {
+const EditFields: React.FC = () => {
   const dispatch = useAppDispatch();
   const { fields, sectionedFields } = useFields();
   const { selectedFields, multiSelectModeEnabled } = useSelectedFields();

@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
+import { Image } from 'expo-image';
 import {
   DrawerContentComponentProps,
   DrawerContentScrollView,
@@ -25,7 +26,7 @@ const DrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
     <DrawerContentScrollView {...props}>
       <View style={style.titleBox}>
         <Image
-          resizeMode="contain"
+          contentFit="contain"
           style={style.image}
           source={require('@assets/logo_full_round_no_border.png')}
         />

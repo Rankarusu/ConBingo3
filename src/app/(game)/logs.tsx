@@ -8,7 +8,6 @@ import { Appbar, Text } from 'react-native-paper';
 import DrawerNavigationHeader, {
   DrawerNavigationHeaderProps,
 } from '@/components/DrawerNavigationHeader';
-import { AppScreenProps } from '@/navigation/types';
 import { share } from '@/utils/io';
 import { getConcatenatedLog } from '@/utils/logger';
 
@@ -32,7 +31,7 @@ const MemoizedHeader = memo((props: MemoizedHeaderProps) => {
   );
 });
 
-const Logs: React.FC<AppScreenProps<'logs'>> = () => {
+const Logs: React.FC = () => {
   const [log, setLog] = useState('');
   const navigation = useNavigation();
 

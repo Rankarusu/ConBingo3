@@ -20,6 +20,10 @@ export const CombinedDefaultTheme = {
     ...MD3LightTheme.colors,
     ...LightTheme.colors,
   },
+  fonts: {
+    ...MD3LightTheme.fonts,
+    ...LightTheme.fonts,
+  },
 };
 export const CombinedDarkTheme = {
   ...MD3DarkTheme,
@@ -27,6 +31,10 @@ export const CombinedDarkTheme = {
   colors: {
     ...MD3DarkTheme.colors,
     ...DarkTheme.colors,
+  },
+  fonts: {
+    ...MD3DarkTheme.fonts,
+    ...DarkTheme.fonts,
   },
 };
 

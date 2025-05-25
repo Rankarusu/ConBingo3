@@ -2,9 +2,8 @@ import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { DimensionValue, Platform, StyleSheet, View } from 'react-native';
 
-import { useFocusEffect } from '@react-navigation/native';
 import confetti from 'canvas-confetti';
-import { useRouter } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
 import ConfettiCannon from 'react-native-confetti-cannon';
 import { Button } from 'react-native-paper';
 
@@ -14,7 +13,6 @@ import GooglePlayAd from '@/components/GooglePlayAd';
 import { AlertOptions, useAlert } from '@/context/AlertContext';
 import { useSnackbar } from '@/context/SnackbarContext';
 import { useAppDispatch } from '@/hooks';
-import { AppScreenProps } from '@/navigation/types';
 import {
   resetCurrentSheet,
   resetWin,
@@ -25,7 +23,7 @@ import { resetFields, useFields } from '@/stores/fieldsSlice';
 import { addSheet } from '@/stores/savedSheetsSlice';
 import { Logger, deleteOldLogs } from '@/utils/logger';
 
-const Play: React.FC<AppScreenProps<'play'>> = () => {
+const Play: React.FC = () => {
   const dispatch = useAppDispatch();
   const { currentSheet, win, alreadyLaunched } = useCurrentSheet();
   const { fields } = useFields();

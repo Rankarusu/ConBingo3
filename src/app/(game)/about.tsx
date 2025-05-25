@@ -1,25 +1,24 @@
 import React from 'react';
 
-import { Image, Linking, Platform, StyleSheet, View } from 'react-native';
+import { Linking, Platform, StyleSheet, View } from 'react-native';
 
+import { Image } from 'expo-image';
 import Constants from 'expo-constants';
 import { useRouter } from 'expo-router';
 import { Button, Card, Text } from 'react-native-paper';
-
-import { AppScreenProps } from '@/navigation/types';
 
 const { version } = Constants.expoConfig ?? {};
 const { playstoreUrl, githubUrl, webUrl } = Constants.expoConfig?.extra ?? {};
 
 const Icon = () => (
   <Image
-    resizeMode="contain"
+    contentFit="contain"
     style={styles.image}
     source={require('@assets/logo_full_round_no_border.png')}
   />
 );
 
-const About: React.FC<AppScreenProps<'about'>> = () => {
+const About: React.FC = () => {
   const router = useRouter();
 
   return (

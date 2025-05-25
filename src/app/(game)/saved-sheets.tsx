@@ -8,7 +8,6 @@ import SavedSheetsScroller from '@/components/SavedSheetsScroller';
 import { useSnackbar } from '@/context/SnackbarContext';
 import { useAppDispatch } from '@/hooks';
 import { CheckableBingoField } from '@/models/checkableBingoField';
-import { AppScreenProps } from '@/navigation/types';
 import { setCurrentSheet } from '@/stores/currentSheetSlice';
 import {
   addSheet,
@@ -31,7 +30,7 @@ const validateSheetFields = (fields: CheckableBingoField[]) => {
   }
 };
 
-const SavedSheets: React.FC<AppScreenProps<'saved-sheets'>> = () => {
+const SavedSheets: React.FC = () => {
   const { savedSheets, selectedSheet, selectedSheetIndex } = useSavedSheets();
   const dispatch = useAppDispatch();
   const { showSnackbar } = useSnackbar();

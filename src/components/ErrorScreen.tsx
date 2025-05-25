@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 
-import { Image, Linking, ScrollView, StyleSheet, View } from 'react-native';
+import { Linking, ScrollView, StyleSheet, View } from 'react-native';
 
+import { Image } from 'expo-image';
 import Constants from 'expo-constants';
 import { Button, List, Text } from 'react-native-paper';
 
