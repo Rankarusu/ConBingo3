@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Image, Linking, Platform, StyleSheet, View } from 'react-native';
+import { Linking, Platform, StyleSheet, View } from 'react-native';
 
+import { Image } from 'expo-image';
 import Constants from 'expo-constants';
 import { useRouter } from 'expo-router';
 import { Button, Card, Text } from 'react-native-paper';

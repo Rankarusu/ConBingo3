@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
+import { Image } from 'expo-image';
 import {
   DrawerContentComponentProps,
   DrawerContentScrollView,
