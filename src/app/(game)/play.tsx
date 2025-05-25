@@ -2,9 +2,8 @@ import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { DimensionValue, Platform, StyleSheet, View } from 'react-native';
 
-import { useFocusEffect } from '@react-navigation/native';
 import confetti from 'canvas-confetti';
-import { useRouter } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
 import ConfettiCannon from 'react-native-confetti-cannon';
 import { Button } from 'react-native-paper';
 

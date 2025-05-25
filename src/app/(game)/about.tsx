@@ -14,7 +14,7 @@ const { playstoreUrl, githubUrl, webUrl } = Constants.expoConfig?.extra ?? {};
 
 const Icon = () => (
   <Image
-    resizeMode="contain"
+    contentFit="contain"
     style={styles.image}
     source={require('@assets/logo_full_round_no_border.png')}
   />
