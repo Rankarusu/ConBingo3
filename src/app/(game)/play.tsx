@@ -13,7 +13,6 @@ import GooglePlayAd from '@/components/GooglePlayAd';
 import { AlertOptions, useAlert } from '@/context/AlertContext';
 import { useSnackbar } from '@/context/SnackbarContext';
 import { useAppDispatch } from '@/hooks';
-import { AppScreenProps } from '@/navigation/types';
 import {
   resetCurrentSheet,
   resetWin,
@@ -24,7 +23,7 @@ import { resetFields, useFields } from '@/stores/fieldsSlice';
 import { addSheet } from '@/stores/savedSheetsSlice';
 import { Logger, deleteOldLogs } from '@/utils/logger';
 
-const Play: React.FC<AppScreenProps<'play'>> = () => {
+const Play: React.FC = () => {
   const dispatch = useAppDispatch();
   const { currentSheet, win, alreadyLaunched } = useCurrentSheet();
   const { fields } = useFields();

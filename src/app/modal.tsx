@@ -10,7 +10,6 @@ import RootNavigationHeader, {
 } from '@/components/RootNavigationHeader';
 import { useSnackbar } from '@/context/SnackbarContext';
 import { useAppDispatch } from '@/hooks';
-import { RootScreenProps } from '@/navigation/types';
 import {
   updateCurrentSheetField,
   useCurrentSheet,
@@ -45,7 +44,7 @@ const validate = (input: string) => {
   return normalizeWhitespace(input).length < 3;
 };
 
-const Modal: React.FC<RootScreenProps<'modal'>> = () => {
+const Modal: React.FC = () => {
   const dispatch = useAppDispatch();
   const { currentSheet, fieldByPosition } = useCurrentSheet();
   const { fields, fieldById } = useFields();

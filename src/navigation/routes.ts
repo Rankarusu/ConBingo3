@@ -1,5 +1,3 @@
-import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
-
 export interface AppRoute {
   name: string;
   displayName: string;
@@ -41,7 +39,7 @@ export const hiddenRoutes: AppRoute[] = [
 
 export interface RootRoute {
   name: string;
-  options?: NativeStackNavigationOptions;
+  options?: any;
 }
 
 export const rootRoutes: RootRoute[] = [

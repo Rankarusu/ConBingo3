@@ -7,8 +7,6 @@ import Constants from 'expo-constants';
 import { useRouter } from 'expo-router';
 import { Button, Card, Text } from 'react-native-paper';
 
-import { AppScreenProps } from '@/navigation/types';
-
 const { version } = Constants.expoConfig ?? {};
 const { playstoreUrl, githubUrl, webUrl } = Constants.expoConfig?.extra ?? {};
 
@@ -20,7 +18,7 @@ const Icon = () => (
   />
 );
 
-const About: React.FC<AppScreenProps<'about'>> = () => {
+const About: React.FC = () => {
   const router = useRouter();
 
   return (

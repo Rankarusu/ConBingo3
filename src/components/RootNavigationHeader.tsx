@@ -2,21 +2,22 @@ import React from 'react';
 
 import { StyleSheet } from 'react-native';
 
-import { NativeStackHeaderProps } from '@react-navigation/native-stack';
+import { useNavigation } from 'expo-router';
 import { Appbar } from 'react-native-paper';
 
-export type RootNavigationHeaderProps = NativeStackHeaderProps & {
+export type RootNavigationHeaderProps = {
   title: string;
   right?: JSX.Element;
 };
 
 const RootNavigationHeader: React.FC<RootNavigationHeaderProps> = (props) => {
+  const navigation = useNavigation();
   return (
     <Appbar.Header elevated>
       <Appbar.Action
         icon={'close'}
         onPress={() => {
-          props.navigation.goBack();
+          navigation.goBack();
         }}
       />
       <Appbar.Content title={props.title} style={styles.title} />
