@@ -30,7 +30,7 @@
     "@react-native-community/hooks": "^3.0.0",
     "@react-navigation/drawer": "^7.1.1",
     "@react-navigation/native": "^7.0.14",
-    "@reduxjs/toolkit": "^1.9.3",
+    "@reduxjs/toolkit": "^2.8.2",
     "@types/canvas-confetti": "^1.6.0",
     "canvas-confetti": "^1.6.0",
     "expo": "^52.0.0",
@@ -63,7 +63,7 @@
     "react-native-screens": "~4.8.0",
     "react-native-share": "^8.2.2",
     "react-native-web": "~0.19.13",
-    "react-redux": "^8.0.5",
+    "react-redux": "^9.2.0",
     "redux-persist": "^6.0.0",
     "swiper": "^9.2.0"
   },
