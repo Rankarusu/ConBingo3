@@ -54,7 +54,6 @@
     "react-native": "0.79.5",
     "react-native-animated-pagination-dots": "^0.1.73",
     "react-native-confetti-cannon": "^1.5.2",
-    "react-native-document-picker": "^8.2.2",
     "react-native-gesture-handler": "~2.24.0",
     "react-native-logs": "^5.1.0",
     "react-native-paper": "^5.12.3",
@@ -75,7 +74,6 @@
     "@commitlint/cz-commitlint": "^17.6.7",
     "@react-native/babel-preset": "^0.79.2",
     "@react-native/eslint-config": "^0.74.85",
-    "@react-native/metro-config": "^0.72.9",
     "@semantic-release/git": "^10.0.1",
     "@types/react": "~19.0.10",
     "@typescript-eslint/parser": "^7.16.1",
@@ -102,8 +100,5 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  },
-  "resolutions": {
-    "@types/react": "^19.0.0"
   }
 }
