@@ -6,7 +6,7 @@ const config: ExpoConfig = {
   name: 'Convention Bingo',
   slug: 'ConventionBingo',
   scheme: 'conbingo',
-  version: '4.0.2',
+  version: '4.1.0',
   orientation: 'portrait',
   icon: './assets/logo_full.png',
   userInterfaceStyle: 'automatic',
@@ -28,7 +28,7 @@ const config: ExpoConfig = {
     },
     package: 'com.conbingo',
     playStoreUrl: 'https://play.google.com/store/apps/details?id=com.conbingo',
-    versionCode: 23,
+    versionCode: 24,
   },
   web: {
     favicon: './assets/favicon_dark.png',
