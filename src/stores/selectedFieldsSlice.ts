@@ -14,7 +14,7 @@ const initialState: SelectedFieldsState = {
   multiSelectModeEnabled: false,
 };
 
-export const selectedFieldsSlice = createSlice({
+const selectedFieldsSlice = createSlice({
   name: 'selectedFields',
   initialState,
   reducers: {

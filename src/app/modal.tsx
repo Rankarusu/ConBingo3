@@ -39,6 +39,7 @@ const MemoizedHeader = memo((props: MemoizedHeaderProps) => (
     }
   />
 ));
+MemoizedHeader.displayName = 'MemoizedHeader';
 
 const validate = (input: string) => {
   return normalizeWhitespace(input).length < 3;

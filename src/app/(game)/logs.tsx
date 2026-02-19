@@ -31,6 +31,8 @@ const MemoizedHeader = memo((props: MemoizedHeaderProps) => {
   );
 });
 
+MemoizedHeader.displayName = 'MemoizedHeader';
+
 const Logs: React.FC = () => {
   const [log, setLog] = useState('');
   const navigation = useNavigation();
