@@ -1,5 +1,4 @@
 // expo web css hacks
-/* eslint-disable react-native/no-inline-styles */
 import React, { memo } from 'react';
 
 import { Platform, StyleSheet } from 'react-native';

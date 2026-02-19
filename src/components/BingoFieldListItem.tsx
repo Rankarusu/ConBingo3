@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, { memo } from 'react';
 
 import { StyleSheet, ViewStyle } from 'react-native';

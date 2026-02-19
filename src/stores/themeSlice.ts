@@ -15,7 +15,7 @@ const initialState: ThemeState = {
   value: Appearance.getColorScheme(),
 };
 
-export const themeSlice = createSlice({
+const themeSlice = createSlice({
   name: 'theme',
   initialState,
   reducers: {

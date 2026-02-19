@@ -21,7 +21,7 @@ const initialState: FieldsState = {
   index: 0,
 };
 
-export const fieldsSlice = createSlice({
+const fieldsSlice = createSlice({
   name: 'fields',
   initialState,
   reducers: {

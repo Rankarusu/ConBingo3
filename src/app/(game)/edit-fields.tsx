@@ -56,6 +56,8 @@ const MemoizedHeader = memo((props: MemoizedHeaderProps) => {
   );
 });
 
+MemoizedHeader.displayName = 'MemoizedHeader';
+
 type MultiSelectModeHeaderProps = {
   title: string;
   cancelMode: () => void;
@@ -72,7 +74,6 @@ const MultiSelectModeHeader = (props: MultiSelectModeHeaderProps) => {
     >
       <Appbar.Header
         // not worth it to create a custom hook with theme just for this
-        // eslint-disable-next-line react-native/no-inline-styles
         style={{
           borderBottomColor: theme.colors.primary,
           borderBottomWidth: 2,

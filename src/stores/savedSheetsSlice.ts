@@ -18,7 +18,7 @@ const initialState: SavedSheetsState = {
   selectedSheetIndex: 0,
 };
 
-export const savedSheetsSlice = createSlice({
+const savedSheetsSlice = createSlice({
   name: 'savedSheets',
   initialState,
   reducers: {

@@ -22,7 +22,7 @@ interface BingoFieldListProps {
   searchQuery: string;
 }
 
-export const BingoFieldList: React.FC<BingoFieldListProps> = (props) => {
+const BingoFieldList: React.FC<BingoFieldListProps> = (props) => {
   const dispatch = useAppDispatch();
   const { openEditModal } = useModal();
   const { showSnackbar } = useSnackbar();

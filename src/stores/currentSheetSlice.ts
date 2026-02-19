@@ -42,7 +42,7 @@ const checkWin = (pos: number, checkedPos: number[]) => {
   return !!result;
 };
 
-export const currentSheetSlice = createSlice({
+const currentSheetSlice = createSlice({
   name: 'currentSheet',
   initialState,
   reducers: {

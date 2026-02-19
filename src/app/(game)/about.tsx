@@ -35,7 +35,7 @@ const About: React.FC = () => {
           <Text variant="bodyMedium">
             Hi there!
             {'\n\n'}
-            My name is Ranka and I'm a developer apprentice at the time of
+            My name is Ranka and I&apos;m a developer apprentice at the time of
             writing this. Because me and my friends always play some kind of
             bullshit bingo at conventions I wanted to digitize that process by
             creating some kind of app for it.
