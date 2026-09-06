@@ -10,6 +10,7 @@ import { Provider as PaperProvider } from 'react-native-paper';
 import { Provider as ReduxProvider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import ErrorScreen from '@/components/ErrorScreen';
 import RootNavigationHeader from '@/components/RootNavigationHeader';
@@ -43,6 +44,11 @@ export default function Layout() {
 
 const AppLayer = () => {
   const theme = useAppTheme();
+  // SDK 54 makes edge-to-edge mandatory on Android, so the window now extends
+  // behind the navigation bar. The headers apply the top inset themselves, but
+  // bottom-anchored content (play/saved-sheets buttons, the edit-fields FAB)
+  // needs this to stay clear of the gesture bar.
+  const insets = useSafeAreaInsets();
 
   //this is just here to hide the initial twitch when screens mount
   setTimeout(() => SplashScreen.hideAsync(), 500);
@@ -63,7 +69,10 @@ const AppLayer = () => {
                   // this just makes it less noticeable
                   style={[
                     styles.rootView,
-                    { backgroundColor: theme.colors.background },
+                    {
+                      backgroundColor: theme.colors.background,
+                      paddingBottom: insets.bottom,
+                    },
                   ]}
                 >
                   <Stack
