@@ -10,7 +10,6 @@ const config: ExpoConfig = {
   orientation: 'portrait',
   icon: './assets/logo_full.png',
   userInterfaceStyle: 'automatic',
-  newArchEnabled: true,
   splash: {
     image: './assets/splash.png',
     resizeMode: 'contain',
