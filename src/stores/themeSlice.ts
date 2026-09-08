@@ -11,8 +11,16 @@ interface ThemeState {
   value: ColorSchemeName;
 }
 
+const getDefaultColorScheme = () => {
+  const system = Appearance.getColorScheme();
+  if (!system || system === 'unspecified') {
+    return 'light';
+  }
+  return system;
+};
+
 const initialState: ThemeState = {
-  value: Appearance.getColorScheme(),
+  value: getDefaultColorScheme(),
 };
 
 const themeSlice = createSlice({

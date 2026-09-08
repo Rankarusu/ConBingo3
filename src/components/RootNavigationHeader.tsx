@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { StyleSheet } from 'react-native';
 
@@ -7,7 +7,7 @@ import { Appbar } from 'react-native-paper';
 
 export type RootNavigationHeaderProps = {
   title: string;
-  right?: JSX.Element;
+  right?: ReactNode;
 };
 
 const RootNavigationHeader: React.FC<RootNavigationHeaderProps> = (props) => {

@@ -5,7 +5,7 @@ import { Dimensions } from 'react-native';
 import ConfettiCannon from 'react-native-confetti-cannon';
 
 interface ConfettiProps {
-  confettiRef: RefObject<ConfettiCannon>;
+  confettiRef: RefObject<ConfettiCannon | null>;
 }
 
 const Confetti = (props: ConfettiProps) => {
