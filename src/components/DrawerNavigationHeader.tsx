@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { StyleSheet } from 'react-native';
 
-import { DrawerHeaderProps } from '@react-navigation/drawer';
+import { DrawerHeaderProps } from 'expo-router/drawer';
 import { Appbar } from 'react-native-paper';
 
 export type DrawerNavigationHeaderProps = DrawerHeaderProps & {
   title: string;
-  right?: JSX.Element;
+  right?: ReactNode;
 };
 
 const DrawerNavigationHeader: React.FC<DrawerNavigationHeaderProps> = (

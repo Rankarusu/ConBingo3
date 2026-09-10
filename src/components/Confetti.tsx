@@ -5,10 +5,10 @@ import { Dimensions } from 'react-native';
 import ConfettiCannon from 'react-native-confetti-cannon';
 
 interface ConfettiProps {
-  confettiRef: RefObject<ConfettiCannon>;
+  confettiRef: RefObject<ConfettiCannon | null>;
 }
 
-const Confetti = (props: ConfettiProps) => {
+const Confetti: React.FC<ConfettiProps> = ({ confettiRef }) => {
   const { height, width } = Dimensions.get('window');
 
   return (
@@ -20,7 +20,7 @@ const Confetti = (props: ConfettiProps) => {
       origin={{ x: width / 2, y: height / 2 }}
       fadeOut={true}
       autoStartDelay={0}
-      ref={props.confettiRef}
+      ref={confettiRef}
     />
   );
 };

@@ -6,7 +6,7 @@ import { Image } from 'expo-image';
 import {
   DrawerContentComponentProps,
   DrawerContentScrollView,
-} from '@react-navigation/drawer';
+} from 'expo-router/drawer';
 import { Drawer, Switch, Text } from 'react-native-paper';
 
 import { useAppDispatch } from '@/hooks';

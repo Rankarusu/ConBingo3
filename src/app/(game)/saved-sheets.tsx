@@ -1,4 +1,4 @@
-import React, { createRef, Suspense } from 'react';
+import React, { Suspense, useRef } from 'react';
 
 import { DimensionValue, FlatList, StyleSheet, View } from 'react-native';
 
@@ -34,7 +34,7 @@ const SavedSheets: React.FC = () => {
   const { savedSheets, selectedSheet, selectedSheetIndex } = useSavedSheets();
   const dispatch = useAppDispatch();
   const { showSnackbar } = useSnackbar();
-  const flatRef = createRef<FlatList>();
+  const flatRef = useRef<FlatList>(null);
 
   const loadSheet = () => {
     const sheetToLoad = selectedSheet;

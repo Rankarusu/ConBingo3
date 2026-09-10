@@ -3,6 +3,7 @@ import React, { RefObject } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 
 import { Text } from 'react-native-paper';
+/* @ts-ignore */
 import { Navigation, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -17,7 +18,7 @@ import '@/components/SavedSheetsScroller.css';
 
 interface WebSavedSheetsScrollerProps {
   savedSheets: BingoSheetModel[];
-  flatRef?: RefObject<FlatList>;
+  flatRef?: RefObject<FlatList | null>;
 }
 
 const WebSavedSheetsScroller: React.FC<WebSavedSheetsScrollerProps> = (

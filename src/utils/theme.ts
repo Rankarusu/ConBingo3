@@ -6,11 +6,12 @@ import {
 import {
   DarkTheme as NavigationDarkTheme,
   DefaultTheme as NavigationDefaultTheme,
-} from '@react-navigation/native';
+} from 'expo-router';
+import { NavigationTheme } from 'react-native-paper/lib/typescript/types';
 
 const { LightTheme, DarkTheme } = adaptNavigationTheme({
-  reactNavigationLight: NavigationDefaultTheme,
-  reactNavigationDark: NavigationDarkTheme,
+  reactNavigationLight: NavigationDefaultTheme as unknown as NavigationTheme,
+  reactNavigationDark: NavigationDarkTheme as unknown as NavigationTheme,
 });
 
 export const CombinedDefaultTheme = {
@@ -22,7 +23,7 @@ export const CombinedDefaultTheme = {
   },
   fonts: {
     ...MD3LightTheme.fonts,
-    ...LightTheme.fonts,
+    ...NavigationDefaultTheme.fonts,
   },
 };
 export const CombinedDarkTheme = {
@@ -34,7 +35,7 @@ export const CombinedDarkTheme = {
   },
   fonts: {
     ...MD3DarkTheme.fonts,
-    ...DarkTheme.fonts,
+    ...NavigationDarkTheme.fonts,
   },
 };
 

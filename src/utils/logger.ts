@@ -5,7 +5,7 @@ import {
   fileAsyncTransport,
   logger,
 } from 'react-native-logs';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 
 const now = new Date();
 const y = now.getFullYear();
@@ -22,7 +22,7 @@ if (Platform.OS !== 'web') {
   transport.push(fileAsyncTransport);
 }
 
-const config = {
+export const Logger = logger.createLogger({
   severity: __DEV__ ? 'debug' : 'error',
   transport: transport,
   levels: {
@@ -40,11 +40,7 @@ const config = {
       error: 'redBright',
     },
   },
-};
-
-type LogLevels = keyof typeof config.levels;
-
-export const Logger = logger.createLogger<LogLevels>(config);
+});
 
 async function getLogUris() {
   const files = await FileSystem.readDirectoryAsync(

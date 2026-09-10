@@ -1,15 +1,15 @@
-import React from 'react';
+import { useEffect } from 'react';
 
 import { Platform, StyleSheet, View } from 'react-native';
 
-import { ThemeProvider } from '@react-navigation/native';
-import { ErrorBoundaryProps, Slot, Stack } from 'expo-router';
+import { ErrorBoundaryProps, Slot, Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Provider as PaperProvider } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Provider as ReduxProvider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import ErrorScreen from '@/components/ErrorScreen';
 import RootNavigationHeader from '@/components/RootNavigationHeader';
@@ -27,11 +27,13 @@ export function ErrorBoundary(props: Readonly<ErrorBoundaryProps>) {
 }
 
 export default function Layout() {
-  // disable console warnings and errors in web so console is not spammed by deprecation warnings and stuff resulting from react-native-web
-  if (!__DEV__ && Platform.OS === 'web') {
-    console.warn = () => {};
-    console.error = () => {};
-  }
+  useEffect(() => {
+    // disable console warnings and errors in web so console is not spammed by deprecation warnings and stuff resulting from react-native-web
+    if (!__DEV__ && Platform.OS === 'web') {
+      console.warn = () => {};
+      console.error = () => {};
+    }
+  });
 
   return (
     //need to move redux provider to another component to we can query the theme inside the next
@@ -43,6 +45,11 @@ export default function Layout() {
 
 const AppLayer = () => {
   const theme = useAppTheme();
+  // SDK 54 makes edge-to-edge mandatory on Android, so the window now extends
+  // behind the navigation bar. The headers apply the top inset themselves, but
+  // bottom-anchored content (play/saved-sheets buttons, the edit-fields FAB)
+  // needs this to stay clear of the gesture bar.
+  const insets = useSafeAreaInsets();
 
   //this is just here to hide the initial twitch when screens mount
   setTimeout(() => SplashScreen.hideAsync(), 500);
@@ -63,7 +70,10 @@ const AppLayer = () => {
                   // this just makes it less noticeable
                   style={[
                     styles.rootView,
-                    { backgroundColor: theme.colors.background },
+                    {
+                      backgroundColor: theme.colors.background,
+                      paddingBottom: insets.bottom,
+                    },
                   ]}
                 >
                   <Stack

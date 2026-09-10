@@ -119,6 +119,7 @@ const Modal: React.FC = () => {
       saveFn(normalizeWhitespace(text));
       navigation.goBack();
     }
+    /* @ts-ignore */
   }, [duplicateCheckFn, text, showSnackbar, saveFn, navigation]);
 
   const rerollField = () => {

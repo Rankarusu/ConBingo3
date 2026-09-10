@@ -4,7 +4,7 @@ import { ModalMode } from '@/app/modal';
 import { Logger } from '@/utils/logger';
 
 export function useModal() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
 
   const methods = {
     openAddModal: () => {
