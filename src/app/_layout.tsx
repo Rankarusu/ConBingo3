@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { Platform, StyleSheet, View } from 'react-native';
 
 import { ErrorBoundaryProps, Slot, Stack, ThemeProvider } from 'expo-router';
@@ -25,11 +27,13 @@ export function ErrorBoundary(props: Readonly<ErrorBoundaryProps>) {
 }
 
 export default function Layout() {
-  // disable console warnings and errors in web so console is not spammed by deprecation warnings and stuff resulting from react-native-web
-  if (!__DEV__ && Platform.OS === 'web') {
-    console.warn = () => {};
-    console.error = () => {};
-  }
+  useEffect(() => {
+    // disable console warnings and errors in web so console is not spammed by deprecation warnings and stuff resulting from react-native-web
+    if (!__DEV__ && Platform.OS === 'web') {
+      console.warn = () => {};
+      console.error = () => {};
+    }
+  });
 
   return (
     //need to move redux provider to another component to we can query the theme inside the next

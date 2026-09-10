@@ -1,4 +1,4 @@
-import React, { RefObject, useCallback, useRef } from 'react';
+import React, { RefObject, useCallback } from 'react';
 
 import {
   Animated,
@@ -8,6 +8,7 @@ import {
   View,
   ViewToken,
   ViewabilityConfig,
+  useAnimatedValue,
 } from 'react-native';
 
 import { ScalingDot } from 'react-native-animated-pagination-dots';
@@ -29,12 +30,15 @@ const viewabilityConfig: ViewabilityConfig = {
   waitForInteraction: false,
 };
 
-const SavedSheetsScroller: React.FC<SavedSheetsScrollerProps> = (props) => {
+const SavedSheetsScroller: React.FC<SavedSheetsScrollerProps> = ({
+  savedSheets,
+  flatRef,
+}) => {
   const { width } = Dimensions.get('window');
   const dispatch = useAppDispatch();
 
   const { primary } = useAppTheme().colors;
-  const scrollX = useRef(new Animated.Value(0)).current;
+  const scrollX = useAnimatedValue(0);
 
   // using useCallback to circumvent "changing onViewableItemsChanged on the fly is not supported"-error
   const onViewableItemsChanged = useCallback(
@@ -53,8 +57,8 @@ const SavedSheetsScroller: React.FC<SavedSheetsScrollerProps> = (props) => {
   return (
     <View>
       <FlatList
-        ref={props.flatRef}
-        data={props.savedSheets}
+        ref={flatRef}
+        data={savedSheets}
         style={{ maxHeight: width + 6 }}
         horizontal
         initialNumToRender={1}
@@ -93,7 +97,7 @@ const SavedSheetsScroller: React.FC<SavedSheetsScrollerProps> = (props) => {
         )}
       />
       <ScalingDot
-        data={props.savedSheets}
+        data={savedSheets}
         scrollX={scrollX}
         dotStyle={styles.dot}
         activeDotColor={primary}

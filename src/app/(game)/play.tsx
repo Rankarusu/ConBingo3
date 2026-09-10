@@ -38,20 +38,6 @@ const Play: React.FC = () => {
     showSnackbar('Sheet saved successfully!');
   };
 
-  const rerollSheet = () => {
-    if (fields.length < 24) {
-      showAlert(notEnoughFieldsAlert);
-      return;
-    }
-    // show a confirmation if there is progress on the sheet
-    const checkedFields = currentSheet.filter((field) => field.checked);
-    if (checkedFields.length > 1) {
-      showAlert(rerollSheetAlert);
-      return;
-    }
-    dispatch(resetCurrentSheet(fields));
-  };
-
   const rerollSheetAlert: AlertOptions = useMemo(() => {
     return {
       title: 'Reroll',
@@ -74,6 +60,20 @@ const Play: React.FC = () => {
       cancelAction: () => router.push('/(game)/edit-fields'),
     };
   }, [dispatch, router]);
+
+  const rerollSheet = () => {
+    if (fields.length < 24) {
+      showAlert(notEnoughFieldsAlert);
+      return;
+    }
+    // show a confirmation if there is progress on the sheet
+    const checkedFields = currentSheet.filter((field) => field.checked);
+    if (checkedFields.length > 1) {
+      showAlert(rerollSheetAlert);
+      return;
+    }
+    dispatch(resetCurrentSheet(fields));
+  };
 
   const shootConfetti = () => {
     if (Platform.OS === 'web') {
